@@ -125,7 +125,7 @@ class LPSEController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return $this->jsonError($validate->errors()->first());
+            return $this->errorResponse($validate->errors()->first());
         }
 
         $year = $request->year;
