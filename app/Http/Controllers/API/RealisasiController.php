@@ -1415,7 +1415,7 @@ class RealisasiController extends Controller
                                                 ->where('year', $request->year)
                                                 ->where('month', $request->month - 1)
                                                 ->where('sub_kegiatan_id', $id)
-                                                ->first()->anggaran;
+                                                ->first()->anggaran ?? 0;
                                         }
 
                                         $arrTargetKinerja[] = [

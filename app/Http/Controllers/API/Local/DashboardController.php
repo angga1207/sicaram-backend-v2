@@ -71,7 +71,12 @@ class DashboardController extends Controller
         $dataTarget = [];
         $dataRealisasi = [];
 
-        $arrInstances = DB::table('instances')->where('status', 'active')->get();
+        $arrInstances = DB::table('instances')
+            ->when($request->instances, function ($query) use ($request) {
+                return $query->whereIn('id', $request->instances);
+            })
+            ->where('status', 'active')
+            ->get();
 
         foreach ($rangeMonths as $month) {
             // $sumTarget = TargetKinerja::where('periode_id', $request->periode)
