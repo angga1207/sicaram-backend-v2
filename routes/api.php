@@ -16,21 +16,22 @@ use App\Http\Controllers\API\ReferencesController;
 use App\Http\Controllers\API\MasterCaramController;
 use App\Http\Controllers\API\AuthenticateController;
 use App\Http\Controllers\API\PohonKinerjaController;
+use App\Http\Controllers\API\RealisasiVer2Controller;
 use App\Http\Controllers\API\TargetKinerjaController;
 use App\Http\Controllers\API\TujuanSasaranController;
 use App\Http\Controllers\API\Accountancy\LRAController;
 use App\Http\Controllers\API\TaggingSumberDanaController;
 use App\Http\Controllers\API\TargetTujuanSasaranController;
 use App\Http\Controllers\API\Accountancy\AdminOnlyController;
-use App\Http\Controllers\API\Accountancy\BebanLaporanOperasionalController;
 use App\Http\Controllers\API\Accountancy\PersediaanController;
 use App\Http\Controllers\API\RealisasiTujuanSasaranController;
 use App\Http\Controllers\API\Accountancy\HutangBelanjaController;
 use App\Http\Controllers\API\Accountancy\RekonsiliasiAsetController;
 use App\Http\Controllers\API\Accountancy\BelanjaBayarDimukaController;
-use App\Http\Controllers\API\Accountancy\ImportController as AccountancyImportController;
-use App\Http\Controllers\API\Accountancy\PendapatanLaporanOperasionalControoler;
+use App\Http\Controllers\API\Accountancy\BebanLaporanOperasionalController;
 use App\Http\Controllers\API\Accountancy\PenyesuaianAsetDanBebanController;
+use App\Http\Controllers\API\Accountancy\PendapatanLaporanOperasionalControoler;
+use App\Http\Controllers\API\Accountancy\ImportController as AccountancyImportController;
 use App\Http\Controllers\API\Accountancy\ReportController as AccountancyReportController;
 
 Route::get('/testing', [TestingController::class, 'index']);
@@ -46,7 +47,6 @@ Route::post('/login', [AuthenticateController::class, 'login'])->name('login');
 
 // REPORT PDF
 Route::get('/report/pdf/realisasi', [ReportController::class, 'reportRealisasiPDF'])->name('report.realisasi.pdf');
-
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -273,6 +273,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Caram Realisasi Program Resources
     Route::get('caram/realisasi/listInstance', [RealisasiController::class, 'listInstance'])->name('caram-realisasi.listInstance');
     Route::get('caram/realisasi/listProgramsSubKegiatan', [RealisasiController::class, 'listProgramsSubKegiatan'])->name('caram-realisasi.listProgramsSubKegiatan');
+
+    Route::get('caram/realisasi/list1', [RealisasiVer2Controller::class, 'list1']);
+    Route::get('caram/realisasi/list2', [RealisasiVer2Controller::class, 'list2']);
+    Route::get('caram/realisasi/list3', [RealisasiVer2Controller::class, 'list3']);
+    Route::get('caram/realisasi/list4', [RealisasiVer2Controller::class, 'list4']);
 
     // Caram Tagging Sumber Dana
     Route::get('/caram/tagging-sumber-dana', [TaggingSumberDanaController::class, 'index'])->name('caram.tagging-sumber-dana.index');

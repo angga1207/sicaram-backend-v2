@@ -47,7 +47,7 @@ class RealisasiController extends Controller
         try {
             $user = auth()->user();
             $instanceIds = [];
-            if ($user->role_id == 6) {
+            if (in_array($user->role_id, [6, 8])) {
                 $Ids = DB::table('pivot_user_verificator_instances')
                     ->where('user_id', $user->id)
                     ->get();
@@ -57,7 +57,7 @@ class RealisasiController extends Controller
             }
 
             $instances = Instance::search($request->search)
-                ->when($user->role_id == 6, function ($query) use ($instanceIds) {
+                ->when(in_array($user->role_id, [6, 8]), function ($query) use ($instanceIds) {
                     return $query->whereIn('id', $instanceIds);
                 })
                 ->with(['Programs', 'Kegiatans', 'SubKegiatans'])
