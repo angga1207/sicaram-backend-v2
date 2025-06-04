@@ -112,6 +112,18 @@ class RealisasiVer2Controller extends Controller
                 ->whereNull('deleted_at')
                 ->orderBy('fullcode')
                 ->get();
+
+            if (auth()->user()->role_id == 9 && auth()->user()->instance_type == 'staff') {
+                $progs = auth()->user()->MyPermissions()->pluck('program_id');
+                $progs = collect($progs)->unique()->values();
+                $arrProgram = DB::table('ref_program')
+                    ->where('instance_id', $request->instance_id)
+                    ->whereIn('id', $progs)
+                    ->whereNull('deleted_at')
+                    ->orderBy('fullcode')
+                    ->get();
+            }
+
             $datas = [];
 
             foreach ($arrProgram as $program) {
@@ -210,6 +222,18 @@ class RealisasiVer2Controller extends Controller
                 ->whereNull('deleted_at')
                 ->orderBy('fullcode')
                 ->get();
+
+            if (auth()->user()->role_id == 9 && auth()->user()->instance_type == 'staff') {
+                $kegs = auth()->user()->MyPermissions()->pluck('kegiatan_id');
+                $kegs = collect($kegs)->unique()->values();
+                $arrKegiatan = DB::table('ref_kegiatan')
+                    ->whereIn('id', $kegs)
+                    ->where('instance_id', $request->instance_id)
+                    ->where('program_id', $request->program_id)
+                    ->whereNull('deleted_at')
+                    ->orderBy('fullcode')
+                    ->get();
+            }
             $datas = [];
             foreach ($arrKegiatan as $kegiatan) {
                 $allTargetKinerja = DB::table('data_target_kinerja')
@@ -317,6 +341,20 @@ class RealisasiVer2Controller extends Controller
                 ->whereNull('deleted_at')
                 ->orderBy('fullcode')
                 ->get();
+
+            if (auth()->user()->role_id == 9 && auth()->user()->instance_type == 'staff') {
+                $subKegs = auth()->user()->MyPermissions()->pluck('sub_kegiatan_id');
+                $subKegs = collect($subKegs)->unique()->values();
+
+                $arrSubKegiatan = DB::table('ref_sub_kegiatan')
+                    ->whereIn('id', $subKegs)
+                    ->where('instance_id', $request->instance_id)
+                    ->where('program_id', $kegiatan->program_id)
+                    ->where('kegiatan_id', $kegiatan->id)
+                    ->whereNull('deleted_at')
+                    ->orderBy('fullcode')
+                    ->get();
+            }
             $datas = [];
             foreach ($arrSubKegiatan as $subKegiatan) {
                 $allTargetKinerja = DB::table('data_target_kinerja')
