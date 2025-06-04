@@ -1902,7 +1902,7 @@ class ReportController extends Controller
                     if (count($realisasiKinerjaLalu) > 0 && count($realisasiKinerja) > 0) {
                         // realisasi kinerja ini = realisasiKinerja - realisasi kinerja lalu
                         $realisasiKinerjaIni = array_map(function ($a, $b) {
-                            return $a - $b;
+                            return floatval($a) - floatval($b);
                         }, $realisasiKinerja, $realisasiKinerjaLalu);
                     } elseif (count($realisasiKinerja) > 0) {
                         // realisasi kinerja ini = realisasi kinerja
@@ -1910,7 +1910,7 @@ class ReportController extends Controller
                     } elseif (count($realisasiKinerjaLalu) > 0) {
                         // realisasi kinerja ini = 0 - realisasi kinerja lalu
                         $realisasiKinerjaIni = array_map(function ($a, $b) {
-                            return $a - $b;
+                            return floatval($a) - floatval($b);
                         }, $realisasiKinerjaLalu, $realisasiKinerjaLalu);
                     }
 
