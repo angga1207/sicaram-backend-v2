@@ -812,14 +812,14 @@ class DashboardController extends Controller
                     })
                     ->where('status', 'verified')
                     ->get()
-                    ->sum('realisasi_anggaran');
+                    ->sum('anggaran');
                 if ($realisasiAnggaran === 0) {
                     $latestRealisasiAnggaran = DB::table('data_realisasi')
                         ->where('instance_id', $instance->id)
                         ->where('program_id', $program->id)
                         ->where('year', $request->year)
                         ->where('status', 'verified')
-                        ->where('realisasi_anggaran', '>', 0)
+                        ->where('anggaran', '>', 0)
                         ->latest('month')
                         ->first();
                     if ($latestRealisasiAnggaran) {
@@ -830,7 +830,7 @@ class DashboardController extends Controller
                             ->where('month', $latestRealisasiAnggaran->month)
                             ->where('status', 'verified')
                             ->get()
-                            ->sum('realisasi_anggaran');
+                            ->sum('anggaran');
                     }
                 }
                 $percentRealisasiAnggaran = 0;
