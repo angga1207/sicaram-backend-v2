@@ -744,7 +744,8 @@ class DashboardController extends Controller
                 $RealisasiKinerja = DB::table('instance_summary')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
-                    ->where('month', $month)
+                    // ->where('month', $month)
+                    ->orderBy('month')
                     ->where('instance_id', $instance->id)
                     ->first()->realisasi_kinerja ?? 0;
                 $dataRealisasiKinerjaMain[] = [
@@ -790,20 +791,30 @@ class DashboardController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('program_id', $program->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     ->where('status', 'verified')
                     ->sum('pagu_sipd');
 
-                $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                $realisasiAnggaran = DB::table('data_realisasi')
                     ->where('instance_id', $instance->id)
                     ->where('program_id', $program->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     ->where('status', 'verified')
                     ->get()
                     ->sum('realisasi_anggaran');
                 if ($realisasiAnggaran === 0) {
-                    $latestRealisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                    $latestRealisasiAnggaran = DB::table('data_realisasi')
                         ->where('instance_id', $instance->id)
                         ->where('program_id', $program->id)
                         ->where('year', $request->year)
@@ -812,7 +823,7 @@ class DashboardController extends Controller
                         ->latest('month')
                         ->first();
                     if ($latestRealisasiAnggaran) {
-                        $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                        $realisasiAnggaran = DB::table('data_realisasi')
                             ->where('instance_id', $instance->id)
                             ->where('program_id', $program->id)
                             ->where('year', $request->year)
@@ -832,16 +843,21 @@ class DashboardController extends Controller
                     ->where('program_id', $program->id)
                     ->where('status', 'active')
                     ->count();
-                $realisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                $realisasiKinerja = DB::table('data_realisasi')
                     ->where('instance_id', $instance->id)
                     ->where('program_id', $program->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     ->where('status', 'verified')
                     ->get()
                     ->sum('persentase_realisasi_kinerja');
                 if ($realisasiKinerja === 0) {
-                    $latestRealisasiSubKegiatanHasKinerja = DB::table('data_realisasi_sub_kegiatan')
+                    $latestRealisasiSubKegiatanHasKinerja = DB::table('data_realisasi')
                         ->where('instance_id', $instance->id)
                         ->where('program_id', $program->id)
                         ->where('year', $request->year)
@@ -850,7 +866,7 @@ class DashboardController extends Controller
                         ->latest('month')
                         ->first();
                     if ($latestRealisasiSubKegiatanHasKinerja) {
-                        $realisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                        $realisasiKinerja = DB::table('data_realisasi')
                             ->where('instance_id', $instance->id)
                             ->where('program_id', $program->id)
                             ->where('year', $request->year)
@@ -1082,22 +1098,32 @@ class DashboardController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('kegiatan_id', $kegiatan->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     // ->groupBy('program_id')
                     // ->groupBy('kode_rekening_id')
                     ->sum('pagu_sipd');
 
-                $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                $realisasiAnggaran = DB::table('data_realisasi')
                     ->where('instance_id', $instance->id)
                     ->where('kegiatan_id', $kegiatan->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     ->where('status', 'verified')
                     ->get()
                     ->sum('realisasi_anggaran');
 
                 if ($realisasiAnggaran === 0) {
-                    $latestRealisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                    $latestRealisasiAnggaran = DB::table('data_realisasi')
                         ->where('instance_id', $instance->id)
                         ->where('kegiatan_id', $kegiatan->id)
                         ->where('year', $request->year)
@@ -1106,7 +1132,7 @@ class DashboardController extends Controller
                         ->latest('month')
                         ->first();
                     if ($latestRealisasiAnggaran) {
-                        $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                        $realisasiAnggaran = DB::table('data_realisasi')
                             ->where('instance_id', $instance->id)
                             ->where('kegiatan_id', $kegiatan->id)
                             ->where('year', $request->year)
@@ -1122,16 +1148,21 @@ class DashboardController extends Controller
                     $percentRealisasiAnggaran = ($realisasiAnggaran / $totalAnggaranApbd) * 100;
                 }
 
-                $realisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                $realisasiKinerja = DB::table('data_realisasi')
                     ->where('instance_id', $instance->id)
                     ->where('kegiatan_id', $kegiatan->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     ->where('status', 'verified')
                     ->get()
                     ->sum('persentase_realisasi_kinerja');
                 if ($realisasiKinerja === 0) {
-                    $latestRealisasiSubKegiatanHasKinerja = DB::table('data_realisasi_sub_kegiatan')
+                    $latestRealisasiSubKegiatanHasKinerja = DB::table('data_realisasi')
                         ->where('instance_id', $instance->id)
                         ->where('kegiatan_id', $kegiatan->id)
                         ->where('year', $request->year)
@@ -1140,7 +1171,7 @@ class DashboardController extends Controller
                         ->latest('month')
                         ->first();
                     if ($latestRealisasiSubKegiatanHasKinerja) {
-                        $realisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                        $realisasiKinerja = DB::table('data_realisasi')
                             ->where('instance_id', $instance->id)
                             ->where('kegiatan_id', $kegiatan->id)
                             ->where('year', $request->year)
@@ -1274,7 +1305,7 @@ class DashboardController extends Controller
                     'target' => $sumTargetAnggaran ?? 0,
                 ];
 
-                $sumRealisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                $sumRealisasiAnggaran = DB::table('data_realisasi')
                     ->where('year', $request->year)
                     ->where('month', $month)
                     ->where('instance_id', $instance->id)
@@ -1295,7 +1326,7 @@ class DashboardController extends Controller
                     'month_short' => Carbon::createFromDate($request->year, $month)->translatedFormat('M'),
                     'target' => 100,
                 ];
-                $sumRealisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                $sumRealisasiKinerja = DB::table('data_realisasi')
                     ->where('year', $request->year)
                     ->where('month', $month)
                     ->where('instance_id', $instance->id)
@@ -1315,7 +1346,7 @@ class DashboardController extends Controller
             $summaryTotalAnggaran = collect($dataTargetAnggaranMain)->max('target');
             $summaryRealisasiAnggaran = collect($dataRealisasiAnggaranMain)->max('realisasi');
 
-            $summaryRealisasiAnggaranUpdatedAt = DB::table('data_realisasi_sub_kegiatan')
+            $summaryRealisasiAnggaranUpdatedAt = DB::table('data_realisasi')
                 ->where('year', $request->year)
                 // ->where('month', date('m'))
                 ->where('instance_id', $instance->id)
@@ -1327,7 +1358,7 @@ class DashboardController extends Controller
             // Kinerja Summary
             $summaryRealisasiKinerja = collect($dataRealisasiKinerjaMain)->max('realisasi');
 
-            $summaryRealisasiKinerjaUpdatedAt = DB::table('data_realisasi_sub_kegiatan')
+            $summaryRealisasiKinerjaUpdatedAt = DB::table('data_realisasi')
                 ->where('year', $request->year)
                 ->where('instance_id', $instance->id)
                 ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
@@ -1349,20 +1380,30 @@ class DashboardController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('sub_kegiatan_id', $subKegiatan->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     ->sum('pagu_sipd');
 
-                $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                $realisasiAnggaran = DB::table('data_realisasi')
                     ->where('instance_id', $instance->id)
                     ->where('sub_kegiatan_id', $subKegiatan->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     ->where('status', 'verified')
                     ->get()
                     ->sum('realisasi_anggaran');
 
                 if ($realisasiAnggaran === 0) {
-                    $latestRealisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                    $latestRealisasiAnggaran = DB::table('data_realisasi')
                         ->where('instance_id', $instance->id)
                         ->where('sub_kegiatan_id', $subKegiatan->id)
                         ->where('year', $request->year)
@@ -1371,7 +1412,7 @@ class DashboardController extends Controller
                         ->latest('month')
                         ->first();
                     if ($latestRealisasiAnggaran) {
-                        $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                        $realisasiAnggaran = DB::table('data_realisasi')
                             ->where('instance_id', $instance->id)
                             ->where('sub_kegiatan_id', $subKegiatan->id)
                             ->where('year', $request->year)
@@ -1387,16 +1428,21 @@ class DashboardController extends Controller
                     $percentRealisasiAnggaran = ($realisasiAnggaran / $totalAnggaranApbd) * 100;
                 }
 
-                $realisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                $realisasiKinerja = DB::table('data_realisasi')
                     ->where('instance_id', $instance->id)
                     ->where('sub_kegiatan_id', $subKegiatan->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->when($request->year < date('Y'), function ($query) {
+                        return $query->where('month', 12);
+                    })
+                    ->when($request->year == date('Y'), function ($query) {
+                        return $query->where('month', date('m'));
+                    })
                     ->where('status', 'verified')
                     ->get()
                     ->sum('persentase_realisasi_kinerja');
                 if ($realisasiKinerja === 0) {
-                    $latestRealisasiSubKegiatanHasKinerja = DB::table('data_realisasi_sub_kegiatan')
+                    $latestRealisasiSubKegiatanHasKinerja = DB::table('data_realisasi')
                         ->where('instance_id', $instance->id)
                         ->where('sub_kegiatan_id', $subKegiatan->id)
                         ->where('year', $request->year)
@@ -1405,7 +1451,7 @@ class DashboardController extends Controller
                         ->latest('month')
                         ->first();
                     if ($latestRealisasiSubKegiatanHasKinerja) {
-                        $realisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                        $realisasiKinerja = DB::table('data_realisasi')
                             ->where('instance_id', $instance->id)
                             ->where('sub_kegiatan_id', $subKegiatan->id)
                             ->where('year', $request->year)
@@ -1537,7 +1583,8 @@ class DashboardController extends Controller
                     'target' => $sumTargetAnggaran ?? 0,
                 ];
 
-                $sumRealisasiAnggaran = RealisasiSubKegiatan::where('year', $request->year)
+                $sumRealisasiAnggaran = DB::table('data_realisasi')
+                    ->where('year', $request->year)
                     ->where('month', $month)
                     ->where('instance_id', $instance->id)
                     ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
@@ -1557,7 +1604,8 @@ class DashboardController extends Controller
                     'month_short' => Carbon::createFromDate($request->year, $month)->translatedFormat('M'),
                     'target' => 100,
                 ];
-                $sumRealisasiKinerja = RealisasiSubKegiatan::where('year', $request->year)
+                $sumRealisasiKinerja = DB::table('data_realisasi')
+                    ->where('year', $request->year)
                     ->where('month', $month)
                     ->where('instance_id', $instance->id)
                     ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
@@ -1575,16 +1623,21 @@ class DashboardController extends Controller
             $summaryTotalAnggaran = collect($dataTargetAnggaranMain)->max('target');
             $summaryRealisasiAnggaran = collect($dataRealisasiAnggaranMain)->max('realisasi');
 
-            $summaryRealisasiAnggaranUpdatedAt = DB::table('data_realisasi_sub_kegiatan')
+            $summaryRealisasiAnggaranUpdatedAt = DB::table('data_realisasi')
                 ->where('year', $request->year)
-                ->where('month', date('m'))
+                ->when($request->year < date('Y'), function ($query) {
+                    return $query->where('month', 12);
+                })
+                ->when($request->year == date('Y'), function ($query) {
+                    return $query->where('month', date('m'));
+                })
                 ->where('instance_id', $instance->id)
                 ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
                 ->where('status', 'verified')
                 ->latest()
                 ->first();
             if ($summaryRealisasiAnggaran === 0) {
-                $latestSummaryRealisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                $latestSummaryRealisasiAnggaran = DB::table('data_realisasi')
                     ->where('year', $request->year)
                     ->where('instance_id', $instance->id)
                     ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
@@ -1593,7 +1646,7 @@ class DashboardController extends Controller
                     ->latest('month')
                     ->first();
                 if ($latestSummaryRealisasiAnggaran) {
-                    $summaryRealisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
+                    $summaryRealisasiAnggaran = DB::table('data_realisasi')
                         ->where('year', $request->year)
                         ->where('month', $latestSummaryRealisasiAnggaran->month)
                         ->where('instance_id', $instance->id)
@@ -1601,7 +1654,7 @@ class DashboardController extends Controller
                         ->where('status', 'verified')
                         ->get()
                         ->sum('realisasi_anggaran');
-                    $summaryRealisasiAnggaranUpdatedAt = DB::table('data_realisasi_sub_kegiatan')
+                    $summaryRealisasiAnggaranUpdatedAt = DB::table('data_realisasi')
                         ->where('year', $request->year)
                         ->where('month', $latestSummaryRealisasiAnggaran->month)
                         ->where('instance_id', $instance->id)
@@ -1615,16 +1668,21 @@ class DashboardController extends Controller
             // Kinerja Summary
             $summaryRealisasiKinerja = collect($dataRealisasiKinerjaMain)->max('realisasi');
 
-            $summaryRealisasiKinerjaUpdatedAt = DB::table('data_realisasi_sub_kegiatan')
+            $summaryRealisasiKinerjaUpdatedAt = DB::table('data_realisasi')
                 ->where('year', $request->year)
-                ->where('month', date('m'))
+                ->when($request->year < date('Y'), function ($query) {
+                    return $query->where('month', 12);
+                })
+                ->when($request->year == date('Y'), function ($query) {
+                    return $query->where('month', date('m'));
+                })
                 ->where('instance_id', $instance->id)
                 ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
                 ->where('status', 'verified')
                 ->latest()
                 ->first();
             if ($summaryRealisasiKinerja === 0) {
-                $latestSummaryRealisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                $latestSummaryRealisasiKinerja = DB::table('data_realisasi')
                     ->where('year', $request->year)
                     ->where('instance_id', $instance->id)
                     ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
@@ -1633,7 +1691,7 @@ class DashboardController extends Controller
                     ->latest('month')
                     ->first();
                 if ($latestSummaryRealisasiKinerja) {
-                    $summaryRealisasiKinerja = DB::table('data_realisasi_sub_kegiatan')
+                    $summaryRealisasiKinerja = DB::table('data_realisasi')
                         ->where('year', $request->year)
                         ->where('month', $latestSummaryRealisasiKinerja->month)
                         ->where('instance_id', $instance->id)
@@ -1641,7 +1699,7 @@ class DashboardController extends Controller
                         ->where('status', 'verified')
                         ->get()
                         ->sum('persentase_realisasi_kinerja');
-                    $summaryRealisasiKinerjaUpdatedAt = DB::table('data_realisasi_sub_kegiatan')
+                    $summaryRealisasiKinerjaUpdatedAt = DB::table('data_realisasi')
                         ->where('year', $request->year)
                         ->where('month', $latestSummaryRealisasiKinerja->month)
                         ->where('instance_id', $instance->id)
@@ -1688,14 +1746,16 @@ class DashboardController extends Controller
         $return = [];
         // $subKegiatan = SubKegiatan::find($idSubKegiatan);
 
-        $RealisasiStatus = RealisasiSubKegiatan::where('sub_kegiatan_id', $idSubKegiatan)
+        $RealisasiStatus = DB::table('data_realisasi')
+            ->where('sub_kegiatan_id', $idSubKegiatan)
             ->where('year', $year)
             ->where('month', $month)
             ->where('status', 'verified')
             ->first();
 
         if (!$RealisasiStatus) {
-            $RealisasiStatus = RealisasiSubKegiatan::where('sub_kegiatan_id', $idSubKegiatan)
+            $RealisasiStatus = DB::table('data_realisasi')
+                ->where('sub_kegiatan_id', $idSubKegiatan)
                 ->where('year', $year)
                 // ->where('month', $month)
                 ->where('status', 'verified')
@@ -1718,7 +1778,8 @@ class DashboardController extends Controller
             'year' => $year,
         ];
 
-        $RealisasiSubKegiatan = RealisasiSubKegiatan::where('sub_kegiatan_id', $idSubKegiatan)
+        $RealisasiSubKegiatan = DB::table('data_realisasi')
+            ->where('sub_kegiatan_id', $idSubKegiatan)
             ->where('year', $year)
             ->where('month', $month)
             ->where('status', 'verified')
