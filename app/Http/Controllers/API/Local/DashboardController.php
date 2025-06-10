@@ -1047,6 +1047,7 @@ class DashboardController extends Controller
                 // MODEL BARU
                 $totalAnggaranApbd = DB::table('data_target_kinerja')
                     ->where('instance_id', $instance->id)
+                    ->where('program_id', $program->id)
                     ->where('kegiatan_id', $kegiatan->id)
                     ->where('year', $request->year)
                     ->when($request->year < date('Y'), function ($query) {
@@ -1055,8 +1056,6 @@ class DashboardController extends Controller
                     ->when($request->year == date('Y'), function ($query) {
                         return $query->where('month', date('m'));
                     })
-                    // ->groupBy('program_id')
-                    // ->groupBy('kode_rekening_id')
                     ->sum('pagu_sipd');
 
                 $realisasiAnggaran = DB::table('data_realisasi')
