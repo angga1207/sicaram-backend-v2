@@ -724,7 +724,7 @@ class DashboardController extends Controller
                 $RealisasiKeuangan = DB::table('instance_summary')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
-                    ->where('month', $month)
+                    ->orderBy('month')
                     ->where('instance_id', $instance->id)
                     ->sum('realisasi_anggaran');
                 $dataRealisasiAnggaranMain[] = [
