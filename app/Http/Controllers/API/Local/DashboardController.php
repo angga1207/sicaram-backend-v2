@@ -79,29 +79,6 @@ class DashboardController extends Controller
             ->get();
 
         foreach ($rangeMonths as $month) {
-            // $sumTarget = TargetKinerja::where('periode_id', $request->periode)
-            //     ->where('year', $request->year)
-            //     ->where('month', $month)
-            //     // ->where('status', 'verified')
-            //     ->where('is_detail', true)
-            //     ->sum('pagu_sipd');
-
-            // MODEL LAMA
-            // $sumTarget = ApbdSubKegiatan::where('year', $request->year)
-            //     ->where('month', $month)
-            //     ->whereIn('instance_id', $arrInstances->pluck('id')->toArray())
-            //     ->get()
-            //     ->sum('total_anggaran');
-
-            // MODEL BARU
-            // $sumTarget = DB::table('data_target_kinerja')
-            //     ->whereIn('instance_id', $arrInstances->pluck('id')->toArray())
-            //     ->where('year', $request->year)
-            //     ->where('month', $month)
-            //     // ->groupBy('program_id')
-            //     // ->groupBy('kode_rekening_id')
-            //     ->sum('pagu_sipd');
-
             $sumTarget = DB::table('instance_summary')
                 ->whereIn('instance_id', $arrInstances->pluck('id')->toArray())
                 ->where('periode_id', $request->periode)
@@ -115,17 +92,6 @@ class DashboardController extends Controller
                 'month_short' => Carbon::createFromDate($request->year, $month)->translatedFormat('M'),
                 'target' => $sumTarget ?? 0,
             ];
-
-            // $sumRealisasi = Realisasi::where('periode_id', $request->periode)
-            //     ->where('year', $request->year)
-            //     ->where('month', $month)
-            //     // ->where('status', 'verified')
-            //     ->sum('anggaran');
-
-            // $sumRealisasi = RealisasiSubKegiatan::where('year', $request->year)
-            //     ->where('month', $month)
-            //     ->where('status', 'verified')
-            //     ->sum('realisasi_anggaran');
 
             $sumRealisasi = DB::table('instance_summary')
                 ->whereIn('instance_id', $arrInstances->pluck('id')->toArray())
@@ -191,20 +157,15 @@ class DashboardController extends Controller
             ->where('month', date('m'))
             ->sum('pagu_anggaran');
 
-        $realisasiSubKegiatan = RealisasiSubKegiatan::where('year', $request->year)
+        $realisasiSubKegiatan = DB::table('data_realisasi')
+            ->where('year', $request->year)
             ->where('month', $request->month)
             ->where('status', 'verified')
             ->first();
 
-        // $realisasiSubKegiatan = DB::table('instance_summary')
-        //     ->where('periode_id', $request->periode)
-        //     ->where('year', $request->year)
-        //     ->where('month', $request->month)
-        //     ->sum('realisasi_anggaran');
-
-        if (!$realisasiSubKegiatan || $realisasiSubKegiatan->realisasi_anggaran === 0) {
+        if (!$realisasiSubKegiatan || $realisasiSubKegiatan->anggaran === 0) {
             $realisasiSubKegiatan = RealisasiSubKegiatan::where('year', $request->year)
-                ->where('realisasi_anggaran', '>', 0)
+                ->where('anggaran', '>', 0)
                 ->latest('month')
                 ->where('status', 'verified')
                 ->first();
@@ -465,16 +426,6 @@ class DashboardController extends Controller
                     // ->where('month', date('m'))
                     ->orderBy('pagu_anggaran', 'desc')
                     ->first()->pagu_anggaran ?? 0;
-                // ->sum('pagu_anggaran');
-
-                // $dataRealisasiAnggaran = RealisasiSubKegiatan::where('year', $request->year)
-                //     // ->where('month', $request->month)
-                //     ->where('month', date('m'))
-                //     ->latest('month')
-                //     ->where('instance_id', $instance->id)
-                //     ->where('status', 'verified')
-                //     ->get()
-                //     ->sum('realisasi_anggaran') ?? 0;
 
                 $dataRealisasi = DB::table('instance_summary')
                     ->where('instance_id', $instance->id)
