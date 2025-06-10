@@ -592,7 +592,7 @@ class DashboardController extends Controller
         }
     }
 
-    function detailInstance($alias, Request $request)
+    function detailInstance($id, Request $request)
     {
         $validate = Validator::make($request->all(), [
             'periode' => 'required|numeric|exists:ref_periode,id',
@@ -604,7 +604,7 @@ class DashboardController extends Controller
 
         try {
             $return = [];
-            $instance = Instance::where('alias', $alias)->first();
+            $instance = Instance::where('id', $id)->first();
             if (!$instance) {
                 return $this->errorResponse('Instance tidak ditemukan');
             }
@@ -932,7 +932,7 @@ class DashboardController extends Controller
         }
     }
 
-    function detailProgramInstance($alias, $id, Request $request)
+    function detailProgramInstance($instanceId, $id, Request $request)
     {
         $validate = Validator::make($request->all(), [
             'periode' => 'required|numeric|exists:ref_periode,id',
@@ -943,7 +943,7 @@ class DashboardController extends Controller
         }
         try {
             $return = [];
-            $instance = Instance::where('alias', $alias)->first();
+            $instance = Instance::where('id', $instanceId)->first();
             if (!$instance) {
                 return $this->errorResponse('Instance tidak ditemukan');
             }
@@ -1194,7 +1194,7 @@ class DashboardController extends Controller
         }
     }
 
-    function detailKegiatanInstance($alias, $id, Request $request)
+    function detailKegiatanInstance($instanceId, $id, Request $request)
     {
         $validate = Validator::make($request->all(), [
             'periode' => 'required|numeric|exists:ref_periode,id',
@@ -1206,7 +1206,7 @@ class DashboardController extends Controller
 
         try {
             $return = [];
-            $instance = Instance::where('alias', $alias)->first();
+            $instance = Instance::where('id', $instanceId)->first();
             if (!$instance) {
                 return $this->errorResponse('Instance tidak ditemukan');
             }
@@ -1458,7 +1458,7 @@ class DashboardController extends Controller
         }
     }
 
-    function detailSubKegiatanInstance($alias, $id, Request $request)
+    function detailSubKegiatanInstance($instanceId, $id, Request $request)
     {
         $validate = Validator::make($request->all(), [
             'periode' => 'required|numeric|exists:ref_periode,id',
@@ -1467,7 +1467,7 @@ class DashboardController extends Controller
 
         try {
             $return = [];
-            $instance = Instance::where('alias', $alias)->first();
+            $instance = Instance::where('id', $instanceId)->first();
             if (!$instance) {
                 return $this->errorResponse('Instance tidak ditemukan');
             }
