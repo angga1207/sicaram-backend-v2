@@ -33,6 +33,8 @@ use App\Http\Controllers\API\Accountancy\PenyesuaianAsetDanBebanController;
 use App\Http\Controllers\API\Accountancy\PendapatanLaporanOperasionalControoler;
 use App\Http\Controllers\API\Accountancy\ImportController as AccountancyImportController;
 use App\Http\Controllers\API\Accountancy\ReportController as AccountancyReportController;
+use App\Http\Controllers\API\RenjaController;
+use App\Http\Controllers\API\RenstraController;
 
 Route::get('/testing', [TestingController::class, 'index']);
 
@@ -240,18 +242,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('caram/rpjmd', [MasterCaramController::class, 'storeCaramRPJMD'])->name('caram-rpjmd.store');
 
     // Caram Renstra Resources
-    Route::get('caram/renstra', [MasterCaramController::class, 'listCaramRenstra'])->name('caram-renstra.list');
-    Route::get('caram/renstra/{id}', [MasterCaramController::class, 'detailCaramRenstra'])->name('caram-renstra.detail');
-    Route::post('caram/renstra/{id}', [MasterCaramController::class, 'saveCaramRenstra'])->name('caram-renstra.save');
-    Route::get('caram/renstra/{id}/notes', [MasterCaramController::class, 'listCaramRenstraNotes'])->name('caram-renstra.notes.list');
-    Route::post('caram/renstra/{id}/notes', [MasterCaramController::class, 'postCaramRenstraNotes'])->name('caram-renstra.notes.post');
+    Route::get('caram/renstra-list-programs', [RenstraController::class, 'listPrograms']);
+    Route::get('caram/renstra', [RenstraController::class, 'listCaramRenstra'])->name('caram-renstra.list');
+    Route::get('caram/renstra/{id}', [RenstraController::class, 'detailCaramRenstra'])->name('caram-renstra.detail');
+    Route::post('caram/renstra/{id}', [RenstraController::class, 'saveCaramRenstra'])->name('caram-renstra.save');
+    Route::get('caram/renstra/{id}/notes', [RenstraController::class, 'listCaramRenstraNotes'])->name('caram-renstra.notes.list');
+    Route::post('caram/renstra/{id}/notes', [RenstraController::class, 'postCaramRenstraNotes'])->name('caram-renstra.notes.post');
 
     // Caram Renja Resources
-    Route::get('caram/renja', [MasterCaramController::class, 'listCaramRenja'])->name('caram-renja.list');
-    Route::get('caram/renja/{id}', [MasterCaramController::class, 'detailCaramRenja'])->name('caram-renja.detail');
-    Route::post('caram/renja/{id}', [MasterCaramController::class, 'saveCaramRenja'])->name('caram-renja.save');
-    Route::get('caram/renja/{id}/notes', [MasterCaramController::class, 'listCaramRenjaNotes'])->name('caram-renja.notes.list');
-    Route::post('caram/renja/{id}/notes', [MasterCaramController::class, 'postCaramRenjaNotes'])->name('caram-renja.notes.post');
+    Route::get('caram/renja', [RenjaController::class, 'listCaramRenja'])->name('caram-renja.list');
+    Route::get('caram/renja/{id}', [RenjaController::class, 'detailCaramRenja'])->name('caram-renja.detail');
+    Route::post('caram/renja/{id}', [RenjaController::class, 'saveCaramRenja'])->name('caram-renja.save');
+    Route::get('caram/renja/{id}/notes', [RenjaController::class, 'listCaramRenjaNotes'])->name('caram-renja.notes.list');
+    Route::post('caram/renja/{id}/notes', [RenjaController::class, 'postCaramRenjaNotes'])->name('caram-renja.notes.post');
+    Route::post('caram/rnja/upload-rekap-5', [RenjaController::class, 'uploadRekap5']);
 
     // Caram APBD Resources
     Route::get('caram/ref-apbd', [MasterCaramController::class, 'listPickProgramForApbd'])->name('caram-apbd.pre-list');

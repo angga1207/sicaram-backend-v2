@@ -28,7 +28,8 @@ class GlobalNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database', 'firebase'];
+        return ['database'];
+        // return ['database', 'firebase'];
         // return ['firebase'];
     }
 

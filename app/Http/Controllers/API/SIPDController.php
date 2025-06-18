@@ -29,6 +29,9 @@ class SIPDController extends Controller
     {
         $datas = [];
         $logs = DB::table('sipd_upload_logs')
+            ->when($request->type, function ($query) use ($request) {
+                return $query->whereIn('type', $request->type);
+            })
             ->select('*')
             ->orderBy('created_at', 'desc')
             ->limit(20)
@@ -262,7 +265,7 @@ class SIPDController extends Controller
             $messages = [];
 
             $file = $request->file('file');
-            $path = $file->store('public/rkp5');
+            $path = $file->store('rkp5', 'public');
             $path = str_replace('public/', '', $path);
             $path = storage_path('app/public/' . $path);
 
@@ -604,7 +607,7 @@ class SIPDController extends Controller
             $messages = [];
 
             $file = $request->file('file');
-            $path = $file->store('public/rkp5');
+            $path = $file->store('rkp5', 'public');
             $path = str_replace('public/', '', $path);
             $path = storage_path('app/public/' . $path);
 
@@ -769,7 +772,6 @@ class SIPDController extends Controller
                             $countMissingSubKegiatan++;
                             continue;
                         }
-
 
                         if ($subKegiatan) {
                             for ($month = $reqMonth; $month <= $reqMonthTo; $month++) {
@@ -1180,7 +1182,7 @@ class SIPDController extends Controller
             $messages = [];
 
             $file = $request->file('file');
-            $path = $file->store('public/rkp5prgmkeg');
+            $path = $file->store('rkp5prgmkeg', 'public');
             $path = str_replace('public/', '', $path);
             $path = storage_path('app/public/' . $path);
 
@@ -1227,6 +1229,15 @@ class SIPDController extends Controller
             $arrKodeSubUnit = $arrKodeSubUnit->unique()->values();
 
             $arrInstances = DB::table('instances')->whereIn('code', $arrKodeSubUnit)->get();
+            $dataInserted = [
+                'urusan' => 0,
+                'bidang' => 0,
+                'program' => 0,
+                'kegiatan' => 0,
+                'sub_kegiatan' => 0,
+                'kode_rekening' => 0,
+                'sumber_dana' => 0,
+            ];
             foreach ($arrInstances as $instance) {
                 if ($instance->code == '4.01.0.00.0.00.01.0000') {
                     $arrSubKegiatanCodes = collect($allData)
@@ -1266,6 +1277,8 @@ class SIPDController extends Controller
                         $urusan->status = 'active';
                         $urusan->created_by = auth()->user()->id;
                         $urusan->save();
+
+                        $dataInserted['urusan'] += 1;
                     }
                     $bidang = DB::table('ref_bidang_urusan')
                         ->where('fullcode', str()->squish($inputSubKeg['I']))
@@ -1284,6 +1297,8 @@ class SIPDController extends Controller
                         $bidang->status = 'active';
                         $bidang->created_by = auth()->user()->id;
                         $bidang->save();
+
+                        $dataInserted['bidang'] += 1;
                     }
                     $program = DB::table('ref_program')
                         ->where('instance_id', $instance->id)
@@ -1305,6 +1320,8 @@ class SIPDController extends Controller
                         $program->status = 'active';
                         $program->created_by = auth()->user()->id;
                         $program->save();
+
+                        $dataInserted['program'] += 1;
                     }
 
                     $kegiatan = DB::table('ref_kegiatan')
@@ -1330,6 +1347,8 @@ class SIPDController extends Controller
                         $kegiatan->status = 'active';
                         $kegiatan->created_by = auth()->user()->id;
                         $kegiatan->save();
+
+                        $dataInserted['kegiatan'] += 1;
                     }
 
                     $subKegiatan = DB::table('ref_sub_kegiatan')
@@ -1354,8 +1373,9 @@ class SIPDController extends Controller
                         $subKegiatan->status = 'active';
                         $subKegiatan->created_by = auth()->user()->id;
                         $subKegiatan->save();
+
+                        $dataInserted['sub_kegiatan'] += 1;
                     }
-                    return $subKegiatan;
                 }
             }
 
@@ -1363,9 +1383,22 @@ class SIPDController extends Controller
                 'message' => 'Data Berhasil disimpan',
                 'note' => $request->message ?? null,
                 'datas_count' => count($allData),
+                'datas_inserted' => $dataInserted,
                 'missing_data' => $missingSubKegiatan,
                 'missing_data_count' => $countMissingSubKegiatan,
             ];
+
+            $logs = DB::table('sipd_upload_logs')
+                ->insert([
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_path' => $path,
+                    'status' => 'success',
+                    'message' => json_encode($messages),
+                    'type' => 'rekap5prgmkeg',
+                    'user_id' => auth()->id(),
+                    'created_at' => $now,
+                    'updated_at' => now(),
+                ]);
 
             DB::commit();
             return $this->successResponse($messages, 'Data Berhasil disimpan');
@@ -1377,7 +1410,7 @@ class SIPDController extends Controller
                     'file_path' => $path,
                     'status' => 'error',
                     'message' => $th->getMessage() . ' - ' . $th->getLine() . ' - ' . $th->getFile(),
-                    'type' => 'apbd',
+                    'type' => 'rekap5prgmkeg',
                     'user_id' => auth()->id(),
                     'created_at' => $now,
                     'updated_at' => now(),
