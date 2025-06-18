@@ -31,7 +31,8 @@ $schedule->call(function () {
             dispatch(new AccountancyReportNeraca(1, 2024, $ids))->onQueue('accountancy_report_neraca_' . $key);
         }
     }
-})->everyThirtyMinutes();
+// })->everyThirtyMinutes();
+})->hourlyAt(45);
 
 $schedule->call(function () {
     $arrInstance = DB::table('instances')
@@ -45,4 +46,5 @@ $schedule->call(function () {
             dispatch(new AccountancyReportLO(1, 2024, $ids))->onQueue('accountancy_report_lo_' . $key);
         }
     }
-})->hourly();
+// })->hourly();
+})->hourlyAt(15);
