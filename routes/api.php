@@ -176,8 +176,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('ref-rekening/{id}', [MasterCaramController::class, 'deleteRekening'])->name('caram-rekening.delete');
     Route::post('ref-rekening-upload', [MasterCaramController::class, 'uploadRekening'])->name('caram-rekening.upload');
 
-    Route::post('ref-rekening-upload', [MasterCaramController::class, 'uploadRekening'])->name('caram-rekening.upload');
-
     // Caram Master Sumber Dana
     Route::get('ref-sumber-dana', [MasterCaramController::class, 'listSumberDana'])->name('caram-sumber-dana.list');
     Route::post('ref-sumber-dana-upload', [MasterCaramController::class, 'uploadSumberDana'])->name('caram-sumber-dana.upload');

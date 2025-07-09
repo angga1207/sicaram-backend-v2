@@ -604,6 +604,7 @@ class SIPDController extends Controller
             $countDatas = 0;
             $countMissingSubKegiatan = 0;
             $missingSubKegiatan = [];
+            $missingKodeRekening = [];
             $messages = [];
 
             $file = $request->file('file');
@@ -697,7 +698,7 @@ class SIPDController extends Controller
                             }
 
                             if (!$kodeRekening) {
-                                $messages[] = 'Kode Rekening ' . $xcelKodeRekening . ' tidak ditemukan';
+                                $missingKodeRekening[] = 'Kode Rekening ' . $xcelKodeRekening . ' tidak ditemukan';
                                 continue;
                             }
                         }
@@ -997,6 +998,7 @@ class SIPDController extends Controller
                 'datas_count' => count($allData),
                 'missing_data' => $missingSubKegiatan,
                 'missing_data_count' => $countMissingSubKegiatan,
+                'missing_kode_rekening' => $missingKodeRekening,
             ];
 
             $logs = DB::table('sipd_upload_logs')
