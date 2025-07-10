@@ -713,13 +713,29 @@ class DashboardController extends Controller
                     ->where('year', $request->year)
                     ->where('month', $month)
                     ->where('instance_id', $instance->id)
-                    ->sum('pagu_anggaran');
+                    ->get();
+                $paguAnggaran = $TargetKeuangan->sum('pagu_pergeseran_4') ?? 0;
+                if ($paguAnggaran == 0) {
+                    $paguAnggaran = $TargetKeuangan->sum('pagu_pergeseran_3') ?? 0;
+                }
+                if ($paguAnggaran == 0) {
+                    $paguAnggaran = $TargetKeuangan->sum('pagu_perubahan') ?? 0;
+                }
+                if ($paguAnggaran == 0) {
+                    $paguAnggaran = $TargetKeuangan->sum('pagu_pergeseran_2') ?? 0;
+                }
+                if ($paguAnggaran == 0) {
+                    $paguAnggaran = $TargetKeuangan->sum('pagu_pergeseran_1') ?? 0;
+                }
+                if ($paguAnggaran == 0) {
+                    $paguAnggaran = $TargetKeuangan->sum('pagu_anggaran') ?? 0;
+                }
 
                 $dataTargetAnggaranMain[] = [
                     'month' => $month,
                     'month_name' => Carbon::createFromDate($request->year, $month)->translatedFormat('F'),
                     'month_short' => Carbon::createFromDate($request->year, $month)->translatedFormat('M'),
-                    'target' => floatval($TargetKeuangan) ?? 0,
+                    'target' => floatval($paguAnggaran) ?? 0,
                 ];
 
                 $RealisasiKeuangan = DB::table('instance_summary')
@@ -787,13 +803,30 @@ class DashboardController extends Controller
             $returnPrograms = [];
             foreach ($arrPrograms as $program) {
                 // MODEL BARU
-                $totalAnggaranApbd = DB::table('data_target_kinerja')
+                $TargetKeuangan = DB::table('data_target_kinerja')
                     ->where('instance_id', $instance->id)
                     ->where('program_id', $program->id)
                     ->where('year', $request->year)
                     ->where('month', date('m'))
                     ->where('status', 'verified')
-                    ->sum('pagu_sipd');
+                    ->get();
+
+                $totalAnggaranApbd = $TargetKeuangan->sum('pagu_pergeseran_4');
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $TargetKeuangan->sum('pagu_pergeseran_3');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $TargetKeuangan->sum('pagu_perubahan');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $TargetKeuangan->sum('pagu_pergeseran_2');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $TargetKeuangan->sum('pagu_pergeseran_1');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $TargetKeuangan->sum('pagu_sipd');
+                }
 
                 $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
                     ->where('instance_id', $instance->id)
@@ -993,12 +1026,29 @@ class DashboardController extends Controller
                 ->get();
 
             foreach ($rangeMonths as $month) {
-                $sumTargetAnggaran = DB::table('data_target_kinerja')
+                $dataTarget = DB::table('data_target_kinerja')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('month', $month)
                     ->where('program_id', $program->id)
-                    ->sum('pagu_sipd');
+                    ->get();
+
+                $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_4') ?? 0;
+                if ($sumTargetAnggaran === 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_3') ?? 0;
+                }
+                if ($sumTargetAnggaran === 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_perubahan') ?? 0;
+                }
+                if ($sumTargetAnggaran === 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_2') ?? 0;
+                }
+                if ($sumTargetAnggaran === 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_1') ?? 0;
+                }
+                if ($sumTargetAnggaran === 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_sipd') ?? 0;
+                }
 
                 $dataTargetAnggaranMain[] = [
                     'month' => $month,
@@ -1079,14 +1129,29 @@ class DashboardController extends Controller
             $returnKegiatans = [];
             foreach ($arrKegiatans as $kegiatan) {
                 // MODEL BARU
-                $totalAnggaranApbd = DB::table('data_target_kinerja')
+                $dataTarget = DB::table('data_target_kinerja')
                     ->where('instance_id', $instance->id)
                     ->where('kegiatan_id', $kegiatan->id)
                     ->where('year', $request->year)
                     ->where('month', date('m'))
-                    // ->groupBy('program_id')
-                    // ->groupBy('kode_rekening_id')
-                    ->sum('pagu_sipd');
+                    ->get();
+
+                $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_4');
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_3');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_perubahan');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_2');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_1');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_sipd');
+                }
 
                 $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
                     ->where('instance_id', $instance->id)
@@ -1263,11 +1328,32 @@ class DashboardController extends Controller
 
             foreach ($rangeMonths as $month) {
                 // Keuangan
-                $sumTargetAnggaran = DB::table('data_target_kinerja')
+                $dataTarget = DB::table('data_target_kinerja')
                     ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
                     ->where('year', $request->year)
                     ->where('month', $month)
-                    ->sum('pagu_sipd');
+                    ->get();
+
+                $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_4');
+                if ($sumTargetAnggaran = 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_3');
+                }
+                if ($sumTargetAnggaran = 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_3');
+                }
+                if ($sumTargetAnggaran = 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_perubahan');
+                }
+                if ($sumTargetAnggaran = 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_2');
+                }
+                if ($sumTargetAnggaran = 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_1');
+                }
+                if ($sumTargetAnggaran = 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_sipd');
+                }
+
                 $dataTargetAnggaranMain[] = [
                     'month' => $month,
                     'month_name' => Carbon::createFromDate($request->year, $month)->translatedFormat('F'),
@@ -1346,12 +1432,32 @@ class DashboardController extends Controller
 
             foreach ($arrSubKegiatans as $subKegiatan) {
                 // MODEL BARU
-                $totalAnggaranApbd = DB::table('data_target_kinerja')
+                $dataTarget = DB::table('data_target_kinerja')
                     ->where('instance_id', $instance->id)
                     ->where('sub_kegiatan_id', $subKegiatan->id)
                     ->where('year', $request->year)
                     ->where('month', date('m'))
-                    ->sum('pagu_sipd');
+                    ->get();
+
+                $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_4');
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_3');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_3');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_perubahan');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_2');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_1');
+                }
+                if ($totalAnggaranApbd === 0) {
+                    $totalAnggaranApbd = $dataTarget->sum('pagu_sipd');
+                }
 
                 $realisasiAnggaran = DB::table('data_realisasi_sub_kegiatan')
                     ->where('instance_id', $instance->id)
@@ -1526,11 +1632,32 @@ class DashboardController extends Controller
 
             foreach ($rangeMonths as $month) {
                 // Keuangan
-                $sumTargetAnggaran = DB::table('data_target_kinerja')
+                $dataTarget = DB::table('data_target_kinerja')
                     ->whereIn('sub_kegiatan_id', $arrSubKegiatan->pluck('id')->toArray())
                     ->where('year', $request->year)
                     ->where('month', $month)
-                    ->sum('pagu_sipd');
+                    ->get();
+
+                $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_4');
+                if ($sumTargetAnggaran == 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_4');
+                }
+                if ($sumTargetAnggaran == 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_3');
+                }
+                if ($sumTargetAnggaran == 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_perubahan');
+                }
+                if ($sumTargetAnggaran == 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_2');
+                }
+                if ($sumTargetAnggaran == 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_1');
+                }
+                if ($sumTargetAnggaran == 0) {
+                    $sumTargetAnggaran = $dataTarget->sum('pagu_sipd');
+                }
+
                 $dataTargetAnggaranMain[] = [
                     'month' => $month,
                     'month_name' => Carbon::createFromDate($request->year, $month)->translatedFormat('F'),
