@@ -778,6 +778,7 @@ class DashboardController extends Controller
                 ->where('periode_id', $request->periode)
                 ->where('year', $request->year)
                 ->get();
+
             $summaryTargetAnggaran = $instanceSummary->max('pagu_pergeseran_4') ?? 0;
             if ($summaryTargetAnggaran == 0) {
                 $summaryTargetAnggaran = $instanceSummary->max('pagu_pergeseran_3') ?? 0;
@@ -831,19 +832,19 @@ class DashboardController extends Controller
                     ->get();
 
                 $totalAnggaranApbd = $TargetKeuangan->sum('pagu_pergeseran_4');
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $TargetKeuangan->sum('pagu_pergeseran_3');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $TargetKeuangan->sum('pagu_perubahan');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $TargetKeuangan->sum('pagu_pergeseran_2');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $TargetKeuangan->sum('pagu_pergeseran_1');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $TargetKeuangan->sum('pagu_sipd');
                 }
 
@@ -1053,19 +1054,19 @@ class DashboardController extends Controller
                     ->get();
 
                 $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_4') ?? 0;
-                if ($sumTargetAnggaran === 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_3') ?? 0;
                 }
-                if ($sumTargetAnggaran === 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_perubahan') ?? 0;
                 }
-                if ($sumTargetAnggaran === 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_2') ?? 0;
                 }
-                if ($sumTargetAnggaran === 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_1') ?? 0;
                 }
-                if ($sumTargetAnggaran === 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_sipd') ?? 0;
                 }
 
@@ -1156,19 +1157,19 @@ class DashboardController extends Controller
                     ->get();
 
                 $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_4');
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_3');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_perubahan');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_2');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_1');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_sipd');
                 }
 
@@ -1354,22 +1355,22 @@ class DashboardController extends Controller
                     ->get();
 
                 $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_4');
-                if ($sumTargetAnggaran = 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_3');
                 }
-                if ($sumTargetAnggaran = 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_3');
                 }
-                if ($sumTargetAnggaran = 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_perubahan');
                 }
-                if ($sumTargetAnggaran = 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_2');
                 }
-                if ($sumTargetAnggaran = 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_pergeseran_1');
                 }
-                if ($sumTargetAnggaran = 0) {
+                if ($sumTargetAnggaran == 0) {
                     $sumTargetAnggaran = $dataTarget->sum('pagu_sipd');
                 }
 
@@ -1459,22 +1460,22 @@ class DashboardController extends Controller
                     ->get();
 
                 $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_4');
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_3');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_3');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_perubahan');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_2');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_pergeseran_1');
                 }
-                if ($totalAnggaranApbd === 0) {
+                if ($totalAnggaranApbd == 0) {
                     $totalAnggaranApbd = $dataTarget->sum('pagu_sipd');
                 }
 
