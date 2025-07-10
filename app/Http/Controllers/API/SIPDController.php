@@ -697,7 +697,7 @@ class SIPDController extends Controller
                                 $kodeRekening = $this->_InputKodeRekeningBaru($xKodeRek[0]['S'], $xKodeRek[0]['T'], $request->periode ?? 1, $reqTahun);
                             }
                         }
-                        if (!$kodeRekening) {
+                        if (!$xcelKodeRekening && !$kodeRekening) {
                             $missingKodeRekening[] = 'Kode Rekening ' . $xcelKodeRekening . ' tidak ditemukan';
                             continue;
                         }
