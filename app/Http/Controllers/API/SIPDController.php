@@ -985,10 +985,11 @@ class SIPDController extends Controller
                                     }
                                 }
                             }
+                            $countDatas++;
                         }
                     }
 
-                    $countDatas++;
+                    // $countDatas++;
                 }
             }
 

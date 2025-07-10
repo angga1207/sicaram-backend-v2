@@ -773,11 +773,30 @@ class DashboardController extends Controller
             }
 
             // MODEL BARU
-            $summaryTargetAnggaran = DB::table('instance_summary')
+            $instanceSummary = DB::table('instance_summary')
                 ->where('instance_id', $instance->id)
                 ->where('periode_id', $request->periode)
                 ->where('year', $request->year)
-                ->max('pagu_anggaran') ?? 0;
+                ->get();
+            $summaryTargetAnggaran = $instanceSummary->max('pagu_pergeseran_4') ?? 0;
+            if ($summaryTargetAnggaran == 0) {
+                $summaryTargetAnggaran = $instanceSummary->max('pagu_pergeseran_3') ?? 0;
+            }
+            if ($summaryTargetAnggaran == 0) {
+                $summaryTargetAnggaran = $instanceSummary->max('pagu_pergeseran_2') ?? 0;
+            }
+            if ($summaryTargetAnggaran == 0) {
+                $summaryTargetAnggaran = $instanceSummary->max('pagu_perubahan') ?? 0;
+            }
+            if ($summaryTargetAnggaran == 0) {
+                $summaryTargetAnggaran = $instanceSummary->max('pagu_pergeseran_2') ?? 0;
+            }
+            if ($summaryTargetAnggaran == 0) {
+                $summaryTargetAnggaran = $instanceSummary->max('pagu_pergeseran_1') ?? 0;
+            }
+            if ($summaryTargetAnggaran == 0) {
+                $summaryTargetAnggaran = $instanceSummary->max('pagu_anggaran') ?? 0;
+            }
 
             $dataRealisasi = DB::table('instance_summary')
                 ->where('instance_id', $instance->id)
