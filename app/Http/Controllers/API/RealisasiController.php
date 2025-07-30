@@ -3583,48 +3583,6 @@ class RealisasiController extends Controller
         }
 
         $now = now();
-        // $checkSubKegiatanStatus = RealisasiStatus::where('sub_kegiatan_id', $id)
-        //     ->where('month', $request->month)
-        //     ->where('year', $request->year)
-        //     ->first();
-        // if ($checkSubKegiatanStatus) {
-        //     if ($checkSubKegiatanStatus->status == 'verified') {
-        //         return $this->errorResponse('Data Realisasi bulan ini telah diverifikasi. Harap hubungi Verifikator.');
-        //     }
-
-        //     // check next months status if verified
-        //     $nextMonths = RealisasiStatus::where('sub_kegiatan_id', $id)
-        //         ->where('year', $request->year)
-        //         ->where('month', '>', $request->month)
-        //         ->where('status', 'verified')
-        //         ->get();
-        //     if ($nextMonths->count() > 0) {
-        //         $verifiedMonths = $nextMonths->pluck('month')->toArray();
-        //         $arrMonths = [
-        //             1 => 'Januari',
-        //             2 => 'Februari',
-        //             3 => 'Maret',
-        //             4 => 'April',
-        //             5 => 'Mei',
-        //             6 => 'Juni',
-        //             7 => 'Juli',
-        //             8 => 'Agustus',
-        //             9 => 'September',
-        //             10 => 'Oktober',
-        //             11 => 'November',
-        //             12 => 'Desember',
-        //         ];
-
-        //         $mnths = [];
-        //         foreach ($verifiedMonths as $month) {
-        //             $mnths[] = $arrMonths[$month];
-        //         }
-        //         return $this->errorResponse('Proses Unggah tidak dapat dilanjutkan dikarenakan Data Realisasi Bulan [' . implode(', ', $mnths) . '] sudah diverifikasi', 200);
-        //         // return $this->errorResponse('Data Realisasi Bulan [' . implode(', ', $verifiedMonths) . '] Sudah diverifikasi', 200);
-
-        //     }
-        // }
-
         DB::beginTransaction();
         try {
             $file = $request->file('file');
@@ -3657,24 +3615,6 @@ class RealisasiController extends Controller
             $arrSubKegiatan = DB::table('ref_sub_kegiatan')
                 ->whereIn('fullcode', $arrSubKegiatanExcel)
                 ->get();
-
-            // $subKegiatanId = $allData->groupBy('R')->keys()->toArray();
-            // if (count($subKegiatanId) > 1) {
-            //     return $this->validationResponse([
-            //         'message' => 'Data tidak valid, terdapat lebih dari 1 sub kegiatan'
-            //     ]);
-            // }
-            // $subKegiatan = SubKegiatan::find($id);
-            // if (!$subKegiatan) {
-            //     return $this->errorResponse('Sub Kegiatan tidak ditemukan', 200);
-            // }
-            // if ($subKegiatan->fullcode != $subKegiatanId[0]) {
-            //     // return [$subKegiatan, $subKegiatanId[0]];
-            //     return $this->errorResponse('Data tidak valid, Sub Kegiatan tidak sesuai dengan berkas excel');
-            //     return $this->validationResponse([
-            //         'message' => 'Data tidak valid, Sub Kegiatan tidak sesuai'
-            //     ]);
-            // }
 
             foreach ($arrSubKegiatan as $subKegiatan) {
                 $arrDataByKodeRekening = $allData
