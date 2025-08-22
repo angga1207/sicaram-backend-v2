@@ -158,13 +158,16 @@ class LPSEController extends Controller
         $return['belum_diumumkan'] = $countPaketPenyediaBelum + $countPaketSwakelolaBelum;
         $return['belum_diumumkan_terbilang'] = Terbilang::make($return['belum_diumumkan'], ' paket');
 
-        $return['dikerjakan'] = $countPaketPenyediaDikerjakan + $countPaketSwakelolaDikerjakan;
+        // $return['dikerjakan'] = $countPaketPenyediaDikerjakan + $countPaketSwakelolaDikerjakan;
+        $return['dikerjakan'] = 'salah';
         $return['dikerjakan_terbilang'] = Terbilang::make($return['dikerjakan'], ' paket');
 
-        $return['terlambat'] = $countPaketPenyediaTerlambat + $countPaketSwakelolaTerlambat;
+        // $return['terlambat'] = $countPaketPenyediaTerlambat + $countPaketSwakelolaTerlambat;
+        $return['terlambat'] = 'salah';
         $return['terlambat_terbilang'] = Terbilang::make($return['terlambat'], ' paket');
 
-        $return['belum_dikerjakan'] = $countPaketPenyediaBelumDikerjakan + $countPaketSwakelolaBelumDikerjakan;
+        // $return['belum_dikerjakan'] = $countPaketPenyediaBelumDikerjakan + $countPaketSwakelolaBelumDikerjakan;
+        $return['belum_dikerjakan'] = 'salah';
         $return['belum_dikerjakan_terbilang'] = Terbilang::make($return['belum_dikerjakan'], ' paket');
 
         return $this->successResponse($return);
