@@ -134,11 +134,6 @@ class LPSEController extends Controller
         $PenyediaTerumumkan = collect($this->PaketPenyediaTerumumkan($year));
         $SwakelolaTerumumkan = collect($this->PaketSwakelolaTerumumkan($year));
 
-        return [
-            $PenyediaTerumumkan,
-            $SwakelolaTerumumkan,
-        ];
-
         $countPaketPenyedia = $PenyediaTerumumkan->where('status_umumkan_rup', 'Terumumkan')->count();
         $countPaketSwakelola = $SwakelolaTerumumkan->where('status_umumkan_rup', 'Terumumkan')->count();
 
