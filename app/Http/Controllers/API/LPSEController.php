@@ -134,6 +134,11 @@ class LPSEController extends Controller
         $PenyediaTerumumkan = collect($this->PaketPenyediaTerumumkan($year));
         $SwakelolaTerumumkan = collect($this->PaketSwakelolaTerumumkan($year));
 
+        return [
+            $PenyediaTerumumkan,
+            $SwakelolaTerumumkan,
+        ];
+
         $countPaketPenyedia = $PenyediaTerumumkan->where('status_umumkan_rup', 'Terumumkan')->count();
         $countPaketSwakelola = $SwakelolaTerumumkan->where('status_umumkan_rup', 'Terumumkan')->count();
 
@@ -143,14 +148,14 @@ class LPSEController extends Controller
         $countPaketPenyediaDikerjakan = $PenyediaTerumumkan->where('tgl_akhir_kontrak', '>=', now())->count();
         $countPaketSwakelolaDikerjakan = $SwakelolaTerumumkan->where('tgl_akhir_kontrak', '>=', now())->count();
 
-        $countPaketPenyediaTerlambat = $PenyediaTerumumkan->where('tgl_akhir_kontrak', '<', now())->count();
-        $countPaketSwakelolaTerlambat = $SwakelolaTerumumkan->where('tgl_akhir_kontrak', '<', now())->count();
+        $countPaketPenyediaTerlambat = $PenyediaTerumumkan->where('tgl_akhir_kontrak', '<=', now())->count();
+        $countPaketSwakelolaTerlambat = $SwakelolaTerumumkan->where('tgl_akhir_kontrak', '<=', now())->count();
 
         // $countPaketPenyediaBelumDikerjakan = $PenyediaTerumumkan->where('tgl_awal_kontrak', '>', null)->count();
         // $countPaketSwakelolaBelumDikerjakan = $SwakelolaTerumumkan->where('tgl_awal_kontrak', '>', null)->count();
 
-        $countPaketPenyediaBelumDikerjakan = $PenyediaTerumumkan->where('tgl_awal_kontrak', '>', now())->count();
-        $countPaketSwakelolaBelumDikerjakan = $SwakelolaTerumumkan->where('tgl_awal_kontrak', '>', now())->count();
+        $countPaketPenyediaBelumDikerjakan = $PenyediaTerumumkan->where('tgl_awal_kontrak', '=>', now())->count();
+        $countPaketSwakelolaBelumDikerjakan = $SwakelolaTerumumkan->where('tgl_awal_kontrak', '=>', now())->count();
 
         $return['terumumkan'] = $countPaketPenyedia + $countPaketSwakelola;
         $return['terumumkan_terbilang'] = Terbilang::make($return['terumumkan'], ' paket');
