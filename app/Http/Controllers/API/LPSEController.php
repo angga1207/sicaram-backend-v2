@@ -161,17 +161,17 @@ class LPSEController extends Controller
         // $return['dikerjakan'] = $countPaketPenyediaDikerjakan + $countPaketSwakelolaDikerjakan;
         // $return['dikerjakan_terbilang'] = Terbilang::make($return['dikerjakan'], ' paket');
         $return['dikerjakan'] = 'salah';
-        $return['dikerjakan_terbilang'] = 'salah';
+        $return['dikerjakan_terbilang'] = 'NaN';
 
         // $return['terlambat'] = $countPaketPenyediaTerlambat + $countPaketSwakelolaTerlambat;
         // $return['terlambat_terbilang'] = Terbilang::make($return['terlambat'], ' paket');
         $return['terlambat'] = 'salah';
-        $return['terlambat_terbilang'] = 'salah';
+        $return['terlambat_terbilang'] = 'NaN';
 
         // $return['belum_dikerjakan'] = $countPaketPenyediaBelumDikerjakan + $countPaketSwakelolaBelumDikerjakan;
         // $return['belum_dikerjakan_terbilang'] = Terbilang::make($return['belum_dikerjakan'], ' paket');
         $return['belum_dikerjakan'] = 'salah';
-        $return['belum_dikerjakan_terbilang'] = 'salah';
+        $return['belum_dikerjakan_terbilang'] = 'NaN';
 
         return $this->successResponse($return);
     }
