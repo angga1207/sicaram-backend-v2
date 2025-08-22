@@ -149,8 +149,8 @@ class LPSEController extends Controller
         // $countPaketPenyediaBelumDikerjakan = $PenyediaTerumumkan->where('tgl_awal_kontrak', '>', null)->count();
         // $countPaketSwakelolaBelumDikerjakan = $SwakelolaTerumumkan->where('tgl_awal_kontrak', '>', null)->count();
 
-        $countPaketPenyediaBelumDikerjakan = $PenyediaTerumumkan->where('tgl_awal_kontrak', '=>', now())->count();
-        $countPaketSwakelolaBelumDikerjakan = $SwakelolaTerumumkan->where('tgl_awal_kontrak', '=>', now())->count();
+        $countPaketPenyediaBelumDikerjakan = $PenyediaTerumumkan->where('tgl_awal_kontrak', '>=', now())->count();
+        $countPaketSwakelolaBelumDikerjakan = $SwakelolaTerumumkan->where('tgl_awal_kontrak', '>=', now())->count();
 
         $return['terumumkan'] = $countPaketPenyedia + $countPaketSwakelola;
         $return['terumumkan_terbilang'] = Terbilang::make($return['terumumkan'], ' paket');
