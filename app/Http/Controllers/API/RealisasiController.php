@@ -3768,6 +3768,23 @@ class RealisasiController extends Controller
                 ]);
 
 
+            $messages = [
+                'success' => 'Realisasi berhasil diunggah dan diproses.',
+                'file_name' => $file->getClientOriginalName(),
+                'file_path' => $path,
+            ];
+            $logs = DB::table('sipd_upload_logs')
+                ->insert([
+                    'file_name' => $file->getClientOriginalName(),
+                    'file_path' => $path,
+                    'status' => 'success',
+                    'message' => json_encode($messages, true),
+                    'type' => 'realisasi-opd',
+                    'user_id' => auth()->id() ?? null,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ]);
+
             DB::commit();
             return $this->successResponse(null, 'Data Realisasi Berhasil diupload');
             // return $this->successResponse($datas, 'Data berhasil diambil');

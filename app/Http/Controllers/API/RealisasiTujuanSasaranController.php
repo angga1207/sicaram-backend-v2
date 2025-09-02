@@ -340,6 +340,10 @@ class RealisasiTujuanSasaranController extends Controller
                             ->where('ref_id', $indTujuan->ref_id)
                             ->first();
 
+                        if (!$target) {
+                            return $this->errorResponse('Target Tujuan tidak ditemukan');
+                        }
+
                         $targetPerubahan = TargetPerubahanTujuan::where('periode_id', $request->periode_id)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance_id)
