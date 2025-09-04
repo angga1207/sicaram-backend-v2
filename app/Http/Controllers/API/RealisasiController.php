@@ -3565,13 +3565,13 @@ class RealisasiController extends Controller
     function uploadExcel($id, Request $request)
     {
         $validate = Validator::make($request->all(), [
-            // 'instance' => 'nullable|exists:instances,id',
+            'instance' => 'nullable|exists:instances,id',
             'year' => 'required|integer',
             'periode' => 'required|exists:ref_periode,id',
             'file' => 'required|file|mimes:xlsx',
             // 'id' => 'required|exists:ref_sub_kegiatan,id',
         ], [], [
-            // 'instance' => 'Perangkat Daerah',
+            'instance' => 'Perangkat Daerah',
             'periode' => 'Periode',
             'year' => 'Tahun',
             'file' => 'Berkas LRA',
@@ -3584,6 +3584,10 @@ class RealisasiController extends Controller
 
         $now = now();
         DB::beginTransaction();
+        $instance = Instance::find($request->instance);
+        if (!$instance) {
+            return $this->errorResponse('Perangkat Daerah tidak ditemukan', 200);
+        }
         try {
             $file = $request->file('file');
             $fileName = 'RealisasiDariSIPD-' . $id . '-' . $request->year . '-' . $request->month . '.' . $file->getClientOriginalExtension();
@@ -3629,7 +3633,8 @@ class RealisasiController extends Controller
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('month', $request->month)
-                            ->where('instance_id', $subKegiatan->instance_id)
+                            // ->where('instance_id', $subKegiatan->instance_id)
+                            ->where('instance_id', $request->instance)
                             ->where('sub_kegiatan_id', $subKegiatan->id)
                             ->where('kode_rekening_id', $kodeRekening->id)
                             // ->where('status', 'draft')
@@ -3683,7 +3688,7 @@ class RealisasiController extends Controller
                                     ->where('periode_id', $request->periode)
                                     ->where('year', $request->year)
                                     ->where('month', $request->month - 1)
-                                    ->where('instance_id', $subKegiatan->instance_id)
+                                    ->where('instance_id', $request->instance)
                                     ->where('sub_kegiatan_id', $subKegiatan->id)
                                     ->where('kode_rekening_id', $kodeRekening->id)
                                     ->first();
@@ -3716,7 +3721,7 @@ class RealisasiController extends Controller
                                     ->where('periode_id', $request->periode)
                                     ->where('year', $request->year)
                                     ->where('month', $i)
-                                    ->where('instance_id', $subKegiatan->instance_id)
+                                    ->where('instance_id', $request->instance)
                                     ->where('sub_kegiatan_id', $subKegiatan->id)
                                     ->where('kode_rekening_id', $kodeRekening->id)
                                     // ->where('status', 'draft')
