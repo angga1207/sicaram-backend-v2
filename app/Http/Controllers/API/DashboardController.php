@@ -940,6 +940,10 @@ class DashboardController extends Controller
                 ->get();
             $returnUsers = [];
             foreach ($arrUsers as $user) {
+                $lastActivity = DB::table('log_users')
+                    ->where('user_id', $user->id)
+                    ->latest()
+                    ->first();
                 $returnUsers[] = [
                     'id' => $user->id,
                     'fullname' => $user->fullname,
@@ -949,7 +953,7 @@ class DashboardController extends Controller
                     'instance_id' => $user->instance_id,
                     'instance_name' => $user->Instance->name ?? null,
                     'instance_type' => $user->instance_type,
-                    'last_activity' => $user->last_activity ?? null,
+                    'last_activity' => $lastActivity->created_at ?? null,
                 ];
             }
 
