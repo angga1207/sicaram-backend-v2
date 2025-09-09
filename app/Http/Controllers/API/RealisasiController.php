@@ -3736,8 +3736,15 @@ class RealisasiController extends Controller
                                     ->where('year', $request->year)
                                     ->where('month', $i)
                                     ->where('instance_id', $request->instance)
+                                    ->where('target_id', $dataRealisasi->target_id)
+                                    ->where('urusan_id', $dataRealisasi->urusan_id)
+                                    ->where('bidang_urusan_id', $dataRealisasi->bidang_urusan_id)
+                                    ->where('program_id', $dataRealisasi->program_id)
+                                    ->where('kegiatan_id', $dataRealisasi->kegiatan_id)
                                     ->where('sub_kegiatan_id', $subKegiatan->id)
                                     ->where('kode_rekening_id', $kodeRekening->id)
+                                    ->where('sumber_dana_id', $dataRealisasi->sumber_dana_id)
+
                                     // ->where('status', 'draft')
                                     ->first();
                                 if ($nextData) {
@@ -3745,6 +3752,7 @@ class RealisasiController extends Controller
                                         ->where('id', $nextData->id)
                                         ->update([
                                             'anggaran' => $realisasiAnggaran,
+                                            'anggaran_bulan_ini' => $realisasiAnggaran,
                                             'updated_at' => $now,
                                         ]);
                                 }
