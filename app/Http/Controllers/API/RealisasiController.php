@@ -1451,6 +1451,20 @@ class RealisasiController extends Controller
                                             'updated_by' => $dataTarget->updated_by,
                                             'updated_by_name' => $dataTarget->UpdatedBy->fullname ?? null,
                                             'rincian_belanja' => [],
+
+                                            'jenis_transaksi' => $dataRealisasi->jenis_transaksi,
+                                            'no_spd' => $dataRealisasi->no_spd,
+                                            'periode_spd' => $dataRealisasi->periode_spd,
+                                            'tahapan_spd' => $dataRealisasi->tahapan_spd,
+                                            'nilai_spd' => $dataRealisasi->nilai_spd,
+                                            'no_spp' => $dataRealisasi->no_spp,
+                                            'tanggal_spp' => $dataRealisasi->tanggal_spp,
+                                            'no_spm' => $dataRealisasi->no_spm,
+                                            'tanggal_spm' => $dataRealisasi->tanggal_spm,
+                                            'no_sp2d' => $dataRealisasi->no_sp2d,
+                                            'tanggal_sp2d' => $dataRealisasi->tanggal_sp2d,
+                                            'nilai_sp2d' => $dataRealisasi->nilai_sp2d,
+                                            'tanggal_transfer' => $dataRealisasi->tanggal_transfer,
                                         ];
                                     }
 
@@ -3716,25 +3730,25 @@ class RealisasiController extends Controller
                                 ]);
 
                             // update next month to 12
-                            for ($i = $request->month + 1; $i <= 12; $i++) {
-                                $nextData = DB::table('data_realisasi')
-                                    ->where('periode_id', $request->periode)
-                                    ->where('year', $request->year)
-                                    ->where('month', $i)
-                                    ->where('instance_id', $request->instance)
-                                    ->where('sub_kegiatan_id', $subKegiatan->id)
-                                    ->where('kode_rekening_id', $kodeRekening->id)
-                                    // ->where('status', 'draft')
-                                    ->first();
-                                if ($nextData) {
-                                    DB::table('data_realisasi')
-                                        ->where('id', $nextData->id)
-                                        ->update([
-                                            'anggaran' => $realisasiAnggaran,
-                                            'updated_at' => $now,
-                                        ]);
-                                }
-                            }
+                            // for ($i = $request->month + 1; $i <= 12; $i++) {
+                            //     $nextData = DB::table('data_realisasi')
+                            //         ->where('periode_id', $request->periode)
+                            //         ->where('year', $request->year)
+                            //         ->where('month', $i)
+                            //         ->where('instance_id', $request->instance)
+                            //         ->where('sub_kegiatan_id', $subKegiatan->id)
+                            //         ->where('kode_rekening_id', $kodeRekening->id)
+                            //         // ->where('status', 'draft')
+                            //         ->first();
+                            //     if ($nextData) {
+                            //         DB::table('data_realisasi')
+                            //             ->where('id', $nextData->id)
+                            //             ->update([
+                            //                 'anggaran' => $realisasiAnggaran,
+                            //                 'updated_at' => $now,
+                            //             ]);
+                            //     }
+                            // }
                         }
                     } else {
                         continue;
