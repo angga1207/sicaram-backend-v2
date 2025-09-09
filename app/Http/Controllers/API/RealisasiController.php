@@ -3756,7 +3756,7 @@ class RealisasiController extends Controller
                                         ->where('id', $nextData->id)
                                         ->update([
                                             'anggaran' => $realisasiAnggaran,
-                                            'anggaran_bulan_ini' => $realisasiAnggaran,
+                                            // 'anggaran_bulan_ini' => $realisasiAnggaran,
                                             'updated_at' => $now,
                                         ]);
                                 }
