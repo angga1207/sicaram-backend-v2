@@ -3706,7 +3706,7 @@ class RealisasiController extends Controller
                                     ->where('sub_kegiatan_id', $subKegiatan->id)
                                     ->where('kode_rekening_id', $kodeRekening->id)
                                     ->first();
-                                $realisasiAnggaran = $lastRealisasi->anggaran + $realisasiBulanIni;
+                                $realisasiAnggaran = $lastRealisasi->anggaran_bulan_ini + $realisasiBulanIni;
                             }
                             DB::table('data_realisasi')
                                 ->where('id', $dataRealisasi->id)
@@ -3730,25 +3730,25 @@ class RealisasiController extends Controller
                                 ]);
 
                             // update next month to 12
-                            // for ($i = $request->month + 1; $i <= 12; $i++) {
-                            //     $nextData = DB::table('data_realisasi')
-                            //         ->where('periode_id', $request->periode)
-                            //         ->where('year', $request->year)
-                            //         ->where('month', $i)
-                            //         ->where('instance_id', $request->instance)
-                            //         ->where('sub_kegiatan_id', $subKegiatan->id)
-                            //         ->where('kode_rekening_id', $kodeRekening->id)
-                            //         // ->where('status', 'draft')
-                            //         ->first();
-                            //     if ($nextData) {
-                            //         DB::table('data_realisasi')
-                            //             ->where('id', $nextData->id)
-                            //             ->update([
-                            //                 'anggaran' => $realisasiAnggaran,
-                            //                 'updated_at' => $now,
-                            //             ]);
-                            //     }
-                            // }
+                            for ($i = $request->month + 1; $i <= 12; $i++) {
+                                $nextData = DB::table('data_realisasi')
+                                    ->where('periode_id', $request->periode)
+                                    ->where('year', $request->year)
+                                    ->where('month', $i)
+                                    ->where('instance_id', $request->instance)
+                                    ->where('sub_kegiatan_id', $subKegiatan->id)
+                                    ->where('kode_rekening_id', $kodeRekening->id)
+                                    // ->where('status', 'draft')
+                                    ->first();
+                                if ($nextData) {
+                                    DB::table('data_realisasi')
+                                        ->where('id', $nextData->id)
+                                        ->update([
+                                            'anggaran' => $realisasiAnggaran,
+                                            'updated_at' => $now,
+                                        ]);
+                                }
+                            }
                         }
                     } else {
                         continue;
