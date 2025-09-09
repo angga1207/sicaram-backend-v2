@@ -803,6 +803,7 @@ class DashboardController extends Controller
                 ->where('instance_id', $instance->id)
                 ->where('periode_id', $request->periode)
                 ->where('year', $request->year)
+                ->where('month', 1)
                 // ->where('month', date('m'))
                 ->orderBy('realisasi_anggaran', 'desc')
                 ->first();
@@ -827,7 +828,7 @@ class DashboardController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('program_id', $program->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->where('month', 1)
                     ->where('status', 'verified')
                     ->get();
 
@@ -852,7 +853,7 @@ class DashboardController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('program_id', $program->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->where('month', 12)
                     ->where('status', 'verified')
                     ->get()
                     ->sum('realisasi_anggaran');
@@ -890,7 +891,7 @@ class DashboardController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('program_id', $program->id)
                     ->where('year', $request->year)
-                    ->where('month', date('m'))
+                    ->where('month', 12)
                     ->where('status', 'verified')
                     ->get()
                     ->sum('persentase_realisasi_kinerja');
