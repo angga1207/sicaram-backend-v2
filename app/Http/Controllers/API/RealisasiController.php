@@ -3706,7 +3706,7 @@ class RealisasiController extends Controller
                                     ->where('sub_kegiatan_id', $subKegiatan->id)
                                     ->where('kode_rekening_id', $kodeRekening->id)
                                     ->first();
-                                $realisasiAnggaran = $lastRealisasi->anggaran_bulan_ini + $realisasiBulanIni;
+                                $realisasiAnggaran = $lastRealisasi->anggaran + $realisasiBulanIni;
                             }
                             DB::table('data_realisasi')
                                 ->where('id', $dataRealisasi->id)
