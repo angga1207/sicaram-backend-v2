@@ -59,6 +59,9 @@ class ReportController extends Controller
         } else if ($request->params['category'] == 'belanja_bayar_dimuka') {
             $datas = $request->data;
             if (isset($request->params['instance'])) {
+                if (!isset($request->params['year'])) {
+                    $request->params['year'] = 2024;
+                }
                 $instance = DB::table('instances')->where('id', $request->params['instance'])->first();
                 $filename = $request->params['type'] . '_' . str()->slug($instance->alias) . '_' . $request->params['year'] . '.xlsx';
             } else {

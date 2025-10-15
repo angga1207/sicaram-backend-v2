@@ -751,6 +751,45 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 ];
             }
             $datas = collect($datas);
+            // add total row
+            $datas[] = [
+                'Total',
+                $collectDatas->sum('saldo_awal'),
+                $collectDatas->sum('plus_realisasi_belanja'),
+                $collectDatas->sum('plus_hutang_kegiatan'),
+                $collectDatas->sum('plus_atribusi'),
+                $collectDatas->sum('plus_reklasifikasi_barang_habis_pakai'),
+                $collectDatas->sum('plus_reklasifikasi_pemeliharaan'),
+                $collectDatas->sum('plus_reklasifikasi_jasa'),
+                $collectDatas->sum('plus_reklasifikasi_kib_a'),
+                $collectDatas->sum('plus_reklasifikasi_kib_b'),
+                $collectDatas->sum('plus_reklasifikasi_kib_c'),
+                $collectDatas->sum('plus_reklasifikasi_kib_d'),
+                $collectDatas->sum('plus_reklasifikasi_kib_e'),
+                $collectDatas->sum('plus_reklasifikasi_kdp'),
+                $collectDatas->sum('plus_reklasifikasi_aset_lain_lain'),
+                $collectDatas->sum('plus_hibah_masuk'),
+                $collectDatas->sum('plus_penilaian'),
+                $collectDatas->sum('plus_mutasi_antar_opd'),
+                $collectDatas->sum('plus_total'),
+                $collectDatas->sum('min_pembayaran_utang'),
+                $collectDatas->sum('min_reklasifikasi_beban_persediaan'),
+                $collectDatas->sum('min_reklasifikasi_beban_jasa'),
+                $collectDatas->sum('min_reklasifikasi_beban_pemeliharaan'),
+                $collectDatas->sum('min_reklasifikasi_beban_hibah'),
+                $collectDatas->sum('min_reklasifikasi_beban_kib_a'),
+                $collectDatas->sum('min_reklasifikasi_beban_kib_b'),
+                $collectDatas->sum('min_reklasifikasi_beban_kib_c'),
+                $collectDatas->sum('min_reklasifikasi_beban_kib_d'),
+                $collectDatas->sum('min_reklasifikasi_beban_kib_e'),
+                $collectDatas->sum('min_reklasifikasi_beban_kdp'),
+                $collectDatas->sum('min_reklasifikasi_beban_aset_lain_lain'),
+                $collectDatas->sum('min_penghapusan'),
+                $collectDatas->sum('min_mutasi_antar_opd'),
+                $collectDatas->sum('min_tptgr'),
+                $collectDatas->sum('min_total'),
+                $collectDatas->sum('saldo_akhir'),
+            ];
         } else if ($this->params['category'] == 'belanja_bayar_dimuka') {
             $collectDatas = collect($this->datas);
             foreach ($collectDatas as $data) {
@@ -771,6 +810,22 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 ];
             }
             $datas = collect($datas);
+            // add total row
+            $datas[] = [
+                'Total',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                $collectDatas->sum('kontrak_value'),
+                $collectDatas->sum('sudah_jatuh_tempo'),
+                $collectDatas->sum('belum_jatuh_tempo'),
+            ];
         } else if ($this->params['category'] == 'persediaan') {
             $collectDatas = collect($this->datas);
             if ($this->params['type'] == 'rekap') {
@@ -786,6 +841,16 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     ];
                 }
                 $datas = collect($datas);
+                // add total row
+                $datas[] = [
+                    'Total',
+                    $collectDatas->sum('saldo_awal'),
+                    $collectDatas->sum('realisasi_lra'),
+                    $collectDatas->sum('hutang_belanja'),
+                    $collectDatas->sum('perolehan_hibah'),
+                    $collectDatas->sum('saldo_akhir'),
+                    $collectDatas->sum('beban'),
+                ];
             } else if ($this->params['type'] == 'barang_habis_pakai') {
                 foreach ($collectDatas as $data) {
                     $datas[] = [
@@ -802,6 +867,19 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     ];
                 }
                 $datas = collect($datas);
+                // add total row
+                $datas[] = [
+                    'Total',
+                    '',
+                    $collectDatas->sum('saldo_awal'),
+                    '',
+                    '',
+                    $collectDatas->sum('realisasi_lra'),
+                    $collectDatas->sum('hutang_belanja'),
+                    $collectDatas->sum('perolehan_hibah'),
+                    $collectDatas->sum('saldo_akhir'),
+                    $collectDatas->sum('beban_persediaan'),
+                ];
             } else if ($this->params['type'] == 'untuk_dijual') {
                 foreach ($collectDatas as $data) {
                     $datas[] = [
@@ -818,6 +896,19 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     ];
                 }
                 $datas = collect($datas);
+                // add total row
+                $datas[] = [
+                    'Total',
+                    '',
+                    $collectDatas->sum('saldo_awal'),
+                    '',
+                    '',
+                    $collectDatas->sum('realisasi_lra'),
+                    $collectDatas->sum('hutang_belanja'),
+                    $collectDatas->sum('perolehan_hibah'),
+                    $collectDatas->sum('saldo_akhir'),
+                    $collectDatas->sum('beban_hibah'),
+                ];
             }
         } else if ($this->params['category'] == 'hutang_belanja') {
             $collectDatas = collect($this->datas);
@@ -858,6 +949,40 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     ];
                 }
                 $datas = collect($datas);
+                // add total row
+                $datas[] = [
+                    'Total',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $collectDatas->sum('kewajiban_tidak_terbayar_last_year'),
+                    '',
+                    '',
+                    $collectDatas->sum('p1_jumlah'),
+                    '',
+                    '',
+                    $collectDatas->sum('p2_jumlah'),
+                    $collectDatas->sum('jumlah_pembayaran_hutang'),
+                    $collectDatas->sum('sisa_hutang'),
+                    $collectDatas->sum('pegawai'),
+                    $collectDatas->sum('persediaan'),
+                    $collectDatas->sum('perjadin'),
+                    $collectDatas->sum('jasa'),
+                    $collectDatas->sum('pemeliharaan'),
+                    $collectDatas->sum('uang_jasa_diserahkan'),
+                    $collectDatas->sum('hibah'),
+                    $collectDatas->sum('aset_tetap_tanah'),
+                    $collectDatas->sum('aset_tetap_peralatan_mesin'),
+                    $collectDatas->sum('aset_tetap_gedung_bangunan'),
+                    $collectDatas->sum('aset_tetap_jalan_jaringan_irigasi'),
+                    $collectDatas->sum('aset_tetap_lainnya'),
+                    $collectDatas->sum('konstruksi_dalam_pekerjaan'),
+                    $collectDatas->sum('aset_lain_lain'),
+                    $collectDatas->sum('total_hutang'),
+                ];
             } else if ($this->params['type'] == 'utang_baru') {
                 foreach ($collectDatas as $data) {
                     $datas[] = [
@@ -901,6 +1026,46 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     ];
                 }
                 $datas = collect($datas);
+                // add total row
+                $datas[] = [
+                    'Total',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $collectDatas->sum('nilai_kontrak'),
+                    '',
+                    '',
+                    $collectDatas->sum('p1_jumlah'),
+                    '',
+                    '',
+                    $collectDatas->sum('p2_jumlah'),
+                    '',
+                    '',
+                    $collectDatas->sum('p3_jumlah'),
+                    '',
+                    '',
+                    $collectDatas->sum('p4_jumlah'),
+                    $collectDatas->sum('jumlah_pembayaran_hutang'),
+                    $collectDatas->sum('hutang_baru'),
+                    $collectDatas->sum('pegawai'),
+                    $collectDatas->sum('persediaan'),
+                    $collectDatas->sum('perjadin'),
+                    $collectDatas->sum('jasa'),
+                    $collectDatas->sum('pemeliharaan'),
+                    $collectDatas->sum('uang_jasa_diserahkan'),
+                    $collectDatas->sum('hibah'),
+                    $collectDatas->sum('aset_tetap_tanah'),
+                    $collectDatas->sum('aset_tetap_peralatan_mesin'),
+                    $collectDatas->sum('aset_tetap_gedung_bangunan'),
+                    $collectDatas->sum('aset_tetap_jalan_jaringan_irigasi'),
+                    $collectDatas->sum('aset_tetap_lainnya'),
+                    $collectDatas->sum('konstruksi_dalam_pekerjaan'),
+                    $collectDatas->sum('aset_lain_lain'),
+                    $collectDatas->sum('total_hutang'),
+                ];
             } else if ($this->params['type'] == 'rekap_utang_belanja') {
                 foreach ($collectDatas as $data) {
                     $datas[] = [
@@ -947,6 +1112,49 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     ];
                 }
                 $datas = collect($datas);
+                // add total row
+                $datas[] = [
+                    'Total',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    $collectDatas->sum('nilai_kontrak'),
+                    $collectDatas->sum('kewajiban_tidak_terbayar_last_year'),
+                    '',
+                    '',
+                    $collectDatas->sum('p1_jumlah'),
+                    '',
+                    '',
+                    $collectDatas->sum('p2_jumlah'),
+                    '',
+                    '',
+                    $collectDatas->sum('p3_jumlah'),
+                    // '',
+                    // '',
+                    // $collectDatas->sum('p4_jumlah'),
+                    $collectDatas->sum('jumlah_pembayaran_hutang'),
+                    $collectDatas->sum('kewajiban_tidak_terbayar'),
+                    $collectDatas->sum('hutang_baru'),
+                    $collectDatas->sum('pegawai'),
+                    $collectDatas->sum('persediaan'),
+                    $collectDatas->sum('perjadin'),
+                    $collectDatas->sum('jasa'),
+                    $collectDatas->sum('pemeliharaan'),
+                    $collectDatas->sum('uang_jasa_diserahkan'),
+                    $collectDatas->sum('hibah'),
+                    $collectDatas->sum('aset_tetap_tanah'),
+                    $collectDatas->sum('aset_tetap_peralatan_mesin'),
+                    $collectDatas->sum('aset_tetap_gedung_bangunan'),
+                    $collectDatas->sum('aset_tetap_jalan_jaringan_irigasi'),
+                    $collectDatas->sum('aset_tetap_lainnya'),
+                    $collectDatas->sum('konstruksi_dalam_pekerjaan'),
+                    $collectDatas->sum('aset_lain_lain'),
+                    $collectDatas->sum('total_hutang'),
+                    '',
+                ];
             }
         } else if ($this->params['category'] == 'beban_lo') {
             $collectDatas = collect($this->datas);
@@ -978,6 +1186,31 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     ];
                 }
                 $datas = collect($datas);
+                // add total row
+                $datas[] = [
+                    'Total',
+                    '',
+                    '',
+                    $collectDatas->sum('realisasi_belanja'),
+                    $collectDatas->sum('saldo_awal'),
+                    $collectDatas->sum('belanja_dibayar_dimuka_akhir'),
+                    $collectDatas->sum('hutang'),
+                    $collectDatas->sum('hibah'),
+                    $collectDatas->sum('reklas_tambah_dari_rekening'),
+                    $collectDatas->sum('reklas_tambah_dari_modal'),
+                    $collectDatas->sum('plus_jukor'),
+                    $collectDatas->sum('plus_total'),
+                    $collectDatas->sum('saldo_akhir'),
+                    $collectDatas->sum('beban_tahun_lalu'),
+                    $collectDatas->sum('belanja_dibayar_dimuka_awal'),
+                    $collectDatas->sum('pembayaran_hutang'),
+                    $collectDatas->sum('reklas_kurang_ke_rekening'),
+                    $collectDatas->sum('reklas_kurang_ke_aset'),
+                    $collectDatas->sum('atribusi'),
+                    $collectDatas->sum('min_jukor'),
+                    $collectDatas->sum('min_total'),
+                    $collectDatas->sum('beban_lo'),
+                ];
             }
         } else if ($this->params['category'] == 'pendapatan_lo') {
             if (in_array($this->params['type'], ['rekap_pendapatan_lo'])) {

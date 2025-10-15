@@ -610,6 +610,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     $data->periode_id = $request->periode;
                     $data->year = $dateYear;
                     $data->instance_id = $input['instance_id'];
+                    $data->uraian_pekerjaan = $input['uraian_pekerjaan'];
 
                     $data->bel_peg_kode_rekening_id = $input['bel_peg_kode_rekening_id'];
                     $data->bel_peg_nama_rekening = $input['bel_peg_nama_rekening'];
@@ -701,15 +702,14 @@ class PenyesuaianAsetDanBebanController extends Controller
         try {
             $datas = [];
             $arrDatas = DB::table('acc_padb_tambahan_mutasi_aset')
+                ->when($request->instance, function ($query) use ($request) {
+                    return $query->where(function ($q) use ($request) {
+                        $q->where('from_instance_id', $request->instance)
+                            ->orWhere('to_instance_id', $request->instance);
+                    });
+                })
                 ->where('periode_id', $request->periode)
                 ->where('year', $request->year)
-                // ->when($request->year, function ($query) use ($request) {
-                //     return $query->where('tahun_perolehan', $request->year);
-                // })
-                ->when($request->instance, function ($query) use ($request) {
-                    return $query->where('from_instance_id', $request->instance)
-                        ->orWhere('to_instance_id', $request->instance);
-                })
                 ->oldest('created_at')
                 ->get();
             foreach ($arrDatas as $data) {

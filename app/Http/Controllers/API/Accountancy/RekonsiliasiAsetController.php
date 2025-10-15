@@ -40,14 +40,17 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')
+                    ->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -208,14 +211,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -541,14 +546,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -886,14 +893,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -1230,14 +1239,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -1574,14 +1585,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -1917,14 +1930,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -2116,14 +2131,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -2462,14 +2479,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -2811,14 +2830,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -3097,14 +3118,16 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instanceIds = DB::table('acc_lra')
-                    ->select('instance_id')
-                    ->groupBy('instance_id')
-                    ->get();
+                // $instanceIds = DB::table('acc_lra')
+                //     ->select('instance_id')
+                //     ->groupBy('instance_id')
+                //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -3350,9 +3373,11 @@ class RekonsiliasiAsetController extends Controller
             $datas = [];
             $instances = [];
             if (!$request->instance) {
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -3522,9 +3547,11 @@ class RekonsiliasiAsetController extends Controller
                 //     ->groupBy('instance_id')
                 //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $values = [];
@@ -3797,9 +3824,11 @@ class RekonsiliasiAsetController extends Controller
                 //     ->groupBy('instance_id')
                 //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('name')->get();
+                $instances = Instance::orderBy('code')->get();
             } elseif ($request->instance) {
-                $instances = Instance::where('id', $request->instance)->get();
+                $instances = Instance::where('id', $request->instance)
+                    ->orderBy('code')
+                    ->get();
             }
 
             $auth = auth()->user();
