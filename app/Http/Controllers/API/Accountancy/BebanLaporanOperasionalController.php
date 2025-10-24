@@ -296,7 +296,7 @@ class BebanLaporanOperasionalController extends Controller
 
             return $this->successResponse($datas, 'Pemeliharaan berhasil diambil');
         } catch (\Exception $e) {
-            return $this->errorResponse($e->getMessage() . ' ' . $e->getLine());
+            return $this->errorResponse($e->getMessage() . ' ' . $e);
         }
     }
 

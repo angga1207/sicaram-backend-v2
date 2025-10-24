@@ -152,7 +152,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pembayaran Utang Aset Tetap Aset Tetap Lainnya',
                     'Pembayaran Utang Konstruksi Dalam Pengerjaan',
                     'Pembayaran Utang Aset Lain-lain',
-                    'Total Utang'
+                    'Total Penyesuaian'
                 ];
             } else if ($this->params['type'] == 'utang_baru') {
                 return [
@@ -192,7 +192,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Utang Aset Tetap Aset Tetap Lainnya',
                     'Utang Konstruksi Dalam Pengerjaan',
                     'Utang Aset Lain-lain',
-                    'Total Utang'
+                    'Total Utang Baru'
                 ];
             } else if ($this->params['type'] == 'rekap_utang_belanja') {
                 return [
@@ -297,7 +297,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Kurang Lancar 1-3 Tahun',
                     'Diragukan 3-5 Tahun',
                     'Macet > 5 Tahun',
-                    'Jumlah',
+                    'Jumlah Penyisihan',
                 ];
             } else if (in_array($this->params['type'], ['beban'])) {
                 return [
@@ -313,8 +313,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Perangkat Daerah',
                     'Uraian',
                     'Pendapatan Diterima Dimuka Awal',
-                    'Mutasi Bertambah',
-                    'Mutasi Berkurang',
+                    'Mutasi Tambah',
+                    'Mutasi Kurang',
                     'Pendapatan Diterima Dimuka Akhir',
                 ];
             } else if (in_array($this->params['type'], ['lota'])) {
@@ -1962,8 +1962,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['instance_name'] ?? null,
                         $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
-                        $data['mutasi_bertambah'],
                         $data['mutasi_berkurang'],
+                        $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
                     ];
                 }
@@ -1997,8 +1997,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['instance_name'] ?? null,
                         $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
-                        $data['mutasi_bertambah'],
                         $data['mutasi_berkurang'],
+                        $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
                     ];
                 }
@@ -2033,8 +2033,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['instance_name'] ?? null,
                         $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
-                        $data['mutasi_bertambah'],
                         $data['mutasi_berkurang'],
+                        $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
                     ];
                 }
@@ -2069,8 +2069,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['instance_name'] ?? null,
                         $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
-                        $data['mutasi_bertambah'],
                         $data['mutasi_berkurang'],
+                        $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
                     ];
                 }
@@ -2105,8 +2105,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['instance_name'] ?? null,
                         $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
-                        $data['mutasi_bertambah'],
                         $data['mutasi_berkurang'],
+                        $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
                     ];
                 }
@@ -2141,8 +2141,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['instance_name'] ?? null,
                         $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
-                        $data['mutasi_bertambah'],
                         $data['mutasi_berkurang'],
+                        $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
                     ];
                 }

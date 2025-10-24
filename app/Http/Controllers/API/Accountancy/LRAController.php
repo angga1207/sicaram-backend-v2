@@ -76,6 +76,14 @@ class LRAController extends Controller
         }
     }
 
+    private function changeToFloat($value)
+    {
+        $value = str_replace(',', '', $value);
+        $value = str_replace('.00', '', $value);
+        $value = str_replace('-0', '', $value);
+        return number_format((float)$value, 2, '.', '');
+    }
+
     // postLRA
     function postLRA(Request $request)
     {
@@ -132,33 +140,18 @@ class LRAController extends Controller
                 // $anggaran = str_replace(',00', '', $anggaran);
                 // $anggaran = (float) $anggaran;
 
-                $anggaran = $input['C'];
-                $anggaran = str_replace(',', '', $anggaran);
-                $anggaran = str_replace('.00', '', $anggaran);
-                $anggaran = str_replace('-0', '', $anggaran);
-                $anggaran = number_format((float)$anggaran, 2, '.', '');
+                $anggaran = $this->changeToFloat($input['C']);
 
                 // $realisasi = $input['D'];
                 // $realisasi = str_replace('.', '', $realisasi);
                 // $realisasi = str_replace(',00', '', $realisasi);
                 // $realisasi = (float) $realisasi;
 
-                $realisasi = $input['D'];
-                $realisasi = str_replace(',', '', $realisasi);
-                $realisasi = str_replace('.00', '', $realisasi);
-                $realisasi = str_replace('-0', '', $realisasi);
-                $realisasi = number_format((float)$realisasi, 2, '.', '');
+                $realisasi = $this->changeToFloat($input['D']);
 
-                $realisasiLastYear = $input['F'];
-                $realisasiLastYear = str_replace('.', '', $realisasiLastYear);
-                $realisasiLastYear = str_replace(',00', '', $realisasiLastYear);
-                $realisasiLastYear = (float) $realisasiLastYear;
+                $realisasiLastYear = $this->changeToFloat($input['F']);
 
-                $realisasiLastYear = $input['F'];
-                $realisasiLastYear = str_replace(',', '', $realisasiLastYear);
-                $realisasiLastYear = str_replace('.00', '', $realisasiLastYear);
-                $realisasiLastYear = str_replace('-0', '', $realisasiLastYear);
-                $realisasiLastYear = number_format((float)$realisasiLastYear, 2, '.', '');
+                $realisasiLastYear = $this->changeToFloat($input['F']);
 
                 $realisasiPercentage = $input['E'];
                 $realisasiPercentage = str_replace(',', '.', $realisasiPercentage);

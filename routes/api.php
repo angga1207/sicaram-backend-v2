@@ -29,6 +29,7 @@ use App\Http\Controllers\API\Accountancy\HutangBelanjaController;
 use App\Http\Controllers\API\Accountancy\RekonsiliasiAsetController;
 use App\Http\Controllers\API\Accountancy\BelanjaBayarDimukaController;
 use App\Http\Controllers\API\Accountancy\BebanLaporanOperasionalController;
+use App\Http\Controllers\API\Accountancy\DataImportController;
 use App\Http\Controllers\API\Accountancy\PenyesuaianAsetDanBebanController;
 use App\Http\Controllers\API\Accountancy\PendapatanLaporanOperasionalControoler;
 use App\Http\Controllers\API\Accountancy\ImportController as AccountancyImportController;
@@ -547,6 +548,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
         Route::post('accountancy/download/excel', [AccountancyReportController::class, 'downloadExcelAll']);
+        Route::post('accountancy/upload/excel', [DataImportController::class, 'uploadExcelAll']);
 
 
         // APIS AKUNTANSI END -------------->>>>>>>>
