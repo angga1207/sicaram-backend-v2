@@ -275,6 +275,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
             } else if (in_array($this->params['type'], ['piutang'])) {
                 return [
                     'Perangkat Daerah',
+                    'Kode Rekening',
                     'Jenis Piutang',
                     'Saldo Awal',
                     'Koreksi Saldo Awal',
@@ -287,10 +288,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Diragukan 3-5 Tahun',
                     'Macet > 5 Tahun',
                     'Piutang Bruto',
+                    'Jenis',
                 ];
             } else if (in_array($this->params['type'], ['penyisihan'])) {
                 return [
                     'Perangkat Daerah',
+                    'Kode Rekening',
                     'Jenis Piutang',
                     'Piutang Bruto',
                     'Lancar < 1 Tahun',
@@ -298,24 +301,29 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Diragukan 3-5 Tahun',
                     'Macet > 5 Tahun',
                     'Jumlah Penyisihan',
+                    'Jenis',
                 ];
             } else if (in_array($this->params['type'], ['beban'])) {
                 return [
                     'Perangkat Daerah',
+                    'Kode Rekening',
                     'Jenis Piutang',
                     'Jumlah Penyisihan',
                     'Jumlah Penyisihan Tahun Lalu',
                     'Koreksi Penyisihan',
                     'Beban Penyisihan',
+                    'Jenis',
                 ];
             } else if (in_array($this->params['type'], ['pdd'])) {
                 return [
                     'Perangkat Daerah',
+                    'Kode Rekening',
                     'Uraian',
                     'Pendapatan Diterima Dimuka Awal',
                     'Mutasi Tambah',
                     'Mutasi Kurang',
                     'Pendapatan Diterima Dimuka Akhir',
+                    'Jenis',
                 ];
             } else if (in_array($this->params['type'], ['lota'])) {
                 return [
@@ -609,7 +617,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 return [
                     'A' => NumberFormat::FORMAT_TEXT,
                     'B' => NumberFormat::FORMAT_TEXT,
-                    'C' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'C' => NumberFormat::FORMAT_TEXT,
                     'D' => NumberFormat::FORMAT_CURRENCY_ID,
                     'E' => NumberFormat::FORMAT_CURRENCY_ID,
                     'F' => NumberFormat::FORMAT_CURRENCY_ID,
@@ -620,35 +628,43 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'K' => NumberFormat::FORMAT_CURRENCY_ID,
                     'L' => NumberFormat::FORMAT_CURRENCY_ID,
                     'M' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'O' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'P' => NumberFormat::FORMAT_TEXT,
                 ];
             } else if (in_array($this->params['type'], ['penyisihan'])) {
                 return [
                     'A' => NumberFormat::FORMAT_TEXT,
                     'B' => NumberFormat::FORMAT_TEXT,
-                    'C' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'C' => NumberFormat::FORMAT_TEXT,
                     'D' => NumberFormat::FORMAT_CURRENCY_ID,
                     'E' => NumberFormat::FORMAT_CURRENCY_ID,
                     'F' => NumberFormat::FORMAT_CURRENCY_ID,
                     'G' => NumberFormat::FORMAT_CURRENCY_ID,
                     'H' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'I' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'J' => NumberFormat::FORMAT_TEXT,
                 ];
             } else if (in_array($this->params['type'], ['beban'])) {
                 return [
                     'A' => NumberFormat::FORMAT_TEXT,
                     'B' => NumberFormat::FORMAT_TEXT,
-                    'C' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'C' => NumberFormat::FORMAT_TEXT,
                     'D' => NumberFormat::FORMAT_CURRENCY_ID,
                     'E' => NumberFormat::FORMAT_CURRENCY_ID,
                     'F' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'H' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'I' => NumberFormat::FORMAT_TEXT,
                 ];
             } else if (in_array($this->params['type'], ['pdd'])) {
                 return [
                     'A' => NumberFormat::FORMAT_TEXT,
                     'B' => NumberFormat::FORMAT_TEXT,
-                    'C' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'C' => NumberFormat::FORMAT_TEXT,
                     'D' => NumberFormat::FORMAT_CURRENCY_ID,
                     'E' => NumberFormat::FORMAT_CURRENCY_ID,
                     'F' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'G' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'H' => NumberFormat::FORMAT_TEXT,
                 ];
             } else if (in_array($this->params['type'], ['lota'])) {
                 return [
@@ -1240,7 +1256,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'pendapatan_pajak_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['saldo_awal'],
                         $data['koreksi_saldo_awal'],
                         $data['penghapusan_piutang'],
@@ -1252,11 +1269,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['umur_piutang_3'],
                         $data['umur_piutang_4'],
                         $data['piutang_bruto'],
+                        $data['type'],
                     ];
                 }
                 $count1 = $collectDatas->where('type', 'pendapatan_pajak_daerah')->count();
                 $datas[] = [
                     'Pendapatan Pajak Daerah',
+                    '',
                     '',
                     '=sum(C2:C' . ($count1 + 1) . ')',
                     '=sum(D2:D' . ($count1 + 1) . ')',
@@ -1269,8 +1288,11 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K2:K' . ($count1 + 1) . ')',
                     '=sum(L2:L' . ($count1 + 1) . ')',
                     '=sum(M2:M' . ($count1 + 1) . ')',
+                    '',
                 ];
                 $datas[] = [
+                    '',
+                    '',
                     '',
                     '',
                     '',
@@ -1289,7 +1311,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'hasil_retribusi_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['saldo_awal'],
                         $data['koreksi_saldo_awal'],
                         $data['penghapusan_piutang'],
@@ -1301,12 +1324,14 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['umur_piutang_3'],
                         $data['umur_piutang_4'],
                         $data['piutang_bruto'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2;
                 $count2 = $collectDatas->where('type', 'hasil_retribusi_daerah')->count() + 1;
                 $datas[] = [
                     'Pendapatan Retribusi Daerah',
+                    '',
                     '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count2) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count2) . ')',
@@ -1319,8 +1344,11 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count2) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count2) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count2) . ')',
+                    '',
                 ];
                 $datas[] = [
+                    '',
+                    '',
                     '',
                     '',
                     '',
@@ -1339,7 +1367,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'hasil_pengelolaan_kekayaan_daerah_yang_dipisahkan') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['saldo_awal'],
                         $data['koreksi_saldo_awal'],
                         $data['penghapusan_piutang'],
@@ -1351,12 +1380,14 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['umur_piutang_3'],
                         $data['umur_piutang_4'],
                         $data['piutang_bruto'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1;
                 $count3 = $collectDatas->where('type', 'hasil_pengelolaan_kekayaan_daerah_yang_dipisahkan')->count() + 1;
                 $datas[] = [
                     'Hasil Pengelolaan Kekayaan Daerah Yang Dipisahkan',
+                    '',
                     '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count3) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count3) . ')',
@@ -1369,8 +1400,11 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count3) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count3) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count3) . ')',
+                    '',
                 ];
                 $datas[] = [
+                    '',
+                    '',
                     '',
                     '',
                     '',
@@ -1389,7 +1423,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'lain_lain_pad_yang_sah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['saldo_awal'],
                         $data['koreksi_saldo_awal'],
                         $data['penghapusan_piutang'],
@@ -1401,12 +1436,14 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['umur_piutang_3'],
                         $data['umur_piutang_4'],
                         $data['piutang_bruto'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1;
                 $count4 = $collectDatas->where('type', 'lain_lain_pad_yang_sah')->count() + 1;
                 $datas[] = [
                     'Lain-lain PAD Yang Sah',
+                    '',
                     '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count4) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count4) . ')',
@@ -1419,8 +1456,11 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count4) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count4) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count4) . ')',
+                    '',
                 ];
                 $datas[] = [
+                    '',
+                    '',
                     '',
                     '',
                     '',
@@ -1439,7 +1479,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'transfer_pemerintah_pusat') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['saldo_awal'],
                         $data['koreksi_saldo_awal'],
                         $data['penghapusan_piutang'],
@@ -1451,12 +1492,14 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['umur_piutang_3'],
                         $data['umur_piutang_4'],
                         $data['piutang_bruto'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1 + $count4 + 1;
                 $count5 = $collectDatas->where('type', 'transfer_pemerintah_pusat')->count() + 1;
                 $datas[] = [
                     'Transfer Pemerintah Pusat',
+                    '',
                     '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count5) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count5) . ')',
@@ -1469,8 +1512,11 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count5) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count5) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count5) . ')',
+                    '',
                 ];
                 $datas[] = [
+                    '',
+                    '',
                     '',
                     '',
                     '',
@@ -1489,7 +1535,8 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'transfer_antar_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['saldo_awal'],
                         $data['koreksi_saldo_awal'],
                         $data['penghapusan_piutang'],
@@ -1501,12 +1548,14 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                         $data['umur_piutang_3'],
                         $data['umur_piutang_4'],
                         $data['piutang_bruto'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1 + $count4 + 1 + $count5 + 1;
                 $count6 = $collectDatas->where('type', 'transfer_antar_daerah')->count() + 1;
                 $datas[] = [
                     'Transfer Antar Daerah',
+                    '',
                     '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count6) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count6) . ')',
@@ -1519,6 +1568,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count6) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count6) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count6) . ')',
+                    '',
                 ];
 
                 $datas = collect($datas);
@@ -1528,18 +1578,21 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'pendapatan_pajak_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['piutang_bruto'],
                         $data['penyisihan_piutang_1'],
                         $data['penyisihan_piutang_2'],
                         $data['penyisihan_piutang_3'],
                         $data['penyisihan_piutang_4'],
                         $data['jumlah'],
+                        $data['type'],
                     ];
                 }
                 $count1 = $collectDatas->where('type', 'pendapatan_pajak_daerah')->count();
                 $datas[] = [
                     'Pendapatan Pajak Daerah',
+                    '',
                     '',
                     '=sum(C2:C' . ($count1 + 1) . ')',
                     '=sum(D2:D' . ($count1 + 1) . ')',
@@ -1547,8 +1600,11 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(F2:F' . ($count1 + 1) . ')',
                     '=sum(G2:G' . ($count1 + 1) . ')',
                     '=sum(H2:H' . ($count1 + 1) . ')',
+                    '',
                 ];
                 $datas[] = [
+                    '',
+                    '',
                     '',
                     '',
                     '',
@@ -1567,13 +1623,15 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'hasil_retribusi_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['piutang_bruto'],
                         $data['penyisihan_piutang_1'],
                         $data['penyisihan_piutang_2'],
                         $data['penyisihan_piutang_3'],
                         $data['penyisihan_piutang_4'],
                         $data['jumlah'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2;
@@ -1581,14 +1639,18 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Pendapatan Retribusi Daerah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count2) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count2) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count2) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count2) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count2) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count2) . ')',
+                    '',
                 ];
                 $datas[] = [
+                    '',
+                    '',
                     '',
                     '',
                     '',
@@ -1607,13 +1669,15 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'hasil_pengelolaan_kekayaan_daerah_yang_dipisahkan') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['piutang_bruto'],
                         $data['penyisihan_piutang_1'],
                         $data['penyisihan_piutang_2'],
                         $data['penyisihan_piutang_3'],
                         $data['penyisihan_piutang_4'],
                         $data['jumlah'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1;
@@ -1621,14 +1685,18 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Hasil Pengelolaan Kekayaan Daerah Yang Dipisahkan',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count3) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count3) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count3) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count3) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count3) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count3) . ')',
+                    '',
                 ];
                 $datas[] = [
+                    '',
+                    '',
                     '',
                     '',
                     '',
@@ -1647,13 +1715,15 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'lain_lain_pad_yang_sah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['piutang_bruto'],
                         $data['penyisihan_piutang_1'],
                         $data['penyisihan_piutang_2'],
                         $data['penyisihan_piutang_3'],
                         $data['penyisihan_piutang_4'],
                         $data['jumlah'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1;
@@ -1661,12 +1731,14 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Lain-lain PAD Yang Sah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count4) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count4) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count4) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count4) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count4) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count4) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -1687,13 +1759,15 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'transfer_pemerintah_pusat') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['piutang_bruto'],
                         $data['penyisihan_piutang_1'],
                         $data['penyisihan_piutang_2'],
                         $data['penyisihan_piutang_3'],
                         $data['penyisihan_piutang_4'],
                         $data['jumlah'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1 + $count4 + 1;
@@ -1701,12 +1775,14 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Transfer Pemerintah Pusat',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count5) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count5) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count5) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count5) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count5) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count5) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -1727,13 +1803,15 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'transfer_antar_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['piutang_bruto'],
                         $data['penyisihan_piutang_1'],
                         $data['penyisihan_piutang_2'],
                         $data['penyisihan_piutang_3'],
                         $data['penyisihan_piutang_4'],
                         $data['jumlah'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1 + $count4 + 1 + $count5 + 1;
@@ -1741,12 +1819,14 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Transfer Antar Daerah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count6) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count6) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count6) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count6) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count6) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count6) . ')',
+                    '',
                 ];
 
                 $datas = collect($datas);
@@ -1756,21 +1836,25 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'pendapatan_pajak_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['jumlah_penyisihan'],
                         $data['jumlah_penyisihan_last_year'],
                         $data['koreksi_penyisihan'],
                         $data['beban_penyisihan'],
+                        $data['type'],
                     ];
                 }
                 $count1 = $collectDatas->where('type', 'pendapatan_pajak_daerah')->count();
                 $datas[] = [
                     'Pendapatan Pajak Daerah',
                     '',
+                    '',
                     '=sum(C2:C' . ($count1 + 1) . ')',
                     '=sum(D2:D' . ($count1 + 1) . ')',
                     '=sum(E2:E' . ($count1 + 1) . ')',
                     '=sum(F2:F' . ($count1 + 1) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -1791,11 +1875,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'hasil_retribusi_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['jumlah_penyisihan'],
                         $data['jumlah_penyisihan_last_year'],
                         $data['koreksi_penyisihan'],
                         $data['beban_penyisihan'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2;
@@ -1803,10 +1889,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Pendapatan Retribusi Daerah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count2) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count2) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count2) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count2) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -1827,11 +1915,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'hasil_pengelolaan_kekayaan_daerah_yang_dipisahkan') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['jumlah_penyisihan'],
                         $data['jumlah_penyisihan_last_year'],
                         $data['koreksi_penyisihan'],
                         $data['beban_penyisihan'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1;
@@ -1839,10 +1929,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Hasil Pengelolaan Kekayaan Daerah Yang Dipisahkan',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count3) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count3) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count3) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count3) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -1863,11 +1955,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'lain_lain_pad_yang_sah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['jumlah_penyisihan'],
                         $data['jumlah_penyisihan_last_year'],
                         $data['koreksi_penyisihan'],
                         $data['beban_penyisihan'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1;
@@ -1875,10 +1969,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Lain-lain PAD Yang Sah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count4) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count4) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count4) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count4) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -1899,11 +1995,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'transfer_pemerintah_pusat') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['jumlah_penyisihan'],
                         $data['jumlah_penyisihan_last_year'],
                         $data['koreksi_penyisihan'],
                         $data['beban_penyisihan'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1 + $count4 + 1;
@@ -1911,10 +2009,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Transfer Pemerintah Pusat',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count5) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count5) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count5) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count5) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -1935,11 +2035,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'transfer_antar_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['jumlah_penyisihan'],
                         $data['jumlah_penyisihan_last_year'],
                         $data['koreksi_penyisihan'],
                         $data['beban_penyisihan'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1 + $count4 + 1 + $count5 + 1;
@@ -1947,10 +2049,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Transfer Antar Daerah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count6) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count6) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count6) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count6) . ')',
+                    '',
                 ];
 
                 $datas = collect($datas);
@@ -1960,21 +2064,25 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'pendapatan_pajak_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
                         $data['mutasi_berkurang'],
                         $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
+                        $data['type'],
                     ];
                 }
                 $count1 = $collectDatas->where('type', 'pendapatan_pajak_daerah')->count();
                 $datas[] = [
                     'Pendapatan Pajak Daerah',
                     '',
+                    '',
                     '=sum(C2:C' . ($count1 + 1) . ')',
                     '=sum(D2:D' . ($count1 + 1) . ')',
                     '=sum(E2:E' . ($count1 + 1) . ')',
                     '=sum(F2:F' . ($count1 + 1) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -1995,11 +2103,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'hasil_retribusi_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
                         $data['mutasi_berkurang'],
                         $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2;
@@ -2007,10 +2117,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Pendapatan Retribusi Daerah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count2) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count2) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count2) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count2) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -2031,11 +2143,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'hasil_pengelolaan_kekayaan_daerah_yang_dipisahkan') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
                         $data['mutasi_berkurang'],
                         $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1;
@@ -2043,10 +2157,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Hasil Pengelolaan Kekayaan Daerah Yang Dipisahkan',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count3) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count3) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count3) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count3) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -2067,11 +2183,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'lain_lain_pad_yang_sah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
                         $data['mutasi_berkurang'],
                         $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1;
@@ -2079,10 +2197,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Lain-lain PAD Yang Sah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count4) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count4) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count4) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count4) . ')',
+                    ''
                 ];
                 $datas[] = [
                     '',
@@ -2103,11 +2223,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'transfer_pemerintah_pusat') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
                         $data['mutasi_berkurang'],
                         $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1 + $count4 + 1;
@@ -2115,10 +2237,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Transfer Pemerintah Pusat',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count5) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count5) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count5) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count5) . ')',
+                    '',
                 ];
                 $datas[] = [
                     '',
@@ -2139,11 +2263,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 foreach ($collectDatas->where('type', 'transfer_antar_daerah') as $data) {
                     $datas[] = [
                         $data['instance_name'] ?? null,
-                        $data['kode_rekening_fullcode'] . ' - ' . $data['kode_rekening_name'],
+                        $data['kode_rekening_fullcode'],
+                        $data['kode_rekening_name'],
                         $data['pendapatan_diterima_dimuka_awal'],
                         $data['mutasi_berkurang'],
                         $data['mutasi_bertambah'],
                         $data['pendapatan_diterima_dimuka_akhir'],
+                        $data['type'],
                     ];
                 }
                 $lastCount = $count1 + 2 + $count2 + 1 + $count3 + 1 + $count4 + 1 + $count5 + 1;
@@ -2151,10 +2277,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 $datas[] = [
                     'Transfer Antar Daerah',
                     '',
+                    '',
                     '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count6) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count6) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count6) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count6) . ')',
+                    '',
                 ];
 
                 $datas = collect($datas);

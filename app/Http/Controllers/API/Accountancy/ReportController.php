@@ -28,6 +28,10 @@ class ReportController extends Controller
             return $this->validationResponse($validate->errors());
         }
 
+        if (!$request->data[0]['id']) {
+            return $this->errorResponse('Tidak ada data untuk diexport!');
+        }
+
         if ($request->params['category'] == 'kibs') {
             $datas = $request->data;
             if (isset($request->params['instance'])) {

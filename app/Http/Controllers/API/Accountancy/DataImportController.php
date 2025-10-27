@@ -461,6 +461,117 @@ class DataImportController extends Controller
                 return $this->UtangBaruImport($allData, $params);
             }
         }
+
+        if ($params['category'] == 'pendapatan_lo') {
+            if ($params['type'] == 'piutang') {
+                $file = $request->file('file');
+                $fileName = 'piutang-' . $params['instance'] . '-' . $params['year'] . '-' . $params['periode'] . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/accountancy', $fileName);
+
+                $path = public_path('uploads/accountancy/' . $fileName);
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $spreadsheet = $reader->load($path);
+                $sheet = $spreadsheet->getActiveSheet();
+
+                $allData = [];
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+                $allData = $sheet->rangeToArray('A1:' . $highestColumn . $highestRow, null, true, true, true);
+                $allData = collect($allData);
+                $allData = $allData->where('A', '!=', null)
+                    ->where('A', '!=', 'Perangkat Daerah')
+                    ->where('A', '!=', 'Total')
+                    ->where('A', '!=', 'TOTAL')
+                    ->where('O', '!=', null)
+                    ->where('O', '!=', '')
+                    ->where('B', '!=', null)
+                    ->where('B', '!=', '')
+                    ->values();
+
+                return $this->PiutangImport($allData, $params);
+            }
+            if ($params['type'] == 'penyisihan') {
+                $file = $request->file('file');
+                $fileName = 'penyisihan-' . $params['instance'] . '-' . $params['year'] . '-' . $params['periode'] . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/accountancy', $fileName);
+
+                $path = public_path('uploads/accountancy/' . $fileName);
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $spreadsheet = $reader->load($path);
+                $sheet = $spreadsheet->getActiveSheet();
+
+                $allData = [];
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+                $allData = $sheet->rangeToArray('A1:' . $highestColumn . $highestRow, null, true, true, true);
+                $allData = collect($allData);
+                $allData = $allData->where('A', '!=', null)
+                    ->where('A', '!=', 'Perangkat Daerah')
+                    ->where('A', '!=', 'Total')
+                    ->where('A', '!=', 'TOTAL')
+                    ->where('O', '!=', null)
+                    ->where('O', '!=', '')
+                    ->where('B', '!=', null)
+                    ->where('B', '!=', '')
+                    ->values();
+
+                return $this->PenyisihanImport($allData, $params);
+            }
+            if ($params['type'] == 'beban') {
+                $file = $request->file('file');
+                $fileName = 'beban-' . $params['instance'] . '-' . $params['year'] . '-' . $params['periode'] . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/accountancy', $fileName);
+
+                $path = public_path('uploads/accountancy/' . $fileName);
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $spreadsheet = $reader->load($path);
+                $sheet = $spreadsheet->getActiveSheet();
+
+                $allData = [];
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+                $allData = $sheet->rangeToArray('A1:' . $highestColumn . $highestRow, null, true, true, true);
+                $allData = collect($allData);
+                $allData = $allData->where('A', '!=', null)
+                    ->where('A', '!=', 'Perangkat Daerah')
+                    ->where('A', '!=', 'Total')
+                    ->where('A', '!=', 'TOTAL')
+                    ->where('B', '!=', null)
+                    ->where('B', '!=', '')
+                    ->values();
+
+                return $this->PendapatanLOBebanImport($allData, $params);
+            }
+            if ($params['type'] == 'pdd') {
+                $file = $request->file('file');
+                $fileName = 'pdd-' . $params['instance'] . '-' . $params['year'] . '-' . $params['periode'] . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/accountancy', $fileName);
+
+                $path = public_path('uploads/accountancy/' . $fileName);
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $spreadsheet = $reader->load($path);
+                $sheet = $spreadsheet->getActiveSheet();
+
+                $allData = [];
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+                $allData = $sheet->rangeToArray('A1:' . $highestColumn . $highestRow, null, true, true, true);
+                $allData = collect($allData);
+                $allData = $allData->where('A', '!=', null)
+                    ->where('A', '!=', 'Perangkat Daerah')
+                    ->where('A', '!=', 'Total')
+                    ->where('A', '!=', 'TOTAL')
+                    ->where('B', '!=', null)
+                    ->where('B', '!=', '')
+                    ->values();
+
+                return $this->PDDImport($allData, $params);
+            }
+        }
     }
 
     private function changeStringMoneyToFloatDouble($value)
@@ -1436,6 +1547,182 @@ class DataImportController extends Controller
             }
             DB::commit();
             return $this->successResponse('Data Utang Baru berhasil diimpor.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e);
+        }
+    }
+
+    private function PiutangImport($datas, $params)
+    {
+        // return $datas;
+        $user = auth()->user();
+        DB::beginTransaction();
+        try {
+            foreach ($datas as $input) {
+                $instance = Instance::find($params['instance']);
+                if (!$instance) {
+                    continue;
+                }
+                $kodeRekening = KodeRekening::where('fullcode', $input['B'])->first();
+                if (!$kodeRekening) {
+                    continue;
+                }
+
+                $data = DB::table('acc_plo_piutang')
+                    ->insert([
+                        'periode_id' => $params['periode'],
+                        'year' => $params['year'],
+                        'instance_id' => $instance->id,
+                        'created_by' => $user->id,
+
+                        'type' => $input['O'],
+                        'kode_rekening_id' => $kodeRekening->id ?? null,
+                        'saldo_awal' => $this->changeStringMoneyToFloatDouble($input['D']),
+                        'koreksi_saldo_awal' => $this->changeStringMoneyToFloatDouble($input['E']),
+                        'mutasi_debet' => $this->changeStringMoneyToFloatDouble($input['G']),
+                        'mutasi_kredit' => $this->changeStringMoneyToFloatDouble($input['H']),
+                        'saldo_akhir' => $this->changeStringMoneyToFloatDouble($input['I']),
+                        'umur_piutang_1' => $this->changeStringMoneyToFloatDouble($input['J']),
+                        'umur_piutang_2' => $this->changeStringMoneyToFloatDouble($input['K']),
+                        'umur_piutang_3' => $this->changeStringMoneyToFloatDouble($input['L']),
+                        'umur_piutang_4' => $this->changeStringMoneyToFloatDouble($input['M']),
+                        'piutang_bruto' => $this->changeStringMoneyToFloatDouble($input['N']),
+                        'penghapusan_piutang' => $this->changeStringMoneyToFloatDouble($input['F']),
+
+                        'updated_by' => $user->id,
+                    ]);
+            }
+            DB::commit();
+            return $this->successResponse('Data Piutang berhasil diimpor.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e);
+        }
+    }
+
+    private function PenyisihanImport($datas, $params)
+    {
+        // return $datas;
+        $user = auth()->user();
+        DB::beginTransaction();
+        try {
+            foreach ($datas as $input) {
+                $instance = Instance::find($params['instance']);
+                if (!$instance) {
+                    continue;
+                }
+                $kodeRekening = KodeRekening::where('fullcode', $input['B'])->first();
+                if (!$kodeRekening) {
+                    continue;
+                }
+
+                $data = DB::table('acc_plo_penyisihan')
+                    ->insert([
+                        'periode_id' => $params['periode'],
+                        'year' => $params['year'],
+                        'instance_id' => $instance->id,
+                        'created_by' => $user->id,
+
+                        'type' => $input['J'],
+                        'kode_rekening_id' => $kodeRekening->id ?? null,
+
+                        'piutang_bruto' => $this->changeStringMoneyToFloatDouble($input['D']),
+                        'penyisihan_piutang_1' => $this->changeStringMoneyToFloatDouble($input['E']),
+                        'penyisihan_piutang_2' => $this->changeStringMoneyToFloatDouble($input['F']),
+                        'penyisihan_piutang_3' => $this->changeStringMoneyToFloatDouble($input['G']),
+                        'penyisihan_piutang_4' => $this->changeStringMoneyToFloatDouble($input['H']),
+                        'jumlah' => $this->changeStringMoneyToFloatDouble($input['I']),
+
+                        'updated_by' => $user->id,
+                    ]);
+            }
+            DB::commit();
+            return $this->successResponse('Data Penyisihan berhasil diimpor.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e);
+        }
+    }
+
+    private function PendapatanLOBebanImport($datas, $params)
+    {
+        // return $datas;
+        $user = auth()->user();
+        DB::beginTransaction();
+        try {
+            foreach ($datas as $input) {
+                $instance = Instance::find($params['instance']);
+                if (!$instance) {
+                    continue;
+                }
+                $kodeRekening = KodeRekening::where('fullcode', $input['B'])->first();
+                if (!$kodeRekening) {
+                    continue;
+                }
+
+                $data = DB::table('acc_plo_beban')
+                    ->insert([
+                        'periode_id' => $params['periode'],
+                        'year' => $params['year'],
+                        'instance_id' => $instance->id,
+                        'created_by' => $user->id,
+
+                        'type' => $input['H'],
+                        'kode_rekening_id' => $kodeRekening->id ?? null,
+
+                        'jumlah_penyisihan' => $this->changeStringMoneyToFloatDouble($input['D']),
+                        'jumlah_penyisihan_last_year' => $this->changeStringMoneyToFloatDouble($input['E']),
+                        'koreksi_penyisihan' => $this->changeStringMoneyToFloatDouble($input['F']),
+                        'beban_penyisihan' => $this->changeStringMoneyToFloatDouble($input['G']),
+
+                        'updated_by' => $user->id,
+                    ]);
+            }
+            DB::commit();
+            return $this->successResponse('Data Beban berhasil diimpor.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e);
+        }
+    }
+
+    private function PDDImport($datas, $params)
+    {
+        // return $datas;
+        $user = auth()->user();
+        DB::beginTransaction();
+        try {
+            foreach ($datas as $input) {
+                $instance = Instance::find($params['instance']);
+                if (!$instance) {
+                    continue;
+                }
+                $kodeRekening = KodeRekening::where('fullcode', $input['B'])->first();
+                if (!$kodeRekening) {
+                    continue;
+                }
+
+                $data = DB::table('acc_plo_pdd')
+                    ->insert([
+                        'periode_id' => $params['periode'],
+                        'year' => $params['year'],
+                        'instance_id' => $instance->id,
+                        'created_by' => $user->id,
+
+                        'type' => $input['H'],
+                        'kode_rekening_id' => $kodeRekening->id ?? null,
+
+                        'pendapatan_diterima_dimuka_awal' => $this->changeStringMoneyToFloatDouble($input['D']),
+                        'mutasi_berkurang' => $this->changeStringMoneyToFloatDouble($input['E']),
+                        'mutasi_bertambah' => $this->changeStringMoneyToFloatDouble($input['F']),
+                        'pendapatan_diterima_dimuka_akhir' => $this->changeStringMoneyToFloatDouble($input['G']),
+
+                        'updated_by' => $user->id,
+                    ]);
+            }
+            DB::commit();
+            return $this->successResponse('Data PDD berhasil diimpor.');
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e);
