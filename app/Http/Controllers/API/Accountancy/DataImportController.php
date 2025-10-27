@@ -579,10 +579,19 @@ class DataImportController extends Controller
 
     private function changeStringMoneyToFloatDouble($value)
     {
-        // Rp4,240,426.77 example
-        $value = str_replace('Rp', '', $value); // Remove 'Rp'
-        $value = str_replace(',', '', $value); // Remove commas
-        return floatval($value);
+        // check last 2 characters are ,0
+        if (substr($value, -2) == ',0') {
+            // if ,xx replace with .xx
+            $value = str_replace('Rp', '', $value); // Remove 'Rp'
+            $value = str_replace('.', '', $value);
+            $value = str_replace(',', '.', $value);
+            return floatval($value);
+        } else {
+            // Rp4,240,426.77 example
+            $value = str_replace('Rp', '', $value); // Remove 'Rp'
+            $value = str_replace(',', '', $value); // Remove commas
+            return floatval($value);
+        }
     }
 
     private function changeStringToDate($value)
