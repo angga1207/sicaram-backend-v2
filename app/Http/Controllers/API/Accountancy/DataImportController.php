@@ -29,6 +29,9 @@ class DataImportController extends Controller
             return $this->validationResponse($validate->errors()->first());
         }
         $params = json_decode($request->params, true);
+        if (!isset($params['instance'])) {
+            return $this->validationResponse('Perangkat Daerah harus dipilih.');
+        }
         if (!$params['instance']) {
             return $this->validationResponse('Perangkat Daerah harus dipilih.');
         }
