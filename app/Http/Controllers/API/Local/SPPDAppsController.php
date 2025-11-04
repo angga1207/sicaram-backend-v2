@@ -57,16 +57,14 @@ class SPPDAppsController extends Controller
         foreach ($arrSubKegiatan as $key => $subKegiatan) {
             $anggaran = TargetKinerja::selectRaw('kode_rekening_id, SUM(pagu_sipd) as total_pagu_sipd')
                 ->where('year', $request->year)
-                ->where('month', '<=', $request->month)
+                ->where('month', '=', $request->month)
                 ->where('instance_id', $request->instance_id)
                 ->where('sub_kegiatan_id', $subKegiatan->id)
                 ->whereIn('kode_rekening_id', $arrRekening->pluck('id'))
                 ->groupBy('kode_rekening_id')
                 ->get()
                 ->keyBy('kode_rekening_id');
-            // if (!$anggaran->isEmpty()) {
-            //     return $this->successResponse($anggaran);
-            // }
+
             $totalPaguInduk = 0;
             foreach ($arrRekening as $rekening) {
                 $totalPaguSipd = isset($anggaran[$rekening->id]) ? $anggaran[$rekening->id]->total_pagu_sipd : 0;
