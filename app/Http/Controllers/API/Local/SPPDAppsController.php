@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Ref\KodeRekening;
 use App\Models\Data\TargetKinerja;
 use App\Http\Controllers\Controller;
+use App\Models\Ref\SubKegiatan;
 use Illuminate\Support\Facades\Validator;
 
 class SPPDAppsController extends Controller
@@ -32,6 +33,55 @@ class SPPDAppsController extends Controller
         }
         $arrRekening = KodeRekening::where('parent_id', $parent->id)
             ->get();
+
+        $arrSubKegiatan = TargetKinerja::where('instance_id', $request->instance_id)
+            ->where('year', $request->year)
+            ->where('month', '<=', $request->month)
+            ->pluck('sub_kegiatan_id')
+            ->unique()
+            ->toArray();
+        $arrSubKegiatan = SubKegiatan::whereIn('id', $arrSubKegiatan)
+            ->get();
+
+        foreach ($arrSubKegiatan as $key => $subKegiatan) {
+            $returnData[$key] = [
+                'id' => $subKegiatan->id,
+                'fullcode' => $subKegiatan->fullcode,
+                'name' => $subKegiatan->name,
+                'pagu_induk' => 0,
+                'kode_rekening' => [],
+            ];
+        }
+
+        $rekening = [];
+        foreach ($arrSubKegiatan as $key => $subKegiatan) {
+            $anggaran = TargetKinerja::selectRaw('kode_rekening_id, SUM(pagu_sipd) as total_pagu_sipd')
+                ->where('year', $request->year)
+                ->where('month', '<=', $request->month)
+                ->where('instance_id', $request->instance_id)
+                ->where('sub_kegiatan_id', $subKegiatan->id)
+                ->whereIn('kode_rekening_id', $arrRekening->pluck('id'))
+                ->groupBy('kode_rekening_id')
+                ->get()
+                ->keyBy('kode_rekening_id');
+            // if (!$anggaran->isEmpty()) {
+            //     return $this->successResponse($anggaran);
+            // }
+            $totalPaguInduk = 0;
+            foreach ($arrRekening as $rekening) {
+                $totalPaguSipd = isset($anggaran[$rekening->id]) ? $anggaran[$rekening->id]->total_pagu_sipd : 0;
+                $returnData[$key]['kode_rekening'][] = [
+                    'kode_rekening_id' => $rekening->id,
+                    'fullcode' => $rekening->fullcode,
+                    'name' => $rekening->name,
+                    'pagu_induk' => $totalPaguSipd,
+                ];
+                $totalPaguInduk += $totalPaguSipd;
+            }
+            $returnData[$key]['pagu_induk'] = $totalPaguInduk;
+        }
+
+        return $this->successResponse($returnData);
 
         $anggaran = TargetKinerja::selectRaw('kode_rekening_id, SUM(pagu_sipd) as total_pagu_sipd')
             ->where('year', $request->year)
