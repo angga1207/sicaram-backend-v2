@@ -1277,7 +1277,6 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pendapatan Pajak Daerah',
                     '',
                     '',
-                    '=sum(C2:C' . ($count1 + 1) . ')',
                     '=sum(D2:D' . ($count1 + 1) . ')',
                     '=sum(E2:E' . ($count1 + 1) . ')',
                     '=sum(F2:F' . ($count1 + 1) . ')',
@@ -1288,6 +1287,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K2:K' . ($count1 + 1) . ')',
                     '=sum(L2:L' . ($count1 + 1) . ')',
                     '=sum(M2:M' . ($count1 + 1) . ')',
+                    '=sum(N2:N' . ($count1 + 1) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1333,7 +1333,6 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pendapatan Retribusi Daerah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count2) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count2) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count2) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count2) . ')',
@@ -1344,6 +1343,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count2) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count2) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count2) . ')',
+                    '=sum(N' . $lastCount + 1 . ':N' . ($lastCount + $count2) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1389,7 +1389,6 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Hasil Pengelolaan Kekayaan Daerah Yang Dipisahkan',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count3) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count3) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count3) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count3) . ')',
@@ -1400,6 +1399,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count3) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count3) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count3) . ')',
+                    '=sum(N' . $lastCount + 1 . ':N' . ($lastCount + $count3) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1445,7 +1445,6 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Lain-lain PAD Yang Sah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count4) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count4) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count4) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count4) . ')',
@@ -1456,6 +1455,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count4) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count4) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count4) . ')',
+                    '=sum(N' . $lastCount + 1 . ':N' . ($lastCount + $count4) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1501,7 +1501,6 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Transfer Pemerintah Pusat',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count5) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count5) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count5) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count5) . ')',
@@ -1512,6 +1511,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count5) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count5) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count5) . ')',
+                    '=sum(N' . $lastCount + 1 . ':N' . ($lastCount + $count5) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1557,7 +1557,6 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Transfer Antar Daerah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count6) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count6) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count6) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count6) . ')',
@@ -1568,6 +1567,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     '=sum(K' . $lastCount + 1 . ':K' . ($lastCount + $count6) . ')',
                     '=sum(L' . $lastCount + 1 . ':L' . ($lastCount + $count6) . ')',
                     '=sum(M' . $lastCount + 1 . ':M' . ($lastCount + $count6) . ')',
+                    '=sum(N' . $lastCount + 1 . ':N' . ($lastCount + $count6) . ')',
                     '',
                 ];
 
@@ -1594,12 +1594,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pendapatan Pajak Daerah',
                     '',
                     '',
-                    '=sum(C2:C' . ($count1 + 1) . ')',
                     '=sum(D2:D' . ($count1 + 1) . ')',
                     '=sum(E2:E' . ($count1 + 1) . ')',
                     '=sum(F2:F' . ($count1 + 1) . ')',
                     '=sum(G2:G' . ($count1 + 1) . ')',
                     '=sum(H2:H' . ($count1 + 1) . ')',
+                    '=sum(I2:I' . ($count1 + 1) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1640,12 +1640,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pendapatan Retribusi Daerah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count2) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count2) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count2) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count2) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count2) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count2) . ')',
+                    '=sum(I' . $lastCount + 1 . ':I' . ($lastCount + $count2) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1686,12 +1686,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Hasil Pengelolaan Kekayaan Daerah Yang Dipisahkan',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count3) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count3) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count3) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count3) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count3) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count3) . ')',
+                    '=sum(I' . $lastCount + 1 . ':I' . ($lastCount + $count3) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1732,12 +1732,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Lain-lain PAD Yang Sah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count4) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count4) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count4) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count4) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count4) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count4) . ')',
+                    '=sum(I' . $lastCount + 1 . ':I' . ($lastCount + $count4) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1776,12 +1776,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Transfer Pemerintah Pusat',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count5) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count5) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count5) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count5) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count5) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count5) . ')',
+                    '=sum(I' . $lastCount + 1 . ':I' . ($lastCount + $count5) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1820,12 +1820,12 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Transfer Antar Daerah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count6) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count6) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count6) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count6) . ')',
                     '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count6) . ')',
                     '=sum(H' . $lastCount + 1 . ':H' . ($lastCount + $count6) . ')',
+                    '=sum(I' . $lastCount + 1 . ':I' . ($lastCount + $count6) . ')',
                     '',
                 ];
 
@@ -1850,10 +1850,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pendapatan Pajak Daerah',
                     '',
                     '',
-                    '=sum(C2:C' . ($count1 + 1) . ')',
                     '=sum(D2:D' . ($count1 + 1) . ')',
                     '=sum(E2:E' . ($count1 + 1) . ')',
                     '=sum(F2:F' . ($count1 + 1) . ')',
+                    '=sum(G2:G' . ($count1 + 1) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1890,10 +1890,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pendapatan Retribusi Daerah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count2) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count2) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count2) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count2) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count2) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1930,10 +1930,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Hasil Pengelolaan Kekayaan Daerah Yang Dipisahkan',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count3) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count3) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count3) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count3) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count3) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -1970,10 +1970,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Lain-lain PAD Yang Sah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count4) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count4) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count4) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count4) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count4) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -2010,10 +2010,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Transfer Pemerintah Pusat',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count5) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count5) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count5) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count5) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count5) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -2050,10 +2050,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Transfer Antar Daerah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count6) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count6) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count6) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count6) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count6) . ')',
                     '',
                 ];
 
@@ -2078,10 +2078,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pendapatan Pajak Daerah',
                     '',
                     '',
-                    '=sum(C2:C' . ($count1 + 1) . ')',
                     '=sum(D2:D' . ($count1 + 1) . ')',
                     '=sum(E2:E' . ($count1 + 1) . ')',
                     '=sum(F2:F' . ($count1 + 1) . ')',
+                    '=sum(G2:G' . ($count1 + 1) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -2118,10 +2118,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Pendapatan Retribusi Daerah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count2) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count2) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count2) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count2) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count2) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -2158,10 +2158,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Hasil Pengelolaan Kekayaan Daerah Yang Dipisahkan',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count3) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count3) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count3) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count3) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count3) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -2198,10 +2198,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Lain-lain PAD Yang Sah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count4) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count4) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count4) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count4) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count4) . ')',
                     ''
                 ];
                 $datas[] = [
@@ -2238,10 +2238,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Transfer Pemerintah Pusat',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count5) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count5) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count5) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count5) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count5) . ')',
                     '',
                 ];
                 $datas[] = [
@@ -2278,10 +2278,10 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Transfer Antar Daerah',
                     '',
                     '',
-                    '=sum(C' . $lastCount + 1 . ':C' . ($lastCount + $count6) . ')',
                     '=sum(D' . $lastCount + 1 . ':D' . ($lastCount + $count6) . ')',
                     '=sum(E' . $lastCount + 1 . ':E' . ($lastCount + $count6) . ')',
                     '=sum(F' . $lastCount + 1 . ':F' . ($lastCount + $count6) . ')',
+                    '=sum(G' . $lastCount + 1 . ':G' . ($lastCount + $count6) . ')',
                     '',
                 ];
 

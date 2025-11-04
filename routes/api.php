@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Controllers\API\LPSEController;
 use App\Http\Controllers\API\SIPDController;
+use App\Http\Controllers\API\RenjaController;
 use App\Http\Controllers\API\GlobalController;
 use App\Http\Controllers\API\ImportController;
 use App\Http\Controllers\API\ReportController;
+use App\Http\Controllers\API\RenstraController;
 use App\Http\Controllers\API\TestingController;
 use App\Http\Controllers\API\PersonalController;
 use App\Http\Controllers\API\DashboardController;
@@ -23,19 +25,18 @@ use App\Http\Controllers\API\Accountancy\LRAController;
 use App\Http\Controllers\API\TaggingSumberDanaController;
 use App\Http\Controllers\API\TargetTujuanSasaranController;
 use App\Http\Controllers\API\Accountancy\AdminOnlyController;
+use App\Http\Controllers\API\Accountancy\DataImportController;
 use App\Http\Controllers\API\Accountancy\PersediaanController;
 use App\Http\Controllers\API\RealisasiTujuanSasaranController;
 use App\Http\Controllers\API\Accountancy\HutangBelanjaController;
 use App\Http\Controllers\API\Accountancy\RekonsiliasiAsetController;
 use App\Http\Controllers\API\Accountancy\BelanjaBayarDimukaController;
+use App\Http\Controllers\API\Accountancy\PengembalianBelanjaController;
 use App\Http\Controllers\API\Accountancy\BebanLaporanOperasionalController;
-use App\Http\Controllers\API\Accountancy\DataImportController;
 use App\Http\Controllers\API\Accountancy\PenyesuaianAsetDanBebanController;
 use App\Http\Controllers\API\Accountancy\PendapatanLaporanOperasionalControoler;
 use App\Http\Controllers\API\Accountancy\ImportController as AccountancyImportController;
 use App\Http\Controllers\API\Accountancy\ReportController as AccountancyReportController;
-use App\Http\Controllers\API\RenjaController;
-use App\Http\Controllers\API\RenstraController;
 
 Route::get('/testing', [TestingController::class, 'index']);
 
@@ -531,6 +532,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/accountancy/plo/lo-ta', [PendapatanLaporanOperasionalControoler::class, 'deleteLoTa']);
         // Pendapatan Laporan Operasional End
 
+        // Pengembalian Belanja Start
+        Route::get('/accountancy/pengembalian-belanja', [PengembalianBelanjaController::class, 'getIndex']);
+        Route::post('/accountancy/pengembalian-belanja', [PengembalianBelanjaController::class, 'storeData']);
+        Route::delete('/accountancy/pengembalian-belanja', [PengembalianBelanjaController::class, 'deleteData']);
+        // Pengembalian Belanja End
+
 
         // LAPORAN AKUNTANSI START
         Route::get('accountancy/report/neraca', [AccountancyReportController::class, 'reportNeraca']);
@@ -570,6 +577,11 @@ Route::prefix('/local')->group(function () {
 
 
     Route::get('/caram/realisasi/listInstance', [BaseController::class, 'localListInstance'])->name('caram-realisasi.listInstance');
+
+
+    // SPPD APPS START
+    Route::get('/sppd/getRekeningPerjadin', [App\Http\Controllers\API\Local\SPPDAppsController::class, 'getRekeningPerjadin'])->name('sppd.getRekeningPerjadin');
+    // SPPD APPS END
 });
 
 // Route::post('import/kode-rekening', [ImportController::class, 'importKodeRekening'])->name('import.kode-rekening');
