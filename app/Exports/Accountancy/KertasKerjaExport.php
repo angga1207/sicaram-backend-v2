@@ -343,6 +343,18 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'Perbedaan LO & LRA',
                 ];
             }
+        } else if ($this->params['category'] == 'pengembalian-belanja') {
+            if ($this->params['type'] == 'pengembalian-belanja') {
+                return [
+                    'Perangkat Daerah',
+                    'Tanggal Setor',
+                    'Kode Rekening',
+                    'Nama Rekening',
+                    'Uraian',
+                    'Jenis SPM',
+                    'Jumlah (Rp)',
+                ];
+            }
         }
 
         return [];
@@ -682,6 +694,18 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                     'L' => NumberFormat::FORMAT_CURRENCY_ID,
                     'M' => NumberFormat::FORMAT_CURRENCY_ID,
                     'N' => NumberFormat::FORMAT_CURRENCY_ID,
+                ];
+            }
+        } else if ($this->params['category'] == 'pengembalian-belanja') {
+            if ($this->params['type'] == 'pengembalian-belanja') {
+                return [
+                    'A' => NumberFormat::FORMAT_TEXT,
+                    'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+                    'C' => NumberFormat::FORMAT_TEXT,
+                    'D' => NumberFormat::FORMAT_TEXT,
+                    'E' => NumberFormat::FORMAT_TEXT,
+                    'F' => NumberFormat::FORMAT_TEXT,
+                    'G' => NumberFormat::FORMAT_CURRENCY_ID,
                 ];
             }
         }
@@ -2325,6 +2349,32 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 ];
 
                 $datas = collect($datas);
+            }
+        } else if ($this->params['category'] == 'pengembalian-belanja') {
+            if ($this->params['type'] == 'pengembalian-belanja') {
+                $collectDatas = collect($this->datas);
+                foreach ($collectDatas as $data) {
+                    $datas[] = [
+                        $data['instance_name'] ?? null,
+                        $data['tanggal_setor'] ?? null,
+                        $data['kode_rekening_fullcode'] ?? null,
+                        $data['kode_rekening_name'] ?? null,
+                        $data['uraian'] ?? null,
+                        $data['jenis_spm'] ?? null,
+                        $data['jumlah'] ?? 0,
+                    ];
+                }
+                $datas = collect($datas);
+                // add total row
+                $datas->push([
+                    'Total',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '=sum(G2:G' . ($collectDatas->count() + 1) . ')',
+                ]);
             }
         }
         return $datas;

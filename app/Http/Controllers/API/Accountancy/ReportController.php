@@ -133,6 +133,20 @@ class ReportController extends Controller
                 'path' => asset('storage/export-accountancy/' . $filename),
                 'filename' => $filename,
             ]);
+        } else if ($request->params['category'] == 'pengembalian-belanja'){
+            $datas = $request->data;
+            if (isset($request->params['instance'])) {
+                $instance = DB::table('instances')->where('id', $request->params['instance'])->first();
+                $filename = $request->params['type'] . '_' . str()->slug($instance->alias) . '_' . $request->params['year'] . '.xlsx';
+            } else {
+                $filename = $request->params['type'] . '_kabupaten_ogan_ilir' . '_' . $request->params['year'] . '.xlsx';
+            }
+            $params = $request->params;
+            Excel::store(new KertasKerjaExport($datas, $params), 'export-accountancy/' . $filename, 'public');
+            return $this->successResponse([
+                'path' => asset('storage/export-accountancy/' . $filename),
+                'filename' => $filename,
+            ]);
         }
     }
 

@@ -535,7 +535,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Pengembalian Belanja Start
         Route::get('/accountancy/pengembalian-belanja', [PengembalianBelanjaController::class, 'getIndex']);
         Route::post('/accountancy/pengembalian-belanja', [PengembalianBelanjaController::class, 'storeData']);
-        Route::delete('/accountancy/pengembalian-belanja', [PengembalianBelanjaController::class, 'deleteData']);
+        Route::delete('/accountancy/pengembalian-belanja/{id}', [PengembalianBelanjaController::class, 'deleteData']);
         // Pengembalian Belanja End
 
 
