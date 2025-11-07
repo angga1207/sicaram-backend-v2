@@ -1837,17 +1837,18 @@ class ReportController extends Controller
                         ->first();
 
                     $realisasiKinerjaLalu = [];
-                    if ($DataRealisasiSubKegiatanLalu && $DataRealisasiSubKegiatanLalu->realisasi_kinerja_json) {
-                        $realisasiKinerjaLaluAll = json_decode($DataRealisasiSubKegiatanLalu->realisasi_kinerja_json, true);
-                        $realisasiKinerjaLaluRaw = collect($realisasiKinerjaLaluAll)
-                            ->where('type', 'kinerja')
-                            ->values();
-                        if ($realisasiKinerjaLaluRaw) {
-                            foreach ($realisasiKinerjaLaluRaw as $realisiKN) {
-                                $realisasiKinerjaLalu[] = $realisiKN['realisasi'] ?? null;
-                            }
-                        }
-                    }
+                    // temporary comment dulu karena ganti table ke data_realisasi
+                    // if ($DataRealisasiSubKegiatanLalu && $DataRealisasiSubKegiatanLalu->realisasi_kinerja_json) {
+                    //     $realisasiKinerjaLaluAll = json_decode($DataRealisasiSubKegiatanLalu->realisasi_kinerja_json, true);
+                    //     $realisasiKinerjaLaluRaw = collect($realisasiKinerjaLaluAll)
+                    //         ->where('type', 'kinerja')
+                    //         ->values();
+                    //     if ($realisasiKinerjaLaluRaw) {
+                    //         foreach ($realisasiKinerjaLaluRaw as $realisiKN) {
+                    //             $realisasiKinerjaLalu[] = $realisiKN['realisasi'] ?? null;
+                    //         }
+                    //     }
+                    // }
 
                     // $DataRealisasiSubKegiatan = DB::table('data_realisasi_sub_kegiatan')
                     $DataRealisasiSubKegiatan = DB::table('data_realisasi')
@@ -1871,20 +1872,20 @@ class ReportController extends Controller
                     $realisasiKinerjaPercent = 0;
                     $berkas = [];
                     if ($DataRealisasiSubKegiatan) {
-                        $realisasiKinerjaAll = json_decode($DataRealisasiSubKegiatan->realisasi_kinerja_json, true);
-                        if ($realisasiKinerjaAll) {
-                            $realisasiKinerjaRaw = collect($realisasiKinerjaAll)
-                                ->where('type', 'kinerja')
-                                ->values();
-                            if ($realisasiKinerjaRaw) {
-                                foreach ($realisasiKinerjaRaw as $realisiKN) {
-                                    $realisasiKinerja[] = $realisiKN['realisasi'] ?? null;
-                                }
-                            }
-                            $realisasiKinerjaPercent = collect($realisasiKinerjaAll)
-                                ->where('type', 'persentase-kinerja')
-                                ->first()['realisasi'] ?? 0;
-                        }
+                        // $realisasiKinerjaAll = json_decode($DataRealisasiSubKegiatan->realisasi_kinerja_json, true);
+                        // if ($realisasiKinerjaAll) {
+                        //     $realisasiKinerjaRaw = collect($realisasiKinerjaAll)
+                        //         ->where('type', 'kinerja')
+                        //         ->values();
+                        //     if ($realisasiKinerjaRaw) {
+                        //         foreach ($realisasiKinerjaRaw as $realisiKN) {
+                        //             $realisasiKinerja[] = $realisiKN['realisasi'] ?? null;
+                        //         }
+                        //     }
+                        //     $realisasiKinerjaPercent = collect($realisasiKinerjaAll)
+                        //         ->where('type', 'persentase-kinerja')
+                        //         ->first()['realisasi'] ?? 0;
+                        // }
 
                         $arrBerkasPendukung = DB::table('data_realisasi_sub_kegiatan_files')
                             ->where('parent_id', $DataRealisasiSubKegiatan->id)
