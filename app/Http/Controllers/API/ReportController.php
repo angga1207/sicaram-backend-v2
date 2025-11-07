@@ -1827,8 +1827,8 @@ class ReportController extends Controller
                         }
                     }
 
-                    // $DataRealisasiSubKegiatanLalu = DB::table('data_realisasi_sub_kegiatan')
-                    $DataRealisasiSubKegiatanLalu = DB::table('data_realisasi')
+                    $DataRealisasiSubKegiatanLalu = DB::table('data_realisasi_sub_kegiatan')
+                    // $DataRealisasiSubKegiatanLalu = DB::table('data_realisasi')
                         ->where('sub_kegiatan_id', $subKegiatan->id)
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
@@ -1838,54 +1838,48 @@ class ReportController extends Controller
 
                     $realisasiKinerjaLalu = [];
                     // temporary comment dulu karena ganti table ke data_realisasi
-                    // if ($DataRealisasiSubKegiatanLalu && $DataRealisasiSubKegiatanLalu->realisasi_kinerja_json) {
-                    //     $realisasiKinerjaLaluAll = json_decode($DataRealisasiSubKegiatanLalu->realisasi_kinerja_json, true);
-                    //     $realisasiKinerjaLaluRaw = collect($realisasiKinerjaLaluAll)
-                    //         ->where('type', 'kinerja')
-                    //         ->values();
-                    //     if ($realisasiKinerjaLaluRaw) {
-                    //         foreach ($realisasiKinerjaLaluRaw as $realisiKN) {
-                    //             $realisasiKinerjaLalu[] = $realisiKN['realisasi'] ?? null;
-                    //         }
-                    //     }
-                    // }
+                    if ($DataRealisasiSubKegiatanLalu && $DataRealisasiSubKegiatanLalu->realisasi_kinerja_json) {
+                        $realisasiKinerjaLaluAll = json_decode($DataRealisasiSubKegiatanLalu->realisasi_kinerja_json, true);
+                        $realisasiKinerjaLaluRaw = collect($realisasiKinerjaLaluAll)
+                            ->where('type', 'kinerja')
+                            ->values();
+                        if ($realisasiKinerjaLaluRaw) {
+                            foreach ($realisasiKinerjaLaluRaw as $realisiKN) {
+                                $realisasiKinerjaLalu[] = $realisiKN['realisasi'] ?? null;
+                            }
+                        }
+                    }
 
-                    // $DataRealisasiSubKegiatan = DB::table('data_realisasi_sub_kegiatan')
-                    $DataRealisasiSubKegiatan = DB::table('data_realisasi')
+                    $DataRealisasiSubKegiatan = DB::table('data_realisasi_sub_kegiatan')
+                    // $DataRealisasiSubKegiatan = DB::table('data_realisasi')
                         ->where('sub_kegiatan_id', $subKegiatan->id)
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
                         ->where('month', $request->month)
                         ->whereNull('deleted_at')
                         ->first();
-                    // if ($DataRealisasiSubKegiatan->id == 11460) {
-                    //     $realisasiKinerjaAll = json_decode($DataRealisasiSubKegiatan->realisasi_kinerja_json, true);
-                    //     $realisasiKinerjaPercent = collect($realisasiKinerjaAll)
-                    //         ->where('type', 'persentase-kinerja')
-                    //         ->first();
-                    //     return $realisasiKinerjaPercent['realisasi'];
-                    //     return [$realisasiKinerjaAll, $realisasiKinerjaPercent];
-                    //     return json_decode($DataRealisasiSubKegiatan->realisasi_kinerja_json, true);
-                    // }
 
                     $realisasiKinerja = [];
                     $realisasiKinerjaPercent = 0;
                     $berkas = [];
                     if ($DataRealisasiSubKegiatan) {
-                        // $realisasiKinerjaAll = json_decode($DataRealisasiSubKegiatan->realisasi_kinerja_json, true);
-                        // if ($realisasiKinerjaAll) {
-                        //     $realisasiKinerjaRaw = collect($realisasiKinerjaAll)
-                        //         ->where('type', 'kinerja')
-                        //         ->values();
-                        //     if ($realisasiKinerjaRaw) {
-                        //         foreach ($realisasiKinerjaRaw as $realisiKN) {
-                        //             $realisasiKinerja[] = $realisiKN['realisasi'] ?? null;
-                        //         }
-                        //     }
-                        //     $realisasiKinerjaPercent = collect($realisasiKinerjaAll)
-                        //         ->where('type', 'persentase-kinerja')
-                        //         ->first()['realisasi'] ?? 0;
-                        // }
+
+                        // START HERE
+                        $realisasiKinerjaAll = json_decode($DataRealisasiSubKegiatan->realisasi_kinerja_json, true);
+                        if ($realisasiKinerjaAll) {
+                            $realisasiKinerjaRaw = collect($realisasiKinerjaAll)
+                                ->where('type', 'kinerja')
+                                ->values();
+                            if ($realisasiKinerjaRaw) {
+                                foreach ($realisasiKinerjaRaw as $realisiKN) {
+                                    $realisasiKinerja[] = $realisiKN['realisasi'] ?? null;
+                                }
+                            }
+                            $realisasiKinerjaPercent = collect($realisasiKinerjaAll)
+                                ->where('type', 'persentase-kinerja')
+                                ->first()['realisasi'] ?? 0;
+                        }
+                        // END HERE
 
                         $arrBerkasPendukung = DB::table('data_realisasi_sub_kegiatan_files')
                             ->where('parent_id', $DataRealisasiSubKegiatan->id)
