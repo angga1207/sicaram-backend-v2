@@ -1827,7 +1827,8 @@ class ReportController extends Controller
                         }
                     }
 
-                    $DataRealisasiSubKegiatanLalu = DB::table('data_realisasi_sub_kegiatan')
+                    // $DataRealisasiSubKegiatanLalu = DB::table('data_realisasi_sub_kegiatan')
+                    $DataRealisasiSubKegiatanLalu = DB::table('data_realisasi')
                         ->where('sub_kegiatan_id', $subKegiatan->id)
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
@@ -1848,7 +1849,8 @@ class ReportController extends Controller
                         }
                     }
 
-                    $DataRealisasiSubKegiatan = DB::table('data_realisasi_sub_kegiatan')
+                    // $DataRealisasiSubKegiatan = DB::table('data_realisasi_sub_kegiatan')
+                    $DataRealisasiSubKegiatan = DB::table('data_realisasi')
                         ->where('sub_kegiatan_id', $subKegiatan->id)
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
