@@ -575,6 +575,35 @@ class DataImportController extends Controller
                 return $this->PDDImport($allData, $params);
             }
         }
+
+        if ($params['category'] == 'pengembalian-belanja') {
+            if ($params['type'] == 'pengembalian-belanja') {
+                $file = $request->file('file');
+                $fileName = 'pengembalian-belanja-' . $params['instance'] . '-' . $params['year'] . '-' . $params['periode'] . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/accountancy', $fileName);
+
+                $path = public_path('uploads/accountancy/' . $fileName);
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $spreadsheet = $reader->load($path);
+                $sheet = $spreadsheet->getActiveSheet();
+
+                $allData = [];
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+                $allData = $sheet->rangeToArray('A1:' . $highestColumn . $highestRow, null, true, true, true);
+                $allData = collect($allData);
+                $allData = $allData->where('A', '!=', null)
+                    ->where('A', '!=', 'Perangkat Daerah')
+                    ->where('A', '!=', 'Total')
+                    ->where('A', '!=', 'TOTAL')
+                    // ->where('B', '!=', null)
+                    // ->where('C', '!=', null)
+                    ->values();
+
+                return $this->PengembalianBelanjaImport($allData, $params);
+            }
+        }
     }
 
     private function changeStringMoneyToFloatDouble($value)
@@ -670,6 +699,9 @@ class DataImportController extends Controller
                         'min_beban_lain_lain' => $this->changeStringMoneyToFloatDouble($input['T']),
                         'min_jumlah_penyesuaian' => $this->changeStringMoneyToFloatDouble($input['V']),
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ],
                 );
             }
@@ -724,6 +756,9 @@ class DataImportController extends Controller
                         'min_aset_lain_lain' => $this->changeStringMoneyToFloatDouble($input['U']),
                         'min_jumlah_penyesuaian' => $this->changeStringMoneyToFloatDouble($input['V']),
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ],
                 );
             }
@@ -778,6 +813,9 @@ class DataImportController extends Controller
                         'min_beban_lain_lain' => $this->changeStringMoneyToFloatDouble($input['T']),
                         'min_jumlah_penyesuaian' => $this->changeStringMoneyToFloatDouble($input['V']),
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ],
                 );
             }
@@ -832,6 +870,9 @@ class DataImportController extends Controller
                         'min_aset_lain_lain' => $this->changeStringMoneyToFloatDouble($input['U']),
                         'min_jumlah_penyesuaian' => $this->changeStringMoneyToFloatDouble($input['V']),
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ],
                 );
             }
@@ -903,6 +944,9 @@ class DataImportController extends Controller
                     ],
                     [
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]
                 );
             }
@@ -952,6 +996,9 @@ class DataImportController extends Controller
                         'aset_lainnya' => $this->changeStringMoneyToFloatDouble($input['R']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -983,8 +1030,8 @@ class DataImportController extends Controller
                         'kelompok_barang_aset' => $input['B'],
                         'nama_barang' => $input['C'],
                         'tahun_perolehan' => $input['D'],
-                        'nilai_perolehan' => $this->changeStringToDate($input['E']),
-                        'akumulasi_penyusutan' => $this->changeStringToDate($input['F']),
+                        'nilai_perolehan' => $this->changeStringMoneyToFloatDouble($input['E']),
+                        'akumulasi_penyusutan' => $this->changeStringMoneyToFloatDouble($input['F']),
 
                         'nomor_berita_acara' => $input['G'],
                         'tanggal_berita_acara' => $this->changeStringToDate($input['H']),
@@ -999,13 +1046,16 @@ class DataImportController extends Controller
                         'aset_lainnya' => $this->changeStringMoneyToFloatDouble($input['P']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
             return $this->successResponse('Data PADB Penghapusan Aset berhasil diimpor.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
+            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File: ' . $e->getFile());
         }
     }
 
@@ -1030,10 +1080,10 @@ class DataImportController extends Controller
                         'kelompok_barang_aset' => $input['B'],
                         'nama_barang' => $input['C'],
                         'tahun_perolehan' => $input['D'],
-                        'harga_perolehan' => $this->changeStringToDate($input['E']),
-                        'akumulasi_penyusutan' => $this->changeStringToDate($input['F']),
-                        'harga_jual' => $this->changeStringToDate($input['G']),
-                        'surplus' => $this->changeStringToDate($input['H']),
+                        'harga_perolehan' => $this->changeStringMoneyToFloatDouble($input['E']),
+                        'akumulasi_penyusutan' => $this->changeStringMoneyToFloatDouble($input['F']),
+                        'harga_jual' => $this->changeStringMoneyToFloatDouble($input['G']),
+                        'surplus' => $this->changeStringMoneyToFloatDouble($input['H']),
 
                         'nomor_berita_acara' => $input['I'],
                         'tanggal_berita_acara' => $this->changeStringToDate($input['J']),
@@ -1048,6 +1098,9 @@ class DataImportController extends Controller
                         'aset_lainnya' => $this->changeStringMoneyToFloatDouble($input['R']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1110,6 +1163,9 @@ class DataImportController extends Controller
                         // 'min_aset_lainnya' => $this->changeStringMoneyToFloatDouble($input['R']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1176,6 +1232,9 @@ class DataImportController extends Controller
                         'keterangan' => '',
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1228,6 +1287,9 @@ class DataImportController extends Controller
                         'aset_lainnya' => $this->changeStringMoneyToFloatDouble($input['Q']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1280,6 +1342,9 @@ class DataImportController extends Controller
                         'aset_lainnya' => $this->changeStringMoneyToFloatDouble($input['Q']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1326,6 +1391,9 @@ class DataImportController extends Controller
                         'belum_jatuh_tempo' => $this->changeStringMoneyToFloatDouble($input['M']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1370,6 +1438,9 @@ class DataImportController extends Controller
                         'beban_persediaan' => $this->changeStringMoneyToFloatDouble($input['J']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1459,6 +1530,9 @@ class DataImportController extends Controller
                         'jangka_pendek' => $jangkaPendek ?? 0,
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1555,6 +1629,9 @@ class DataImportController extends Controller
                         'jangka_pendek' => $jangkaPendek ?? 0,
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1603,6 +1680,9 @@ class DataImportController extends Controller
                         'penghapusan_piutang' => $this->changeStringMoneyToFloatDouble($input['F']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1647,6 +1727,9 @@ class DataImportController extends Controller
                         'jumlah' => $this->changeStringMoneyToFloatDouble($input['I']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1689,6 +1772,9 @@ class DataImportController extends Controller
                         'beban_penyisihan' => $this->changeStringMoneyToFloatDouble($input['G']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
@@ -1731,10 +1817,57 @@ class DataImportController extends Controller
                         'pendapatan_diterima_dimuka_akhir' => $this->changeStringMoneyToFloatDouble($input['G']),
 
                         'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ]);
             }
             DB::commit();
             return $this->successResponse('Data PDD berhasil diimpor.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e);
+        }
+    }
+
+    private function PengembalianBelanjaImport($datas, $params)
+    {
+        // return $datas;
+        $user = auth()->user();
+        DB::beginTransaction();
+        try {
+            foreach ($datas as $input) {
+                $instance = Instance::find($params['instance']);
+                if (!$instance) {
+                    continue;
+                }
+                $kodeRekening = KodeRekening::where('fullcode', $input['C'])->first();
+                if (!$kodeRekening) {
+                    continue;
+                }
+
+                $data = DB::table('acc_pengembalian_belanja')
+                    ->insert([
+                        'periode_id' => $params['periode'],
+                        'year' => $params['year'],
+                        'instance_id' => $instance->id,
+                        'created_by' => $user->id,
+
+                        // 'tanggal_setor' => $this->changeStringToDate($input['C']),
+                        'tanggal_setor' => $input['B'],
+                        'kode_rekening_id' => $kodeRekening->id ?? null,
+                        'uraian' => $input['E'],
+                        'jenis_spm' => $input['F'],
+                        'jumlah' => $this->changeStringMoneyToFloatDouble($input['G']),
+
+                        'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+            }
+            DB::commit();
+            return $this->successResponse('Data Pengembalian Belanja berhasil diimpor.');
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e);

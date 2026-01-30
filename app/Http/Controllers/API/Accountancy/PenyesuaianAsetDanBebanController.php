@@ -599,7 +599,7 @@ class PenyesuaianAsetDanBebanController extends Controller
         try {
             $dateYear = $request->year ?? date('Y');
             foreach ($request->data as $input) {
-                if ($input['instance_id'] && ($input['bel_peg_kode_rekening_id'] || $input['bel_barjas_kode_rekening_id'] || $input['bel_modal_kode_rekening_id'])) {
+                if ($input['instance_id']) {
                     if (!$input['id']) {
                         $data = new Atribusi();
                         $data->created_by = auth()->user()->id;

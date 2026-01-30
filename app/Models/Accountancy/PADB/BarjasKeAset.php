@@ -38,7 +38,7 @@ class BarjasKeAset extends Model
 
     public function getMinJumlahPenyesuaianAttribute()
     {
-        return $this->min_aset_tetap_tanah + $this->min_aset_tetap_peralatan_mesin + $this->min_aset_tetap_gedung_bangunan + $this->min_aset_tetap_jalan_jaringan_irigasi + $this->min_aset_tetap_lainnya + $this->min_konstruksi_dalam_pekerjaan + $this->min_aset_lain_lain;
+        return $this->min_beban_pegawai + $this->min_beban_persediaan + $this->min_beban_jasa + $this->min_beban_pemeliharaan + $this->min_beban_perjalanan_dinas + $this->min_beban_hibah + $this->min_beban_lain_lain;
     }
 
     public function getJumlahPenyesuaianAttribute()
