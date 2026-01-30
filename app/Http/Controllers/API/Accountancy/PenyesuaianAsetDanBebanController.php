@@ -1129,7 +1129,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     'pemberi_hibah' => $data->pemberi_hibah,
                     'kode_rekening_id' => $data->kode_rekening_id,
                     'kode_rekening_fullcode' => $kodeRekening->fullcode ?? 'NaN',
-                    'kode_rekening_name' => $kodeRekening->name,
+                    'kode_rekening_name' => $kodeRekening->name ?? 'NaN',
                     'nama_barang' => $data->nama_barang,
                     'nilai' => $data->nilai,
                     'nomor_berita_acara' => $data->nomor_berita_acara,
