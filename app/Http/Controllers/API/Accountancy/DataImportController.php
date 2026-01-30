@@ -1841,8 +1841,12 @@ class DataImportController extends Controller
                 if (!$instance) {
                     continue;
                 }
-                $kodeRekening = KodeRekening::where('fullcode', $input['C'])->first();
-                if (!$kodeRekening) {
+                // $kodeRekening = KodeRekening::where('fullcode', $input['C'])->first();
+                // if (!$kodeRekening) {
+                //     continue;
+                // }
+
+                if(!$input['C'] && !$input['H']){
                     continue;
                 }
 
@@ -1854,11 +1858,11 @@ class DataImportController extends Controller
                         'created_by' => $user->id,
 
                         // 'tanggal_setor' => $this->changeStringToDate($input['C']),
-                        'tanggal_setor' => $input['B'],
+                        'tanggal_setor' => $input['C'],
                         'kode_rekening_id' => $kodeRekening->id ?? null,
-                        'uraian' => $input['E'],
-                        'jenis_spm' => $input['F'],
-                        'jumlah' => $this->changeStringMoneyToFloatDouble($input['G']),
+                        'uraian' => $input['F'],
+                        'jenis_spm' => $input['G'],
+                        'jumlah' => $this->changeStringMoneyToFloatDouble($input['H']),
 
                         'updated_by' => $user->id,
 

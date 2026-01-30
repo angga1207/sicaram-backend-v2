@@ -1128,7 +1128,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     'penerima_hibah' => $data->penerima_hibah,
                     'pemberi_hibah' => $data->pemberi_hibah,
                     'kode_rekening_id' => $data->kode_rekening_id,
-                    'kode_rekening_fullcode' => $kodeRekening->fullcode,
+                    'kode_rekening_fullcode' => $kodeRekening->fullcode ?? 'NaN',
                     'kode_rekening_name' => $kodeRekening->name,
                     'nama_barang' => $data->nama_barang,
                     'nilai' => $data->nilai,
@@ -1848,7 +1848,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                 $jumlahPenyesuaian = 0;
                 $jumlahPenyesuaian = $data->persediaan + $data->aset_tetap_tanah + $data->aset_tetap_peralatan_mesin + $data->aset_tetap_gedung_bangunan + $data->aset_tetap_jalan_jaringan_irigasi + $data->aset_tetap_lainnya + $data->konstruksi_dalam_pekerjaan + $data->aset_lainnya;
                 $instance = DB::table('instances')->where('id', $data->instance_id)->first();
-                $surplus = $data->harga_jual - ($data->harga_perolehan + $data->akumulasi_penyusutan);
+                $surplus = $data->harga_jual - ($data->harga_perolehan - $data->akumulasi_penyusutan);
 
                 $datas[] = [
                     'id' => $data->id,

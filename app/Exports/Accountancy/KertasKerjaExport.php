@@ -346,6 +346,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
         } else if ($this->params['category'] == 'pengembalian-belanja') {
             if ($this->params['type'] == 'pengembalian-belanja') {
                 return [
+                    'No',
                     'Perangkat Daerah',
                     'Tanggal Setor',
                     'Kode Rekening',
@@ -700,12 +701,13 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
             if ($this->params['type'] == 'pengembalian-belanja') {
                 return [
                     'A' => NumberFormat::FORMAT_TEXT,
-                    'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-                    'C' => NumberFormat::FORMAT_TEXT,
+                    'B' => NumberFormat::FORMAT_TEXT,
+                    'C' => NumberFormat::FORMAT_DATE_DDMMYYYY,
                     'D' => NumberFormat::FORMAT_TEXT,
                     'E' => NumberFormat::FORMAT_TEXT,
                     'F' => NumberFormat::FORMAT_TEXT,
-                    'G' => NumberFormat::FORMAT_CURRENCY_ID,
+                    'G' => NumberFormat::FORMAT_TEXT,
+                    'H' => NumberFormat::FORMAT_CURRENCY_ID,
                 ];
             }
         }
@@ -2353,8 +2355,9 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
         } else if ($this->params['category'] == 'pengembalian-belanja') {
             if ($this->params['type'] == 'pengembalian-belanja') {
                 $collectDatas = collect($this->datas);
-                foreach ($collectDatas as $data) {
+                foreach ($collectDatas as $key => $data) {
                     $datas[] = [
+                        $key + 1,
                         $data['instance_name'] ?? null,
                         $data['tanggal_setor'] ?? null,
                         $data['kode_rekening_fullcode'] ?? null,
@@ -2368,6 +2371,7 @@ class KertasKerjaExport implements FromCollection, WithHeadings, WithColumnForma
                 // add total row
                 $datas->push([
                     'Total',
+                    '',
                     '',
                     '',
                     '',
