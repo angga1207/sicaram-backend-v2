@@ -252,4 +252,80 @@ class AdminOnlyController extends Controller
             return $this->errorResponse($e->getMessage());
         }
     }
+
+    function massDelete(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'type' => 'required|string',
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer',
+        ], [], [
+            'type' => 'Tipe Data',
+            'ids' => 'Daftar ID',
+            'ids.*' => 'ID',
+        ]);
+
+        if ($validate->fails()) {
+            return $this->validationResponse($validate->errors());
+        }
+
+        $now = now();
+        $allowedTables = [
+            'acc_padb_atribusi',
+            'acc_padb_barjas_ke_aset',
+            'acc_padb_modal_ke_beban',
+            'acc_padb_penilaian_aset',
+            'acc_padb_penjualan_aset',
+            'acc_padb_penghapusan_aset',
+            'acc_padb_penyesuaian_aset',
+            'acc_padb_tambahan_hibah_masuk',
+            'acc_padb_tambahan_mutasi_aset',
+            'acc_padb_tambahan_hibah_keluar',
+            'acc_padb_penyesuaian_beban_barjas',
+            'acc_padb_tambahan_daftar_pekerjaan',
+
+            'acc_belanja_bayar_dimuka',
+
+            'acc_persediaan_belanja_persediaan_untuk_dijual',
+
+            'acc_htb_pembayaran_hutang',
+            'acc_htb_hutang_baru',
+
+            'acc_blo_jasa',
+            // 'acc_blo_hibah', // Belum diizinkan oleh SAYA
+            'acc_blo_pegawai',
+            // 'acc_blo_subsidi', // Belum diizinkan oleh SAYA
+            'acc_blo_perjadin',
+            'acc_blo_persediaan',
+            'acc_blo_pemeliharaan',
+            // 'acc_blo_uang_jasa_diserahkan', // Belum diizinkan oleh SAYA
+
+            'acc_plo_pdd',
+            // 'acc_plo_lo_ta', // Belum diizinkan oleh SAYA
+            'acc_plo_piutang',
+            'acc_plo_beban',
+            'acc_plo_penyisihan',
+
+            'acc_pengembalian_belanja',
+        ];
+
+        if (!in_array($request->type, $allowedTables)) {
+            return $this->errorResponse('Tabel tidak diizinkan untuk dihapus massal');
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table($request->type)->whereIn('id', $request->ids)
+                ->update([
+                    'deleted_by' => auth()->user()->id ?? null,
+                    'deleted_at' => $now,
+                ]);
+            // ->delete();
+            DB::commit();
+            return $this->successResponse(null, 'Data pada tabel ' . $request->type . ' berhasil dihapus massal');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse($e->getMessage());
+        }
+    }
 }

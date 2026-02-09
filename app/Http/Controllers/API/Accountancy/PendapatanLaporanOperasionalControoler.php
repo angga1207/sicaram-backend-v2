@@ -170,6 +170,7 @@ class PendapatanLaporanOperasionalControoler extends Controller
             ->when($request->instance, function ($query) use ($request) {
                 return $query->where('instance_id', $request->instance);
             })
+            ->whereNull('deleted_at')
             ->get();
         foreach ($arrData as $data) {
             $instance = DB::table('instances')
@@ -226,6 +227,11 @@ class PendapatanLaporanOperasionalControoler extends Controller
             $datas = $request->data;
             foreach ($datas as $input) {
                 if ($input['id']) {
+                    $input = collect($input)->except([
+                        'instance_name',
+                        'kode_rekening_fullcode',
+                        'kode_rekening_name',
+                    ])->toArray();
                     DB::table('acc_plo_piutang')->where('id', $input['id'])->update($input);
                 } elseif (!$input['id']) {
                     if ($input['kode_rekening_id'] == null) {
@@ -280,6 +286,7 @@ class PendapatanLaporanOperasionalControoler extends Controller
             ->when($request->instance, function ($query) use ($request) {
                 return $query->where('instance_id', $request->instance);
             })
+            ->whereNull('deleted_at')
             ->get();
 
         foreach ($arrPiutangData as $data) {
@@ -288,6 +295,7 @@ class PendapatanLaporanOperasionalControoler extends Controller
                 ->where('year', $data->year)
                 ->where('instance_id', $data->instance_id)
                 ->where('kode_rekening_id', $data->kode_rekening_id)
+                ->whereNull('deleted_at')
                 ->first();
             $penyisihan1 = 0;
             $penyisihan1 = $data->umur_piutang_1 * (0.5 / 100);
@@ -341,6 +349,7 @@ class PendapatanLaporanOperasionalControoler extends Controller
             ->when($request->instance, function ($query) use ($request) {
                 return $query->where('instance_id', $request->instance);
             })
+            ->whereNull('deleted_at')
             ->get();
 
         foreach ($arrData as $data) {
@@ -392,6 +401,11 @@ class PendapatanLaporanOperasionalControoler extends Controller
             $datas = $request->data;
             foreach ($datas as $input) {
                 if ($input['id']) {
+                    $input = collect($input)->except([
+                        'instance_name',
+                        'kode_rekening_fullcode',
+                        'kode_rekening_name',
+                    ])->toArray();
                     DB::table('acc_plo_penyisihan')->where('id', $input['id'])->update($input);
                 } elseif (!$input['id']) {
                     if ($input['kode_rekening_id'] == null) {
@@ -446,6 +460,7 @@ class PendapatanLaporanOperasionalControoler extends Controller
             ->when($request->instance, function ($query) use ($request) {
                 return $query->where('instance_id', $request->instance);
             })
+            ->whereNull('deleted_at')
             ->get();
 
         foreach ($arrPenyisihanData as $data) {
@@ -454,6 +469,7 @@ class PendapatanLaporanOperasionalControoler extends Controller
                 ->where('year', $data->year)
                 ->where('instance_id', $data->instance_id)
                 ->where('kode_rekening_id', $data->kode_rekening_id)
+                ->whereNull('deleted_at')
                 ->first();
             if (!$bebanData) {
                 if ($data->kode_rekening_id != null) {
@@ -492,6 +508,7 @@ class PendapatanLaporanOperasionalControoler extends Controller
             ->when($request->instance, function ($query) use ($request) {
                 return $query->where('instance_id', $request->instance);
             })
+            ->whereNull('deleted_at')
             ->get();
 
         foreach ($arrData as $data) {
@@ -541,6 +558,11 @@ class PendapatanLaporanOperasionalControoler extends Controller
             $datas = $request->data;
             foreach ($datas as $input) {
                 if ($input['id']) {
+                    $input = collect($input)->except([
+                        'instance_name',
+                        'kode_rekening_fullcode',
+                        'kode_rekening_name',
+                    ])->toArray();
                     DB::table('acc_plo_beban')->where('id', $input['id'])->update($input);
                 } elseif (!$input['id']) {
                     if ($input['kode_rekening_id'] == null) {
@@ -595,6 +617,7 @@ class PendapatanLaporanOperasionalControoler extends Controller
             ->when($request->instance, function ($query) use ($request) {
                 return $query->where('instance_id', $request->instance);
             })
+            ->whereNull('deleted_at')
             ->get();
         foreach ($arrData as $data) {
             $instance = DB::table('instances')
@@ -643,6 +666,11 @@ class PendapatanLaporanOperasionalControoler extends Controller
             $datas = $request->data;
             foreach ($datas as $input) {
                 if ($input['id']) {
+                    $input = collect($input)->except([
+                        'instance_name',
+                        'kode_rekening_fullcode',
+                        'kode_rekening_name',
+                    ])->toArray();
                     DB::table('acc_plo_pdd')->where('id', $input['id'])->update($input);
                 } elseif (!$input['id']) {
                     if ($input['kode_rekening_id'] == null) {
@@ -719,12 +747,14 @@ class PendapatanLaporanOperasionalControoler extends Controller
                     ->where('year', $request->year)
                     ->where('instance_id', $lra->instance_id)
                     ->where('kode_rekening_id', $kodeRekening->id)
+                    ->whereNull('deleted_at')
                     ->first();
                 $dataPdd = DB::table('acc_plo_pdd')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
                     ->where('instance_id', $lra->instance_id)
                     ->where('kode_rekening_id', $kodeRekening->id)
+                    ->whereNull('deleted_at')
                     ->first();
                 $laporanOperasional = 0;
                 // if ($dataPiutang || $dataPdd) {

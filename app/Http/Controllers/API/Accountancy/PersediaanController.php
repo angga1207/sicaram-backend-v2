@@ -139,6 +139,7 @@ class PersediaanController extends Controller
                 })
                 // ->orderBy('instance_id')
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
             foreach ($arrDatas as $data) {
                 $instance = DB::table('instances')->where('id', $data->instance_id)->first();
@@ -295,6 +296,7 @@ class PersediaanController extends Controller
                 })
                 // ->orderBy('instance_id')
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
             foreach ($arrDatas as $data) {
                 $instance = DB::table('instances')->where('id', $data->instance_id)->first();
@@ -451,6 +453,7 @@ class PersediaanController extends Controller
                 })
                 // ->orderBy('instance_id')
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
             foreach ($arrDatas as $data) {
                 $datas[] = [

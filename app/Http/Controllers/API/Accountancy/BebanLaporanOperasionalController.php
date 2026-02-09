@@ -106,6 +106,7 @@ class BebanLaporanOperasionalController extends Controller
                 $arrData = DB::table('acc_blo_pegawai')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
+                    ->whereNull('deleted_at')
                     ->pluck('kode_rekening_id');
                 $arrData = collect($arrData)->unique()->values();
 
@@ -118,6 +119,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('periode_id', $request->periode)
                         ->where('year', $request->year)
                         ->where('kode_rekening_id', $rek->id)
+                        ->whereNull('deleted_at')
                         ->get();
                     $plusTotal = ($data->sum('saldo_awal') ?? 0) + ($data->sum('belanja_dibayar_dimuka_akhir') ?? 0) + ($data->sum('hutang') ?? 0) + ($data->sum('hibah') ?? 0) + ($data->sum('reklas_tambah_dari_rekening') ?? 0) + ($data->sum('reklas_tambah_dari_modal') ?? 0) + ($data->sum('plus_jukor') ?? 0);
                     $minTotal = ($data->sum('saldo_akhir') ?? 0) + ($data->sum('beban_tahun_lalu') ?? 0) + ($data->sum('belanja_dibayar_dimuka_awal') ?? 0) + ($data->sum('pembayaran_hutang') ?? 0) + ($data->sum('reklas_kurang_ke_rekening') ?? 0) + ($data->sum('reklas_kurang_ke_aset') ?? 0) + ($data->sum('atribusi') ?? 0) + ($data->sum('min_jukor') ?? 0);
@@ -171,6 +173,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if (!$data) {
                         $HutangBaru = DB::table('acc_htb_hutang_baru')
@@ -178,12 +181,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('pegawai') ?? 0;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('pegawai') ?? 0;
 
                         DB::table('acc_blo_pegawai')
@@ -216,6 +221,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if ($data) {
                         $HutangBaru = DB::table('acc_htb_hutang_baru')
@@ -223,6 +229,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('pegawai') ?? 0;
                         $data->hutang = $HutangBaru;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
@@ -230,6 +237,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('pegawai') ?? 0;
                         $data->pembayaran_hutang = $PembayaranHutang;
 
@@ -425,6 +433,7 @@ class BebanLaporanOperasionalController extends Controller
                 $arrData = DB::table('acc_blo_persediaan')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
+                    ->whereNull('deleted_at')
                     ->pluck('kode_rekening_id');
                 $arrData = collect($arrData)->unique()->values();
 
@@ -437,6 +446,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('periode_id', $request->periode)
                         ->where('year', $request->year)
                         ->where('kode_rekening_id', $rek->id)
+                        ->whereNull('deleted_at')
                         ->get();
                     $plusTotal = ($data->sum('saldo_awal') ?? 0) + ($data->sum('belanja_dibayar_dimuka_akhir') ?? 0) + ($data->sum('hutang') ?? 0) + ($data->sum('hibah') ?? 0) + ($data->sum('reklas_tambah_dari_rekening') ?? 0) + ($data->sum('reklas_tambah_dari_modal') ?? 0) + ($data->sum('plus_jukor') ?? 0);
                     $minTotal = ($data->sum('saldo_akhir') ?? 0) + ($data->sum('beban_tahun_lalu') ?? 0) + ($data->sum('belanja_dibayar_dimuka_awal') ?? 0) + ($data->sum('pembayaran_hutang') ?? 0) + ($data->sum('reklas_kurang_ke_rekening') ?? 0) + ($data->sum('reklas_kurang_ke_aset') ?? 0) + ($data->sum('atribusi') ?? 0) + ($data->sum('min_jukor') ?? 0);
@@ -521,6 +531,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if (!$data && $kodeRekeningId) {
                         $HutangBaru = DB::table('acc_htb_hutang_baru')
@@ -528,12 +539,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('persediaan') ?? 0;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('persediaan') ?? 0;
 
                         $PersediaanHabisPakai = DB::table('acc_persediaan_barang_habis_pakai')
@@ -541,12 +554,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get();
                         $PersediaanUntukDijual = DB::table('acc_persediaan_belanja_persediaan_untuk_dijual')
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get();
                         $saldoAwal = ($PersediaanHabisPakai->sum('saldo_awal') ?? 0) + ($PersediaanUntukDijual->sum('saldo_awal') ?? 0);
                         $saldoAkhir = ($PersediaanHabisPakai->sum('saldo_akhir') ?? 0) + ($PersediaanUntukDijual->sum('saldo_akhir') ?? 0);
@@ -582,6 +597,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('persediaan') ?? 0;
                         $data->hutang = $HutangBaru;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
@@ -589,6 +605,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('persediaan') ?? 0;
                         $data->pembayaran_hutang = $PembayaranHutang;
 
@@ -597,12 +614,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get();
                         $PersediaanUntukDijual = DB::table('acc_persediaan_belanja_persediaan_untuk_dijual')
                             ->where('periode_id', $data->periode_id)
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get();
                         $saldoAwal = ($PersediaanHabisPakai->sum('saldo_awal') ?? 0) + ($PersediaanUntukDijual->sum('saldo_awal') ?? 0);
                         $saldoAkhir = ($PersediaanHabisPakai->sum('saldo_akhir') ?? 0) + ($PersediaanUntukDijual->sum('saldo_akhir') ?? 0);
@@ -813,6 +832,7 @@ class BebanLaporanOperasionalController extends Controller
                 $arrData = DB::table('acc_blo_jasa')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
+                    ->whereNull('deleted_at')
                     ->pluck('kode_rekening_id');
                 $arrData = collect($arrData)->unique()->values();
 
@@ -825,6 +845,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('periode_id', $request->periode)
                         ->where('year', $request->year)
                         ->where('kode_rekening_id', $rek->id)
+                        ->whereNull('deleted_at')
                         ->get();
                     $plusTotal = ($data->sum('saldo_awal') ?? 0) + ($data->sum('belanja_dibayar_dimuka_akhir') ?? 0) + ($data->sum('hutang') ?? 0) + ($data->sum('hibah') ?? 0) + ($data->sum('reklas_tambah_dari_rekening') ?? 0) + ($data->sum('reklas_tambah_dari_modal') ?? 0) + ($data->sum('plus_jukor') ?? 0);
                     $minTotal = ($data->sum('saldo_akhir') ?? 0) + ($data->sum('beban_tahun_lalu') ?? 0) + ($data->sum('belanja_dibayar_dimuka_awal') ?? 0) + ($data->sum('pembayaran_hutang') ?? 0) + ($data->sum('reklas_kurang_ke_rekening') ?? 0) + ($data->sum('reklas_kurang_ke_aset') ?? 0) + ($data->sum('atribusi') ?? 0) + ($data->sum('min_jukor') ?? 0);
@@ -906,6 +927,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if (!$data && $kodeRekeningId) {
                         $HutangBaru = DB::table('acc_htb_hutang_baru')
@@ -913,12 +935,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('jasa') ?? 0;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('jasa') ?? 0;
 
                         $BelanjaBayarDimuka = DB::table('acc_belanja_bayar_dimuka')
@@ -926,6 +950,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()
                             ->sum('belum_jatuh_tempo') ?? 0;
 
@@ -960,6 +985,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('jasa') ?? 0;
                         $data->hutang = $HutangBaru;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
@@ -967,6 +993,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('jasa') ?? 0;
                         $data->pembayaran_hutang = $PembayaranHutang;
 
@@ -975,6 +1002,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('belum_jatuh_tempo') ?? 0;
                         $data->belanja_dibayar_dimuka_akhir = $BelanjaBayarDimuka;
 
@@ -1180,6 +1208,7 @@ class BebanLaporanOperasionalController extends Controller
                 $arrData = DB::table('acc_blo_pemeliharaan')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
+                    ->whereNull('deleted_at')
                     ->pluck('kode_rekening_id');
                 $arrData = collect($arrData)->unique()->values();
 
@@ -1192,6 +1221,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('periode_id', $request->periode)
                         ->where('year', $request->year)
                         ->where('kode_rekening_id', $rek->id)
+                        ->whereNull('deleted_at')
                         ->get();
                     $plusTotal = ($data->sum('saldo_awal') ?? 0) + ($data->sum('belanja_dibayar_dimuka_akhir') ?? 0) + ($data->sum('hutang') ?? 0) + ($data->sum('hibah') ?? 0) + ($data->sum('reklas_tambah_dari_rekening') ?? 0) + ($data->sum('reklas_tambah_dari_modal') ?? 0) + ($data->sum('plus_jukor') ?? 0);
                     $minTotal = ($data->sum('saldo_akhir') ?? 0) + ($data->sum('beban_tahun_lalu') ?? 0) + ($data->sum('belanja_dibayar_dimuka_awal') ?? 0) + ($data->sum('pembayaran_hutang') ?? 0) + ($data->sum('reklas_kurang_ke_rekening') ?? 0) + ($data->sum('reklas_kurang_ke_aset') ?? 0) + ($data->sum('atribusi') ?? 0) + ($data->sum('min_jukor') ?? 0);
@@ -1273,6 +1303,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if (!$data && $kodeRekeningId) {
                         $HutangBaru = DB::table('acc_htb_hutang_baru')
@@ -1280,12 +1311,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('pemeliharaan') ?? 0;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('pemeliharaan') ?? 0;
 
                         DB::table('acc_blo_pemeliharaan')
@@ -1319,6 +1352,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('pemeliharaan') ?? 0;
                         $data->hutang = $HutangBaru;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
@@ -1326,6 +1360,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('pemeliharaan') ?? 0;
                         $data->pembayaran_hutang = $PembayaranHutang;
 
@@ -1531,6 +1566,7 @@ class BebanLaporanOperasionalController extends Controller
                 $arrData = DB::table('acc_blo_perjadin')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
+                    ->whereNull('deleted_at')
                     ->pluck('kode_rekening_id');
                 $arrData = collect($arrData)->unique()->values();
 
@@ -1543,6 +1579,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('periode_id', $request->periode)
                         ->where('year', $request->year)
                         ->where('kode_rekening_id', $rek->id)
+                        ->whereNull('deleted_at')
                         ->get();
                     $plusTotal = ($data->sum('saldo_awal') ?? 0) + ($data->sum('belanja_dibayar_dimuka_akhir') ?? 0) + ($data->sum('hutang') ?? 0) + ($data->sum('hibah') ?? 0) + ($data->sum('reklas_tambah_dari_rekening') ?? 0) + ($data->sum('reklas_tambah_dari_modal') ?? 0) + ($data->sum('plus_jukor') ?? 0);
                     $minTotal = ($data->sum('saldo_akhir') ?? 0) + ($data->sum('beban_tahun_lalu') ?? 0) + ($data->sum('belanja_dibayar_dimuka_awal') ?? 0) + ($data->sum('pembayaran_hutang') ?? 0) + ($data->sum('reklas_kurang_ke_rekening') ?? 0) + ($data->sum('reklas_kurang_ke_aset') ?? 0) + ($data->sum('atribusi') ?? 0) + ($data->sum('min_jukor') ?? 0);
@@ -1624,6 +1661,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if (!$data && $kodeRekeningId) {
                         $HutangBaru = DB::table('acc_htb_hutang_baru')
@@ -1631,12 +1669,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('perjadin') ?? 0;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('perjadin') ?? 0;
 
                         DB::table('acc_blo_perjadin')
@@ -1670,6 +1710,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('perjadin') ?? 0;
                         $data->hutang = $HutangBaru;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
@@ -1677,6 +1718,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('perjadin') ?? 0;
                         $data->pembayaran_hutang = $PembayaranHutang;
 
@@ -1882,6 +1924,7 @@ class BebanLaporanOperasionalController extends Controller
                 $arrData = DB::table('acc_blo_uang_jasa_diserahkan')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
+                    ->whereNull('deleted_at')
                     ->pluck('kode_rekening_id');
                 $arrData = collect($arrData)->unique()->values();
 
@@ -1894,6 +1937,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('periode_id', $request->periode)
                         ->where('year', $request->year)
                         ->where('kode_rekening_id', $rek->id)
+                        ->whereNull('deleted_at')
                         ->get();
                     $plusTotal = ($data->sum('saldo_awal') ?? 0) + ($data->sum('belanja_dibayar_dimuka_akhir') ?? 0) + ($data->sum('hutang') ?? 0) + ($data->sum('hibah') ?? 0) + ($data->sum('reklas_tambah_dari_rekening') ?? 0) + ($data->sum('reklas_tambah_dari_modal') ?? 0) + ($data->sum('plus_jukor') ?? 0);
                     $minTotal = ($data->sum('saldo_akhir') ?? 0) + ($data->sum('beban_tahun_lalu') ?? 0) + ($data->sum('belanja_dibayar_dimuka_awal') ?? 0) + ($data->sum('pembayaran_hutang') ?? 0) + ($data->sum('reklas_kurang_ke_rekening') ?? 0) + ($data->sum('reklas_kurang_ke_aset') ?? 0) + ($data->sum('atribusi') ?? 0) + ($data->sum('min_jukor') ?? 0);
@@ -1947,6 +1991,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if (!$data && $kodeRekeningId) {
                         $HutangBaru = DB::table('acc_htb_hutang_baru')
@@ -1954,12 +1999,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('uang_jasa_diserahkan') ?? 0;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('uang_jasa_diserahkan') ?? 0;
 
                         DB::table('acc_blo_uang_jasa_diserahkan')
@@ -1993,6 +2040,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('uang_jasa_diserahkan') ?? 0;
                         $data->hutang = $HutangBaru;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
@@ -2000,6 +2048,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('uang_jasa_diserahkan') ?? 0;
                         $data->pembayaran_hutang = $PembayaranHutang;
 
@@ -2187,6 +2236,7 @@ class BebanLaporanOperasionalController extends Controller
                 $arrData = DB::table('acc_blo_hibah')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
+                    ->whereNull('deleted_at')
                     ->pluck('kode_rekening_id');
                 $arrData = collect($arrData)->unique()->values();
 
@@ -2199,6 +2249,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('periode_id', $request->periode)
                         ->where('year', $request->year)
                         ->where('kode_rekening_id', $rek->id)
+                        ->whereNull('deleted_at')
                         ->get();
                     $plusTotal = ($data->sum('saldo_awal') ?? 0) + ($data->sum('belanja_dibayar_dimuka_akhir') ?? 0) + ($data->sum('hutang') ?? 0) + ($data->sum('hibah') ?? 0) + ($data->sum('reklas_tambah_dari_rekening') ?? 0) + ($data->sum('reklas_tambah_dari_modal') ?? 0) + ($data->sum('plus_jukor') ?? 0);
                     $minTotal = ($data->sum('saldo_akhir') ?? 0) + ($data->sum('beban_tahun_lalu') ?? 0) + ($data->sum('belanja_dibayar_dimuka_awal') ?? 0) + ($data->sum('pembayaran_hutang') ?? 0) + ($data->sum('reklas_kurang_ke_rekening') ?? 0) + ($data->sum('reklas_kurang_ke_aset') ?? 0) + ($data->sum('atribusi') ?? 0) + ($data->sum('min_jukor') ?? 0);
@@ -2252,6 +2303,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if (!$data && $kodeRekeningId) {
                         $HutangBaru = DB::table('acc_htb_hutang_baru')
@@ -2259,12 +2311,14 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('hibah') ?? 0;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                             ->where('periode_id', $request->periode)
                             ->where('year', $request->year)
                             ->where('instance_id', $request->instance)
                             ->where('kode_rekening_id', $kodeRekeningId)
+                            ->whereNull('deleted_at')
                             ->get()->sum('hibah') ?? 0;
 
                         DB::table('acc_blo_hibah')
@@ -2298,6 +2352,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('hibah') ?? 0;
                         $data->hutang = $HutangBaru;
                         $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
@@ -2305,6 +2360,7 @@ class BebanLaporanOperasionalController extends Controller
                             ->where('year', $data->year)
                             ->where('instance_id', $data->instance_id)
                             ->where('kode_rekening_id', $data->kode_rekening_id)
+                            ->whereNull('deleted_at')
                             ->get()->sum('hibah') ?? 0;
                         $data->pembayaran_hutang = $PembayaranHutang;
 
@@ -2544,6 +2600,7 @@ class BebanLaporanOperasionalController extends Controller
                 $arrData = DB::table('acc_blo_subsidi')
                     ->where('periode_id', $request->periode)
                     ->where('year', $request->year)
+                    ->whereNull('deleted_at')
                     ->pluck('kode_rekening_id');
                 $arrData = collect($arrData)->unique()->values();
 
@@ -2556,6 +2613,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('periode_id', $request->periode)
                         ->where('year', $request->year)
                         ->where('kode_rekening_id', $rek->id)
+                        ->whereNull('deleted_at')
                         ->get();
                     $plusTotal = ($data->sum('saldo_awal') ?? 0) + ($data->sum('belanja_dibayar_dimuka_akhir') ?? 0) + ($data->sum('hutang') ?? 0) + ($data->sum('hibah') ?? 0) + ($data->sum('reklas_tambah_dari_rekening') ?? 0) + ($data->sum('reklas_tambah_dari_modal') ?? 0) + ($data->sum('plus_jukor') ?? 0);
                     $minTotal = ($data->sum('saldo_akhir') ?? 0) + ($data->sum('beban_tahun_lalu') ?? 0) + ($data->sum('belanja_dibayar_dimuka_awal') ?? 0) + ($data->sum('pembayaran_hutang') ?? 0) + ($data->sum('reklas_kurang_ke_rekening') ?? 0) + ($data->sum('reklas_kurang_ke_aset') ?? 0) + ($data->sum('atribusi') ?? 0) + ($data->sum('min_jukor') ?? 0);
@@ -2609,6 +2667,7 @@ class BebanLaporanOperasionalController extends Controller
                         ->where('year', $request->year ?? date('Y'))
                         ->where('instance_id', $request->instance)
                         ->where('kode_rekening_id', $kodeRekeningId)
+                        ->whereNull('deleted_at')
                         ->first();
                     if (!$data && $kodeRekeningId) {
                         // $hutangSubsidi = DB::table('acc_hutang_belanja')
@@ -2616,6 +2675,7 @@ class BebanLaporanOperasionalController extends Controller
                         //     ->where('year', $request->year)
                         //     ->where('instance_id', $request->instance)
                         //     ->where('kode_rekening_id', $kodeRekeningId)
+                        //    ->whereNull('deleted_at')
                         //     ->get()->sum('subsidi) ?? 0;
 
                         DB::table('acc_blo_subsidi')
@@ -2649,6 +2709,7 @@ class BebanLaporanOperasionalController extends Controller
                         //     ->where('year', $data->year)
                         //     ->where('instance_id', $data->instance_id)
                         //     ->where('kode_rekening_id', $data->kode_rekening_id)
+                        //     ->whereNull('deleted_at')
                         //     ->get()->sum('subsidi) ?? 0;
                         // $data->hutang = $hutangSubsidi;
 

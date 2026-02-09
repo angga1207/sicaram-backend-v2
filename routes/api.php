@@ -30,13 +30,13 @@ use App\Http\Controllers\API\Accountancy\PersediaanController;
 use App\Http\Controllers\API\RealisasiTujuanSasaranController;
 use App\Http\Controllers\API\Accountancy\HutangBelanjaController;
 use App\Http\Controllers\API\Accountancy\RekonsiliasiAsetController;
+use App\Http\Controllers\API\Accountancy\AccountancyReportController;
 use App\Http\Controllers\API\Accountancy\BelanjaBayarDimukaController;
 use App\Http\Controllers\API\Accountancy\PengembalianBelanjaController;
 use App\Http\Controllers\API\Accountancy\BebanLaporanOperasionalController;
 use App\Http\Controllers\API\Accountancy\PenyesuaianAsetDanBebanController;
 use App\Http\Controllers\API\Accountancy\PendapatanLaporanOperasionalControoler;
 use App\Http\Controllers\API\Accountancy\ImportController as AccountancyImportController;
-use App\Http\Controllers\API\Accountancy\ReportController as AccountancyReportController;
 
 Route::get('/testing', [TestingController::class, 'index']);
 
@@ -557,6 +557,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('accountancy/download/excel', [AccountancyReportController::class, 'downloadExcelAll']);
         Route::post('accountancy/upload/excel', [DataImportController::class, 'uploadExcelAll']);
 
+        Route::post('accountancy/massDelete', [AdminOnlyController::class, 'massDelete']);
 
         // APIS AKUNTANSI END -------------->>>>>>>>
 

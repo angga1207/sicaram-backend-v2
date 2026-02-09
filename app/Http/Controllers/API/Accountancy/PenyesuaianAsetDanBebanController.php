@@ -711,6 +711,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                 ->where('periode_id', $request->periode)
                 ->where('year', $request->year)
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
             foreach ($arrDatas as $data) {
                 $instanceFrom = DB::table('instances')->where('id', $data->from_instance_id)->first();
@@ -912,6 +913,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     return $query->where('instance_id', $request->instance);
                 })
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($arrDatas as $data) {
@@ -1114,6 +1116,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     return $query->where('instance_id', $request->instance);
                 })
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($arrDatas as $data) {
@@ -1296,6 +1299,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     return $query->where('instance_id', $request->instance);
                 })
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->paginate(10);
 
             foreach ($arrDatas as $data) {
@@ -1477,6 +1481,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     return $query->where('instance_id', $request->instance);
                 })
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($arrDatas as $data) {
@@ -1661,6 +1666,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     return $query->where('instance_id', $request->instance);
                 })
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($arrDatas as $data) {
@@ -1842,6 +1848,7 @@ class PenyesuaianAsetDanBebanController extends Controller
                     return $query->where('instance_id', $request->instance);
                 })
                 ->oldest('created_at')
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($arrDatas as $data) {

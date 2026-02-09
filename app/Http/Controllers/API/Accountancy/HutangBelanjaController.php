@@ -44,7 +44,7 @@ class HutangBelanjaController extends Controller
                 ->when($request->year, function ($query) use ($request) {
                     return $query->where('year', $request->year);
                 })
-                ->where('deleted_at', null)
+                ->whereNull('deleted_at')
                 ->get();
             $arrHutangBaru = DB::table('acc_htb_hutang_baru')
                 ->when($request->instance, function ($query) use ($request) {
@@ -53,7 +53,7 @@ class HutangBelanjaController extends Controller
                 ->when($request->year, function ($query) use ($request) {
                     return $query->where('year', $request->year);
                 })
-                ->where('deleted_at', null)
+                ->whereNull('deleted_at')
                 ->get();
 
             // merge data
@@ -326,7 +326,7 @@ class HutangBelanjaController extends Controller
                 ->when($request->year, function ($query) use ($request) {
                     return $query->where('year', $request->year);
                 })
-                ->where('deleted_at', null)
+                ->whereNull('deleted_at')
                 ->get();
             foreach ($arrData as $data) {
                 $instance = DB::table('instances')->where('id', $data->instance_id)->first();
@@ -550,7 +550,7 @@ class HutangBelanjaController extends Controller
                 ->when($request->year, function ($query) use ($request) {
                     return $query->where('year', $request->year);
                 })
-                ->where('deleted_at', null)
+                ->whereNull('deleted_at')
                 ->get();
 
             foreach ($arrData as $data) {
