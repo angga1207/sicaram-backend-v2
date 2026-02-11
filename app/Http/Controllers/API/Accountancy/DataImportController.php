@@ -667,8 +667,6 @@ class DataImportController extends Controller
             'Desember' => '12',
         ];
 
-        return $value;
-
         $hari = explode(' ', $value)[0];
         $namaBulan = explode(' ', $value)[1];
         $tahun = explode(' ', $value)[2];
