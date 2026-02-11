@@ -1204,8 +1204,8 @@ class DataImportController extends Controller
                         'nama_kegiatan_paket' => $input['D'],
                         'pelaksana_pekerjaan' => $input['E'],
                         'no_kontrak' => $input['F'],
-                        'periode_kontrak' => $input['G'],
-                        'tanggal_kontrak' => $this->changeStringToDate($input['H']) ?? null,
+                        'tanggal_kontrak' => $this->changeStringToDate($input['G']) ?? null,
+                        'periode_kontrak' => $input['H'],
                         'nilai_belanja_kontrak' => $this->changeStringMoneyToFloatDouble($input['I']),
 
                         'payment_1_sp2d' => $input['J'],
