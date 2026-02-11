@@ -668,7 +668,7 @@ class DataImportController extends Controller
         ];
 
         $hari = explode(' ', $value)[0];
-        $namaBulan = explode(' ', $value)[1];
+        $namaBulan = explode(' ', $value)[1] ?? '';
         $tahun = explode(' ', $value)[2];
 
         // [$hari, $namaBulan, $tahun] = explode(' ', $value);
@@ -1861,7 +1861,7 @@ class DataImportController extends Controller
 
     private function PengembalianBelanjaImport($datas, $params)
     {
-        // return $datas;
+        return $datas;
         $user = auth()->user();
         DB::beginTransaction();
         try {
