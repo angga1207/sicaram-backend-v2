@@ -1947,7 +1947,7 @@ class DataImportController extends Controller
                     continue;
                 }
 
-                if (!$input['C'] && !$input['H']) {
+                if (!$input['D'] && !$input['H']) {
                     continue;
                 }
 
