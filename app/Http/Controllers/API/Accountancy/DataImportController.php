@@ -1568,6 +1568,21 @@ class DataImportController extends Controller
                 //     continue;
                 // }
 
+                $bebanKeys = [
+                    'Q', // to W
+                    'R',
+                    'S',
+                    'T',
+                    'U',
+                    'V',
+                    'W'
+                ];
+                $beban = 0;
+                foreach ($bebanKeys as $key) {
+                    if ($key) {
+                        $beban += $this->changeStringMoneyToFloatDouble($input[$key]);
+                    }
+                }
                 // $jangkaPendekKeys = ['aset_tetap_tanah', 'aset_tetap_peralatan_mesin', 'aset_tetap_gedung_bangunan', 'aset_tetap_jalan_jaringan_irigasi', 'aset_tetap_lainnya', 'konstruksi_dalam_pekerjaan', 'aset_lain_lain'];
                 $jangkaPendekKeys = [
                     'X',
@@ -1626,7 +1641,8 @@ class DataImportController extends Controller
                         'aset_tetap_lainnya' => $this->changeStringMoneyToFloatDouble($input['AB']),
                         'konstruksi_dalam_pekerjaan' => $this->changeStringMoneyToFloatDouble($input['AC']),
                         'aset_lain_lain' => $this->changeStringMoneyToFloatDouble($input['AD']),
-                        'beban' => $this->changeStringMoneyToFloatDouble($input['AE']),
+                        // 'beban' => $this->changeStringMoneyToFloatDouble($input['AE']),
+                        'beban' => $beban ?? 0,
                         // 'jangka_pendek' => 0,
                         'jangka_pendek' => $jangkaPendek ?? 0,
 
@@ -1659,6 +1675,22 @@ class DataImportController extends Controller
                 // if (!$kodeRekening) {
                 //     continue;
                 // }
+
+                $bebanKeys = [
+                    'W', // to AC
+                    'X',
+                    'Y',
+                    'Z',
+                    'AA',
+                    'AB',
+                    'AC'
+                ];
+                $beban = 0;
+                foreach ($bebanKeys as $key) {
+                    if ($key) {
+                        $beban += $this->changeStringMoneyToFloatDouble($input[$key]);
+                    }
+                }
 
                 // $jangkaPendekKeys = ['aset_tetap_tanah', 'aset_tetap_peralatan_mesin', 'aset_tetap_gedung_bangunan', 'aset_tetap_jalan_jaringan_irigasi', 'aset_tetap_lainnya', 'konstruksi_dalam_pekerjaan', 'aset_lain_lain'];
                 $jangkaPendekKeys = [
@@ -1725,7 +1757,8 @@ class DataImportController extends Controller
                         'aset_tetap_lainnya' => $this->changeStringMoneyToFloatDouble($input['AH']),
                         'konstruksi_dalam_pekerjaan' => $this->changeStringMoneyToFloatDouble($input['AI']),
                         'aset_lain_lain' => $this->changeStringMoneyToFloatDouble($input['AJ']),
-                        'beban' => $this->changeStringMoneyToFloatDouble($input['AK']),
+                        // 'beban' => $this->changeStringMoneyToFloatDouble($input['AK']),
+                        'beban' => $beban ?? 0,
                         // 'jangka_pendek' => 0,
                         'jangka_pendek' => $jangkaPendek ?? 0,
 
