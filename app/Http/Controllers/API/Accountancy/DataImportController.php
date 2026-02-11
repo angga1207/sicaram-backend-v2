@@ -669,15 +669,27 @@ class DataImportController extends Controller
             return $date->format('Y-m-d');
         }
 
-        // if format is DD-MM-YYYY
-        if (Carbon::hasFormat($value, 'd-m-Y')) {
-            $date = Carbon::createFromFormat('d-m-Y', $value);
+        // if format is MM/DD/YYYY
+        if (Carbon::hasFormat($value, 'm/d/Y')) {
+            $date = Carbon::createFromFormat('m/d/Y', $value);
             return $date->format('Y-m-d');
         }
 
         // if format is YYYY/MM/DD
         if (Carbon::hasFormat($value, 'Y/m/d')) {
             $date = Carbon::createFromFormat('Y/m/d', $value);
+            return $date->format('Y-m-d');
+        }
+
+        // if format is DD-MM-YYYY
+        if (Carbon::hasFormat($value, 'd-m-Y')) {
+            $date = Carbon::createFromFormat('d-m-Y', $value);
+            return $date->format('Y-m-d');
+        }
+
+        // if format is MM-DD-YYYY
+        if (Carbon::hasFormat($value, 'm-d-Y')) {
+            $date = Carbon::createFromFormat('m-d-Y', $value);
             return $date->format('Y-m-d');
         }
 
