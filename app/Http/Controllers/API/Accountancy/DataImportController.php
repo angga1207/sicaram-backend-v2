@@ -1858,7 +1858,8 @@ class DataImportController extends Controller
                         'created_by' => $user->id,
 
                         // 'tanggal_setor' => $this->changeStringToDate($input['C']),
-                        'tanggal_setor' => $input['C'],
+                        // 'tanggal_setor' => $input['C'],
+                        $this->changeStringToDate($input['C']) ?? null,
                         'kode_rekening_id' => $kodeRekening->id ?? null,
                         'uraian' => $input['F'],
                         'jenis_spm' => $input['G'],
