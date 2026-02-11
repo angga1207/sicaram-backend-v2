@@ -407,6 +407,33 @@ class DataImportController extends Controller
 
                 return $this->BarangHabisPakaiImport($allData, $params);
             }
+
+            if ($params['type'] == 'untuk_dijual') {
+                $file = $request->file('file');
+                $fileName = 'untuk-dijual-' . $params['instance'] . '-' . $params['year'] . '-' . $params['periode'] . '.' . $file->getClientOriginalExtension();
+                $file->move('uploads/accountancy', $fileName);
+
+                $path = public_path('uploads/accountancy/' . $fileName);
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+                $spreadsheet = $reader->load($path);
+                $sheet = $spreadsheet->getActiveSheet();
+
+                $allData = [];
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+                $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
+                $allData = $sheet->rangeToArray('A1:' . $highestColumn . $highestRow, null, true, true, true);
+                $allData = collect($allData);
+                $allData = $allData->where('A', '!=', null)
+                    ->where('A', '!=', 'Perangkat Daerah')
+                    ->where('A', '!=', 'Total')
+                    ->where('A', '!=', 'TOTAL')
+                    // ->where('B', '!=', null)
+                    // ->where('C', '!=', null)
+                    ->values();
+
+                return $this->BarangPersediaanImport($allData, $params);
+            }
         }
 
         if ($params['category'] == 'hutang_belanja') {
@@ -1471,6 +1498,53 @@ class DataImportController extends Controller
             }
             DB::commit();
             return $this->successResponse('Data Persediaan Barang Habis Pakai berhasil diimpor.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
+        }
+    }
+
+    private function BarangPersediaanImport($datas, $params)
+    {
+        $user = auth()->user();
+        DB::beginTransaction();
+        try {
+            foreach ($datas as $input) {
+                $instance = Instance::find($params['instance']);
+                if (!$instance) {
+                    continue;
+                }
+                $kodeRekening = KodeRekening::where('fullcode', $input['D'])->first();
+                if (!$kodeRekening) {
+                    continue;
+                }
+
+                $data = DB::table('acc_persediaan_belanja_persediaan_untuk_dijual')
+                    ->insert([
+                        'periode_id' => $params['periode'],
+                        'year' => $params['year'],
+                        'instance_id' => $instance->id,
+                        'created_by' => $user->id,
+
+                        'nama_persediaan' => $input['B'],
+                        'saldo_awal' => $this->changeStringMoneyToFloatDouble($input['C']),
+
+                        'kode_rekening_id' => $kodeRekening->id ?? null,
+
+                        'realisasi_lra' => $this->changeStringMoneyToFloatDouble($input['F']),
+                        'hutang_belanja' => $this->changeStringMoneyToFloatDouble($input['G']),
+                        'perolehan_hibah' => $this->changeStringMoneyToFloatDouble($input['H']),
+                        'saldo_akhir' => $this->changeStringMoneyToFloatDouble($input['I']),
+                        'beban_persediaan' => $this->changeStringMoneyToFloatDouble($input['J']),
+
+                        'updated_by' => $user->id,
+
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+            }
+            DB::commit();
+            return $this->successResponse('Data Persediaan Belanja Persediaan Untuk Dijual berhasil diimpor.');
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
