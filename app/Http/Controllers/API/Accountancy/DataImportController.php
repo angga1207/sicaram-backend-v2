@@ -667,7 +667,17 @@ class DataImportController extends Controller
             'Desember' => '12',
         ];
 
-        [$hari, $namaBulan, $tahun] = explode(' ', $value);
+        $hari = explode(' ', $value)[0];
+        $namaBulan = explode(' ', $value)[1];
+        $tahun = explode(' ', $value)[2];
+        if (!$hari || !$namaBulan || !$tahun) {
+            $date = Carbon::createFromFormat('d M Y', $value);
+            if ($date) {
+                return $date->format('Y-m-d');
+            }
+        }
+
+        // [$hari, $namaBulan, $tahun] = explode(' ', $value);
         $bulanAngka = $bulan[$namaBulan];
         $hasil = "$tahun-$bulanAngka-$hari";
         return $hasil;
