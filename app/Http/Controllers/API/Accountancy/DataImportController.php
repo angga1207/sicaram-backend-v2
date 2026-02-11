@@ -1942,10 +1942,10 @@ class DataImportController extends Controller
                 if (!$instance) {
                     continue;
                 }
-                // $kodeRekening = KodeRekening::where('fullcode', $input['C'])->first();
-                // if (!$kodeRekening) {
-                //     continue;
-                // }
+                $kodeRekening = KodeRekening::where('fullcode', $input['D'])->first();
+                if (!$kodeRekening) {
+                    continue;
+                }
 
                 if (!$input['C'] && !$input['H']) {
                     continue;
