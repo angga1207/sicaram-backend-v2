@@ -667,7 +667,13 @@ class DataImportController extends Controller
             'Desember' => '12',
         ];
 
-        [$hari, $namaBulan, $tahun] = explode(' ', $value);
+        dd($value);
+
+        $hari = explode(' ', $value)[0];
+        $namaBulan = explode(' ', $value)[1];
+        $tahun = explode(' ', $value)[2];
+
+        // [$hari, $namaBulan, $tahun] = explode(' ', $value);
         // if bulan already angka
         if (is_numeric($namaBulan)) {
             $bulanAngka = str_pad($namaBulan, 2, '0', STR_PAD_LEFT);
