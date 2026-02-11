@@ -594,6 +594,7 @@ class DataImportController extends Controller
                 $allData = $sheet->rangeToArray('A1:' . $highestColumn . $highestRow, null, true, true, true);
                 $allData = collect($allData);
                 $allData = $allData->where('A', '!=', null)
+                    ->where('A', '!=', 'No')
                     ->where('A', '!=', 'Perangkat Daerah')
                     ->where('A', '!=', 'Total')
                     ->where('A', '!=', 'TOTAL')
@@ -667,11 +668,7 @@ class DataImportController extends Controller
             'Desember' => '12',
         ];
 
-        $hari = explode(' ', $value)[0];
-        $namaBulan = explode(' ', $value)[1] ?? '';
-        $tahun = explode(' ', $value)[2];
-
-        // [$hari, $namaBulan, $tahun] = explode(' ', $value);
+        [$hari, $namaBulan, $tahun] = explode(' ', $value);
         // if bulan already angka
         if (is_numeric($namaBulan)) {
             $bulanAngka = str_pad($namaBulan, 2, '0', STR_PAD_LEFT);
@@ -1861,7 +1858,7 @@ class DataImportController extends Controller
 
     private function PengembalianBelanjaImport($datas, $params)
     {
-        return $datas;
+        // return $datas;
         $user = auth()->user();
         DB::beginTransaction();
         try {
