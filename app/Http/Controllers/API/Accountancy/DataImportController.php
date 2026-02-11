@@ -1846,7 +1846,7 @@ class DataImportController extends Controller
                 //     continue;
                 // }
 
-                if(!$input['C'] && !$input['H']){
+                if (!$input['C'] && !$input['H']) {
                     continue;
                 }
 
@@ -1857,9 +1857,9 @@ class DataImportController extends Controller
                         'instance_id' => $instance->id,
                         'created_by' => $user->id,
 
-                        // 'tanggal_setor' => $this->changeStringToDate($input['C']),
-                        // 'tanggal_setor' => $input['C'],
                         'tanggal_setor' => $this->changeStringToDate($input['C']) ?? null,
+                        // 'tanggal_setor' => $input['C'],
+                        // 'tanggal_setor' => $this->changeStringToDate($input['C']) ?? null,
                         'kode_rekening_id' => $kodeRekening->id ?? null,
                         'uraian' => $input['F'],
                         'jenis_spm' => $input['G'],
