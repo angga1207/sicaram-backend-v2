@@ -1943,9 +1943,9 @@ class DataImportController extends Controller
                     continue;
                 }
                 $kodeRekening = KodeRekening::where('fullcode', $input['D'])->first();
-                if (!$kodeRekening) {
-                    continue;
-                }
+                // if (!$kodeRekening) {
+                //     continue;
+                // }
 
                 if (!$input['D'] && !$input['H']) {
                     continue;
