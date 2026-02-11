@@ -1536,7 +1536,7 @@ class DataImportController extends Controller
                         'hutang_belanja' => $this->changeStringMoneyToFloatDouble($input['G']),
                         'perolehan_hibah' => $this->changeStringMoneyToFloatDouble($input['H']),
                         'saldo_akhir' => $this->changeStringMoneyToFloatDouble($input['I']),
-                        'beban_persediaan' => $this->changeStringMoneyToFloatDouble($input['J']),
+                        'beban_hibah' => $this->changeStringMoneyToFloatDouble($input['J']),
 
                         'updated_by' => $user->id,
 
