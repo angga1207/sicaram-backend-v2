@@ -28,6 +28,9 @@ class PengembalianBelanjaController extends Controller
             ->where('year', $request->year)
             ->when($request->has('instance'), function ($query) use ($request) {
                 $query->where('instance_id', $request->instance);
+            })
+            ->when(auth()->user()->role_id == 9, function ($query) {
+                $query->where('instance_id', auth()->user()->instance_id);
             });
 
         $count = $datas->count();
