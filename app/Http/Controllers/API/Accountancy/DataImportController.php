@@ -427,6 +427,7 @@ class DataImportController extends Controller
                 $allData = $allData->where('A', '!=', null)
                     ->where('A', '!=', 'Perangkat Daerah')
                     ->where('A', '!=', 'Total')
+                    ->where('A', '!=', 'No')
                     ->where('A', '!=', 'TOTAL')
                     // ->where('B', '!=', null)
                     // ->where('C', '!=', null)
@@ -1506,6 +1507,7 @@ class DataImportController extends Controller
 
     private function BarangPersediaanImport($datas, $params)
     {
+        return $datas;
         $user = auth()->user();
         DB::beginTransaction();
         try {
