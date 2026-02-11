@@ -661,6 +661,7 @@ class DataImportController extends Controller
         // if first character is ' remove it
         if (substr($value, 0, 1) == "'") {
             $value = substr($value, 1);
+            return $this->changeStringToDate($value);
         }
 
         // if format is already Y-m-d
