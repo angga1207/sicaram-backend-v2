@@ -658,6 +658,11 @@ class DataImportController extends Controller
             return null;
         }
 
+        // if first character is ' remove it
+        if (substr($value, 0, 1) == "'") {
+            $value = substr($value, 1);
+        }
+
         // if format is already Y-m-d
         if (Carbon::hasFormat($value, 'Y-m-d')) {
             return $value;
