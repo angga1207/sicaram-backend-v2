@@ -1241,7 +1241,7 @@ class DataImportController extends Controller
             return $this->successResponse('Data PADB Pekerjaan Kontrak berhasil diimpor.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
+            return $this->errorResponse('Terjadi kesalahan saat mengimpor data: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File: ' . $e->getFile());
         }
     }
 
