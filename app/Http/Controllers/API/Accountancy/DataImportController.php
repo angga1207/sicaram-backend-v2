@@ -1507,7 +1507,6 @@ class DataImportController extends Controller
 
     private function BarangPersediaanImport($datas, $params)
     {
-        return $datas;
         $user = auth()->user();
         DB::beginTransaction();
         try {
