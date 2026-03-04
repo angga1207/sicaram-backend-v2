@@ -3582,221 +3582,221 @@ class RekonsiliasiAsetController extends Controller
             ];
 
             // Tanah Start
-            $SaldoAwal = DB::table('acc_rek_as_kib_a')
+            $SaldoAwalTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_awal');
-            $MutasiTambah = DB::table('acc_rek_as_kib_a')
+            $MutasiTambahTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
-                ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
-            $MutasiKurang = DB::table('acc_rek_as_kib_a')
+                ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
+            $MutasiKurangTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
-                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
-            $SaldoAkhir = DB::table('acc_rek_as_kib_a')
+                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
+            $SaldoAkhirTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_akhir');
-            $SaldoAkhir = $SaldoAwal + $MutasiTambah - $MutasiKurang;
+            $SaldoAkhirTanah = $SaldoAwalTanah + $MutasiTambahTanah - $MutasiKurangTanah;
             $values[] = [
                 'uraian' => 'Tanah',
-                'saldo_awal' => $SaldoAwal ?? 0,
-                'mutasi_tambah' => $MutasiTambah ?? 0,
-                'mutasi_kurang' => $MutasiKurang ?? 0,
-                'saldo_akhir' => $SaldoAkhir ?? 0,
+                'saldo_awal' => $SaldoAwalTanah ?? 0,
+                'mutasi_tambah' => $MutasiTambahTanah ?? 0,
+                'mutasi_kurang' => $MutasiKurangTanah ?? 0,
+                'saldo_akhir' => $SaldoAkhirTanah ?? 0,
             ];
             // Tanah End
 
             // Peralatan dan Mesin Start
-            $SaldoAwal = DB::table('acc_rek_as_kib_b')
+            $SaldoAwalPeralatan = DB::table('acc_rek_as_kib_b')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_awal');
-            $MutasiTambah = DB::table('acc_rek_as_kib_b')
+            $MutasiTambahPeralatan = DB::table('acc_rek_as_kib_b')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
-            $MutasiKurang = DB::table('acc_rek_as_kib_b')
+            $MutasiKurangPeralatan = DB::table('acc_rek_as_kib_b')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
-                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
-            $SaldoAkhir = DB::table('acc_rek_as_kib_b')
+                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
+            $SaldoAkhirPeralatan = DB::table('acc_rek_as_kib_b')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_akhir');
-            $SaldoAkhir = $SaldoAwal + $MutasiTambah - $MutasiKurang;
+            $SaldoAkhirPeralatan = $SaldoAwalPeralatan + $MutasiTambahPeralatan - $MutasiKurangPeralatan;
             $values[] = [
                 'uraian' => 'Peralatan dan Mesin',
-                'saldo_awal' => $SaldoAwal ?? 0,
-                'mutasi_tambah' => $MutasiTambah ?? 0,
-                'mutasi_kurang' => $MutasiKurang ?? 0,
-                'saldo_akhir' => $SaldoAkhir ?? 0,
+                'saldo_awal' => $SaldoAwalPeralatan ?? 0,
+                'mutasi_tambah' => $MutasiTambahPeralatan ?? 0,
+                'mutasi_kurang' => $MutasiKurangPeralatan ?? 0,
+                'saldo_akhir' => $SaldoAkhirPeralatan ?? 0,
             ];
-            // Peralatan dan Mesin Start
+            // Peralatan dan Mesin End
 
             // Gedung dan Bangunan Start
-            $SaldoAwal = DB::table('acc_rek_as_kib_c')
+            $SaldoAwalGedung = DB::table('acc_rek_as_kib_c')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_awal');
-            $MutasiTambah = DB::table('acc_rek_as_kib_c')
+            $MutasiTambahGedung = DB::table('acc_rek_as_kib_c')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
-            $MutasiKurang = DB::table('acc_rek_as_kib_c')
+            $MutasiKurangGedung = DB::table('acc_rek_as_kib_c')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
-                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
-            $SaldoAkhir = DB::table('acc_rek_as_kib_c')
+                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
+            $SaldoAkhirGedung = DB::table('acc_rek_as_kib_c')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_akhir');
-            $SaldoAkhir = $SaldoAwal + $MutasiTambah - $MutasiKurang;
+            $SaldoAkhirGedung = $SaldoAwalGedung + $MutasiTambahGedung - $MutasiKurangGedung;
             $values[] = [
                 'uraian' => 'Gedung dan Bangunan',
-                'saldo_awal' => $SaldoAwal ?? 0,
-                'mutasi_tambah' => $MutasiTambah ?? 0,
-                'mutasi_kurang' => $MutasiKurang ?? 0,
-                'saldo_akhir' => $SaldoAkhir ?? 0,
+                'saldo_awal' => $SaldoAwalGedung ?? 0,
+                'mutasi_tambah' => $MutasiTambahGedung ?? 0,
+                'mutasi_kurang' => $MutasiKurangGedung ?? 0,
+                'saldo_akhir' => $SaldoAkhirGedung ?? 0,
             ];
-            // Gedung dan Bangunan Start
+            // Gedung dan Bangunan End
 
             // Jalan Irigasi dan Jaringan Start
-            $SaldoAwal = DB::table('acc_rek_as_kib_d')
+            $SaldoAwalJalan = DB::table('acc_rek_as_kib_d')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_awal');
-            $MutasiTambah = DB::table('acc_rek_as_kib_d')
+            $MutasiTambahJalan = DB::table('acc_rek_as_kib_d')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
-            $MutasiKurang = DB::table('acc_rek_as_kib_d')
+            $MutasiKurangJalan = DB::table('acc_rek_as_kib_d')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
-                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
-            $SaldoAkhir = DB::table('acc_rek_as_kib_d')
+                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
+            $SaldoAkhirJalan = DB::table('acc_rek_as_kib_d')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_akhir');
-            $SaldoAkhir = $SaldoAwal + $MutasiTambah - $MutasiKurang;
+            $SaldoAkhirJalan = $SaldoAwalJalan + $MutasiTambahJalan - $MutasiKurangJalan;
             $values[] = [
                 'uraian' => 'Jalan Irigasi dan Jaringan',
-                'saldo_awal' => $SaldoAwal ?? 0,
-                'mutasi_tambah' => $MutasiTambah ?? 0,
-                'mutasi_kurang' => $MutasiKurang ?? 0,
-                'saldo_akhir' => $SaldoAkhir ?? 0,
+                'saldo_awal' => $SaldoAwalJalan ?? 0,
+                'mutasi_tambah' => $MutasiTambahJalan ?? 0,
+                'mutasi_kurang' => $MutasiKurangJalan ?? 0,
+                'saldo_akhir' => $SaldoAkhirJalan ?? 0,
             ];
-            // Jalan Irigasi dan Jaringan Start
+            // Jalan Irigasi dan Jaringan End
 
             // Aset Tetap Lainnya Start
-            $SaldoAwal = DB::table('acc_rek_as_kib_e')
+            $SaldoAwalLainnya = DB::table('acc_rek_as_kib_e')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_awal');
-            $MutasiTambah = DB::table('acc_rek_as_kib_e')
+            $MutasiTambahLainnya = DB::table('acc_rek_as_kib_e')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
-            $MutasiKurang = DB::table('acc_rek_as_kib_e')
+            $MutasiKurangLainnya = DB::table('acc_rek_as_kib_e')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
-                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
-            $SaldoAkhir = DB::table('acc_rek_as_kib_e')
+                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
+            $SaldoAkhirLainnya = DB::table('acc_rek_as_kib_e')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_akhir');
-            $SaldoAkhir = $SaldoAwal + $MutasiTambah - $MutasiKurang;
+            $SaldoAkhirLainnya = $SaldoAwalLainnya + $MutasiTambahLainnya - $MutasiKurangLainnya;
             $values[] = [
                 'uraian' => 'Aset Tetap Lainnya',
-                'saldo_awal' => $SaldoAwal ?? 0,
-                'mutasi_tambah' => $MutasiTambah ?? 0,
-                'mutasi_kurang' => $MutasiKurang ?? 0,
-                'saldo_akhir' => $SaldoAkhir ?? 0,
+                'saldo_awal' => $SaldoAwalLainnya ?? 0,
+                'mutasi_tambah' => $MutasiTambahLainnya ?? 0,
+                'mutasi_kurang' => $MutasiKurangLainnya ?? 0,
+                'saldo_akhir' => $SaldoAkhirLainnya ?? 0,
             ];
-            // Aset Tetap Lainnya Start
+            // Aset Tetap Lainnya End
 
             // Konstruksi Dalam Pekerjaan Start
-            $SaldoAwal = DB::table('acc_rek_as_kdp')
+            $SaldoAwalKdp = DB::table('acc_rek_as_kdp')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_awal');
-            $MutasiTambah = DB::table('acc_rek_as_kdp')
+            $MutasiTambahKdp = DB::table('acc_rek_as_kdp')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
-            $MutasiKurang = DB::table('acc_rek_as_kdp')
+            $MutasiKurangKdp = DB::table('acc_rek_as_kdp')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
-                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
-            $SaldoAkhir = DB::table('acc_rek_as_kdp')
+                ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
+            $SaldoAkhirKdp = DB::table('acc_rek_as_kdp')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('saldo_akhir');
-            $SaldoAkhir = $SaldoAwal + $MutasiTambah - $MutasiKurang;
+            $SaldoAkhirKdp = $SaldoAwalKdp + $MutasiTambahKdp - $MutasiKurangKdp;
             $values[] = [
                 'uraian' => 'Konstruksi Dalam Pekerjaan',
-                'saldo_awal' => $SaldoAwal ?? 0,
-                'mutasi_tambah' => $MutasiTambah ?? 0,
-                'mutasi_kurang' => $MutasiKurang ?? 0,
-                'saldo_akhir' => $SaldoAkhir ?? 0,
+                'saldo_awal' => $SaldoAwalKdp ?? 0,
+                'mutasi_tambah' => $MutasiTambahKdp ?? 0,
+                'mutasi_kurang' => $MutasiKurangKdp ?? 0,
+                'saldo_akhir' => $SaldoAkhirKdp ?? 0,
             ];
-            // Konstruksi Dalam Pekerjaan Start
+            // Konstruksi Dalam Pekerjaan End
 
             // Akumulasi Penyusutan Start
-            $SaldoAwal = DB::table('acc_rek_as_penyusutan')
+            $SaldoAwalPenyusutan = DB::table('acc_rek_as_penyusutan')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('akumulasi_penyusutan_last_year');
-            $MutasiTambah = DB::table('acc_rek_as_penyusutan')
+            $MutasiTambahPenyusutan = DB::table('acc_rek_as_penyusutan')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('mutasi_tambah');
-            $MutasiKurang = DB::table('acc_rek_as_penyusutan')
+            $MutasiKurangPenyusutan = DB::table('acc_rek_as_penyusutan')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('mutasi_kurang');
-            $SaldoAkhir = DB::table('acc_rek_as_penyusutan')
+            $SaldoAkhirPenyusutan = DB::table('acc_rek_as_penyusutan')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
                 ->sum('akumulasi_penyusutan');
-            $SaldoAkhir = $SaldoAwal + $MutasiTambah - $MutasiKurang;
+            $SaldoAkhirPenyusutan = $SaldoAwalPenyusutan + $MutasiTambahPenyusutan - $MutasiKurangPenyusutan;
             $values[] = [
                 'uraian' => 'Akumulasi Penyusutan',
-                'saldo_awal' => $SaldoAwal ?? 0,
-                'mutasi_tambah' => $MutasiTambah ?? 0,
-                'mutasi_kurang' => $MutasiKurang ?? 0,
-                'saldo_akhir' => $SaldoAkhir ?? 0,
+                'saldo_awal' => $SaldoAwalPenyusutan ?? 0,
+                'mutasi_tambah' => $MutasiTambahPenyusutan ?? 0,
+                'mutasi_kurang' => $MutasiKurangPenyusutan ?? 0,
+                'saldo_akhir' => $SaldoAkhirPenyusutan ?? 0,
             ];
-            // Akumulasi Penyusutan Start
+            // Akumulasi Penyusutan End
 
             $grandTotal = [
                 'saldo_awal' => collect($values)->sum('saldo_awal'),
