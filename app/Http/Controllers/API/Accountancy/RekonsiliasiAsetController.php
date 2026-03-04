@@ -3571,15 +3571,15 @@ class RekonsiliasiAsetController extends Controller
             }
 
             $values = [];
-            $arrUraian = [
-                'Tanah',
-                'Peralatan dan Mesin',
-                'Gedung dan Bangunan',
-                'Jalan, Irigasi dan Jaringan',
-                'Aset Tetap Lainnya',
-                'Konstruksi Dalam Pekerjaan',
-                'Akumulasi Penyusutan',
-            ];
+            // $arrUraian = [
+            //     'Tanah',
+            //     'Peralatan dan Mesin',
+            //     'Gedung dan Bangunan',
+            //     'Jalan, Irigasi dan Jaringan',
+            //     'Aset Tetap Lainnya',
+            //     'Konstruksi Dalam Pekerjaan',
+            //     'Akumulasi Penyusutan',
+            // ];
 
             // Tanah Start
             $SaldoAwalTanah = DB::table('acc_rek_as_kib_a')
@@ -3606,7 +3606,8 @@ class RekonsiliasiAsetController extends Controller
             $values[] = [
                 'uraian' => 'Tanah',
                 'saldo_awal' => $SaldoAwalTanah ?? 0,
-                'mutasi_tambah' => $MutasiTambahTanah ?? 0,
+                // 'mutasi_tambah' => $MutasiTambahTanah ?? 0,
+                'mutasi_tambah' => 54321,
                 'mutasi_kurang' => $MutasiKurangTanah ?? 0,
                 'saldo_akhir' => $SaldoAkhirTanah ?? 0,
             ];
