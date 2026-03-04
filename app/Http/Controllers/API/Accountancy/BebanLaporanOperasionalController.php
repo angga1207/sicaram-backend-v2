@@ -646,7 +646,7 @@ class BebanLaporanOperasionalController extends Controller
                             $editable = true;
                         }
                         // $realisasiBelanja = $data->realisasi_belanja;
-                        $realisasiBelanja = $PersediaanHabisPakai->realisasi_lra + $PersediaanUntukDijual->realisasi_lra;
+                        $realisasiBelanja = $PersediaanHabisPakai->sum('realisasi_lra') + $PersediaanUntukDijual->sum('realisasi_lra');
                         if ($editable == false) {
                             $realisasiBelanja = $lra->realisasi;
                         }
