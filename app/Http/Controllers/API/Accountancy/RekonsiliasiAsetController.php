@@ -3591,8 +3591,7 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
-                ->sum('plus_realisasi_belanja');
-                // ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
+                ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
 
             $MutasiKurangTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
