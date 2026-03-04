@@ -3792,10 +3792,10 @@ class RekonsiliasiAsetController extends Controller
             $SaldoAkhirPenyusutan = $SaldoAwalPenyusutan + $MutasiTambahPenyusutan - $MutasiKurangPenyusutan;
             $values[] = [
                 'uraian' => 'Akumulasi Penyusutan',
-                'saldo_awal' => $SaldoAwalPenyusutan ?? 0,
-                'mutasi_tambah' => $MutasiTambahPenyusutan ?? 0,
-                'mutasi_kurang' => $MutasiKurangPenyusutan ?? 0,
-                'saldo_akhir' => $SaldoAkhirPenyusutan ?? 0,
+                'saldo_awal' => $SaldoAwalPenyusutan ? $SaldoAwalPenyusutan * -1 : 0,
+                'mutasi_tambah' => $MutasiTambahPenyusutan ? $MutasiTambahPenyusutan * -1 : 0,
+                'mutasi_kurang' => $MutasiKurangPenyusutan ? $MutasiKurangPenyusutan * -1 : 0,
+                'saldo_akhir' => $SaldoAkhirPenyusutan ? $SaldoAkhirPenyusutan * -1 : 0,
             ];
             // Akumulasi Penyusutan End
 
