@@ -645,7 +645,8 @@ class BebanLaporanOperasionalController extends Controller
                         if ($lra->kode_rekening == '5.1.02.88.88.8888' || $lra->kode_rekening == '5.1.02.90.01.0001' || $lra->kode_rekening == '5.1.02.99.99.9999') {
                             $editable = true;
                         }
-                        $realisasiBelanja = $data->realisasi_belanja;
+                        // $realisasiBelanja = $data->realisasi_belanja;
+                        $realisasiBelanja = $PersediaanHabisPakai->realisasi_lra + $PersediaanUntukDijual->realisasi_lra;
                         if ($editable == false) {
                             $realisasiBelanja = $lra->realisasi;
                         }
@@ -676,7 +677,8 @@ class BebanLaporanOperasionalController extends Controller
                             'kode_rekening_id' => $data->kode_rekening_id,
                             'kode_rekening_fullcode' => $kodeRekening->fullcode,
                             'kode_rekening_name' => $kodeRekening->name,
-                            'realisasi_belanja' => $data->realisasi_belanja,
+                            // 'realisasi_belanja' => $data->realisasi_belanja,
+                            'realisasi_belanja' => $realisasiBelanja,
                             'saldo_awal' => $saldoAwal ?? $data->saldo_awal,
                             'belanja_dibayar_dimuka_akhir' => $data->belanja_dibayar_dimuka_akhir,
                             'hutang' => $HutangBaru ?? $data->hutang,
