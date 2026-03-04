@@ -2673,9 +2673,11 @@ class RekonsiliasiAsetController extends Controller
                     ->where('plus_aset_tetap_tanah', '>', 0)
                     ->sum($minReklasKey) ?? 0;
 
-                $getData->plus_reklasifikasi_kib_b = $ReklasKib->where($plusReklasKey, '>', 0)
-                    ->where('min_aset_tetap_peralatan_mesin', '>', 0)
-                    ->sum($plusReklasKey) ?? 0;
+                // $getData->plus_reklasifikasi_kib_b = $ReklasKib->where($plusReklasKey, '>', 0)
+                //     ->where('min_aset_tetap_peralatan_mesin', '>', 0)
+                //     ->sum($plusReklasKey) ?? 0;
+                // $getData->plus_reklasifikasi_kib_b = $getData->plus_reklasifikasi_kib_b ?? 0;
+
                 $getData->min_reklasifikasi_beban_kib_b = $ReklasKib->where($minReklasKey, '>', 0)
                     ->where('plus_aset_tetap_peralatan_mesin', '>', 0)
                     ->sum($minReklasKey) ?? 0;
@@ -3508,42 +3510,50 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $KibA = DB::table('acc_rek_as_kib_a')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KibB = DB::table('acc_rek_as_kib_b')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KibC = DB::table('acc_rek_as_kib_c')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KibD = DB::table('acc_rek_as_kib_d')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KibE = DB::table('acc_rek_as_kib_e')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KDP = DB::table('acc_rek_as_kdp')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $AsetLainLain = DB::table('acc_rek_as_aset_lain_lain')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
 
                 if (!$getData) {
@@ -3557,6 +3567,7 @@ class RekonsiliasiAsetController extends Controller
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
                         ->where('periode_id', $request->periode)
+                        ->whereNull('deleted_at')
                         ->first();
                 }
 
@@ -3692,22 +3703,26 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_awal');
             $MutasiTambahTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
 
             $MutasiKurangTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
             $SaldoAkhirTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_akhir');
             $SaldoAkhirTanah = $SaldoAwalTanah + $MutasiTambahTanah - $MutasiKurangTanah;
             $values[] = [
@@ -3724,21 +3739,25 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_awal');
             $MutasiTambahPeralatan = DB::table('acc_rek_as_kib_b')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
             $MutasiKurangPeralatan = DB::table('acc_rek_as_kib_b')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
             $SaldoAkhirPeralatan = DB::table('acc_rek_as_kib_b')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_akhir');
             $SaldoAkhirPeralatan = $SaldoAwalPeralatan + $MutasiTambahPeralatan - $MutasiKurangPeralatan;
             $values[] = [
@@ -3755,21 +3774,25 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_awal');
             $MutasiTambahGedung = DB::table('acc_rek_as_kib_c')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
             $MutasiKurangGedung = DB::table('acc_rek_as_kib_c')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
             $SaldoAkhirGedung = DB::table('acc_rek_as_kib_c')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_akhir');
             $SaldoAkhirGedung = $SaldoAwalGedung + $MutasiTambahGedung - $MutasiKurangGedung;
             $values[] = [
@@ -3786,21 +3809,25 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_awal');
             $MutasiTambahJalan = DB::table('acc_rek_as_kib_d')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
             $MutasiKurangJalan = DB::table('acc_rek_as_kib_d')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
             $SaldoAkhirJalan = DB::table('acc_rek_as_kib_d')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_akhir');
             $SaldoAkhirJalan = $SaldoAwalJalan + $MutasiTambahJalan - $MutasiKurangJalan;
             $values[] = [
@@ -3817,21 +3844,25 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_awal');
             $MutasiTambahLainnya = DB::table('acc_rek_as_kib_e')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
             $MutasiKurangLainnya = DB::table('acc_rek_as_kib_e')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
             $SaldoAkhirLainnya = DB::table('acc_rek_as_kib_e')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_akhir');
             $SaldoAkhirLainnya = $SaldoAwalLainnya + $MutasiTambahLainnya - $MutasiKurangLainnya;
             $values[] = [
@@ -3848,21 +3879,25 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_awal');
             $MutasiTambahKdp = DB::table('acc_rek_as_kdp')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
             $MutasiKurangKdp = DB::table('acc_rek_as_kdp')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum(DB::raw('min_pembayaran_utang + min_reklasifikasi_beban_persediaan + min_reklasifikasi_beban_jasa + min_reklasifikasi_beban_pemeliharaan + min_reklasifikasi_beban_hibah + min_reklasifikasi_beban_kib_a + min_reklasifikasi_beban_kib_b + min_reklasifikasi_beban_kib_c + min_reklasifikasi_beban_kib_d + min_reklasifikasi_beban_kib_e + min_reklasifikasi_beban_kdp + min_reklasifikasi_beban_aset_lain_lain + min_penghapusan + min_mutasi_antar_opd + min_tptgr'));
             $SaldoAkhirKdp = DB::table('acc_rek_as_kdp')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('saldo_akhir');
             $SaldoAkhirKdp = $SaldoAwalKdp + $MutasiTambahKdp - $MutasiKurangKdp;
             $values[] = [
@@ -3879,21 +3914,25 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('akumulasi_penyusutan_last_year');
             $MutasiTambahPenyusutan = DB::table('acc_rek_as_penyusutan')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('mutasi_tambah');
             $MutasiKurangPenyusutan = DB::table('acc_rek_as_penyusutan')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('mutasi_kurang');
             $SaldoAkhirPenyusutan = DB::table('acc_rek_as_penyusutan')
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances)
+                ->whereNull('deleted_at')
                 ->sum('akumulasi_penyusutan');
             $SaldoAkhirPenyusutan = $SaldoAwalPenyusutan + $MutasiTambahPenyusutan - $MutasiKurangPenyusutan;
             $values[] = [
