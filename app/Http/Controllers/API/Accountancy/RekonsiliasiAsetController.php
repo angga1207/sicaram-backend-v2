@@ -3563,12 +3563,14 @@ class RekonsiliasiAsetController extends Controller
                 //     ->groupBy('instance_id')
                 //     ->get();
                 // $instances = Instance::whereIn('id', $instanceIds->pluck('instance_id'))->get();
-                $instances = Instance::orderBy('code')->get();
+                $instances = Instance::orderBy('code')->pluck('id');
             } elseif ($request->instance) {
                 $instances = Instance::where('id', $request->instance)
                     ->orderBy('code')
-                    ->get();
+                    ->pluck('id');
             }
+
+            return $instances;
 
             $values = [];
             // $arrUraian = [
@@ -3591,8 +3593,7 @@ class RekonsiliasiAsetController extends Controller
                 ->where('year', $request->year)
                 ->where('periode_id', $request->periode)
                 ->whereIn('instance_id', $instances->pluck('id'))
-                ->selectRaw('SUM(plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd) as total')
-                ->value('total');
+                ->sum(DB::raw('plus_realisasi_belanja + plus_hutang_kegiatan + plus_atribusi + plus_reklasifikasi_barang_habis_pakai + plus_reklasifikasi_pemeliharaan + plus_reklasifikasi_jasa + plus_reklasifikasi_kib_a + plus_reklasifikasi_kib_b + plus_reklasifikasi_kib_c + plus_reklasifikasi_kib_d + plus_reklasifikasi_kib_e + plus_reklasifikasi_kdp + plus_reklasifikasi_aset_lain_lain + plus_hibah_masuk + plus_penilaian + plus_mutasi_antar_opd'));
 
             $MutasiKurangTanah = DB::table('acc_rek_as_kib_a')
                 ->where('year', $request->year)
@@ -3607,10 +3608,10 @@ class RekonsiliasiAsetController extends Controller
             $SaldoAkhirTanah = $SaldoAwalTanah + $MutasiTambahTanah - $MutasiKurangTanah;
             $values[] = [
                 'uraian' => 'Tanah',
-                'saldo_awal' => $SaldoAwalTanah,
-                'mutasi_tambah' => $MutasiTambahTanah,
-                'mutasi_kurang' => $MutasiKurangTanah,
-                'saldo_akhir' => $SaldoAkhirTanah,
+                'saldo_awal' => $SaldoAwalTanah ?? 0,
+                'mutasi_tambah' => $MutasiTambahTanah ?? 0,
+                'mutasi_kurang' => $MutasiKurangTanah ?? 0,
+                'saldo_akhir' => $SaldoAkhirTanah ?? 0,
             ];
             // Tanah End
 
@@ -3638,10 +3639,10 @@ class RekonsiliasiAsetController extends Controller
             $SaldoAkhirPeralatan = $SaldoAwalPeralatan + $MutasiTambahPeralatan - $MutasiKurangPeralatan;
             $values[] = [
                 'uraian' => 'Peralatan dan Mesin',
-                'saldo_awal' => $SaldoAwalPeralatan,
-                'mutasi_tambah' => $MutasiTambahPeralatan,
-                'mutasi_kurang' => $MutasiKurangPeralatan,
-                'saldo_akhir' => $SaldoAkhirPeralatan,
+                'saldo_awal' => $SaldoAwalPeralatan ?? 0,
+                'mutasi_tambah' => $MutasiTambahPeralatan ?? 0,
+                'mutasi_kurang' => $MutasiKurangPeralatan ?? 0,
+                'saldo_akhir' => $SaldoAkhirPeralatan ?? 0,
             ];
             // Peralatan dan Mesin End
 
@@ -3669,10 +3670,10 @@ class RekonsiliasiAsetController extends Controller
             $SaldoAkhirGedung = $SaldoAwalGedung + $MutasiTambahGedung - $MutasiKurangGedung;
             $values[] = [
                 'uraian' => 'Gedung dan Bangunan',
-                'saldo_awal' => $SaldoAwalGedung,
-                'mutasi_tambah' => $MutasiTambahGedung,
-                'mutasi_kurang' => $MutasiKurangGedung,
-                'saldo_akhir' => $SaldoAkhirGedung,
+                'saldo_awal' => $SaldoAwalGedung ?? 0,
+                'mutasi_tambah' => $MutasiTambahGedung ?? 0,
+                'mutasi_kurang' => $MutasiKurangGedung ?? 0,
+                'saldo_akhir' => $SaldoAkhirGedung ?? 0,
             ];
             // Gedung dan Bangunan End
 
@@ -3700,10 +3701,10 @@ class RekonsiliasiAsetController extends Controller
             $SaldoAkhirJalan = $SaldoAwalJalan + $MutasiTambahJalan - $MutasiKurangJalan;
             $values[] = [
                 'uraian' => 'Jalan Irigasi dan Jaringan',
-                'saldo_awal' => $SaldoAwalJalan,
-                'mutasi_tambah' => $MutasiTambahJalan,
-                'mutasi_kurang' => $MutasiKurangJalan,
-                'saldo_akhir' => $SaldoAkhirJalan,
+                'saldo_awal' => $SaldoAwalJalan ?? 0,
+                'mutasi_tambah' => $MutasiTambahJalan ?? 0,
+                'mutasi_kurang' => $MutasiKurangJalan ?? 0,
+                'saldo_akhir' => $SaldoAkhirJalan ?? 0,
             ];
             // Jalan Irigasi dan Jaringan End
 
@@ -3731,10 +3732,10 @@ class RekonsiliasiAsetController extends Controller
             $SaldoAkhirLainnya = $SaldoAwalLainnya + $MutasiTambahLainnya - $MutasiKurangLainnya;
             $values[] = [
                 'uraian' => 'Aset Tetap Lainnya',
-                'saldo_awal' => $SaldoAwalLainnya,
-                'mutasi_tambah' => $MutasiTambahLainnya,
-                'mutasi_kurang' => $MutasiKurangLainnya,
-                'saldo_akhir' => $SaldoAkhirLainnya,
+                'saldo_awal' => $SaldoAwalLainnya ?? 0,
+                'mutasi_tambah' => $MutasiTambahLainnya ?? 0,
+                'mutasi_kurang' => $MutasiKurangLainnya ?? 0,
+                'saldo_akhir' => $SaldoAkhirLainnya ?? 0,
             ];
             // Aset Tetap Lainnya End
 
@@ -3762,10 +3763,10 @@ class RekonsiliasiAsetController extends Controller
             $SaldoAkhirKdp = $SaldoAwalKdp + $MutasiTambahKdp - $MutasiKurangKdp;
             $values[] = [
                 'uraian' => 'Konstruksi Dalam Pekerjaan',
-                'saldo_awal' => $SaldoAwalKdp,
-                'mutasi_tambah' => $MutasiTambahKdp,
-                'mutasi_kurang' => $MutasiKurangKdp,
-                'saldo_akhir' => $SaldoAkhirKdp,
+                'saldo_awal' => $SaldoAwalKdp ?? 0,
+                'mutasi_tambah' => $MutasiTambahKdp ?? 0,
+                'mutasi_kurang' => $MutasiKurangKdp ?? 0,
+                'saldo_akhir' => $SaldoAkhirKdp ?? 0,
             ];
             // Konstruksi Dalam Pekerjaan End
 
@@ -3793,10 +3794,10 @@ class RekonsiliasiAsetController extends Controller
             $SaldoAkhirPenyusutan = $SaldoAwalPenyusutan + $MutasiTambahPenyusutan - $MutasiKurangPenyusutan;
             $values[] = [
                 'uraian' => 'Akumulasi Penyusutan',
-                'saldo_awal' => $SaldoAwalPenyusutan,
-                'mutasi_tambah' => $MutasiTambahPenyusutan,
-                'mutasi_kurang' => $MutasiKurangPenyusutan,
-                'saldo_akhir' => $SaldoAkhirPenyusutan,
+                'saldo_awal' => $SaldoAwalPenyusutan ?? 0,
+                'mutasi_tambah' => $MutasiTambahPenyusutan ?? 0,
+                'mutasi_kurang' => $MutasiKurangPenyusutan ?? 0,
+                'saldo_akhir' => $SaldoAkhirPenyusutan ?? 0,
             ];
             // Akumulasi Penyusutan End
 
