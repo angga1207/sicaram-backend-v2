@@ -249,6 +249,9 @@ class RekonsiliasiAsetController extends Controller
                         ->where('periode_id', $request->periode)
                         ->first();
                 }
+                // Realisasi Belanja
+                $getData->plus_realisasi_belanja = $dataLRA->realisasi ?? $getData->plus_realisasi_belanja ?? 0;
+
                 // Hutang Belanja
                 $HutangBaru = DB::table('acc_htb_hutang_baru')
                     ->where('instance_id', $instance->id)
@@ -584,6 +587,9 @@ class RekonsiliasiAsetController extends Controller
                         ->where('periode_id', $request->periode)
                         ->first();
                 }
+                // Realisasi Belanja
+                $getData->plus_realisasi_belanja = $dataLRA->realisasi ?? $getData->plus_realisasi_belanja ?? 0;
+
                 // Hutang Belanja
                 $HutangBaru = DB::table('acc_htb_hutang_baru')
                     ->where('instance_id', $instance->id)
@@ -931,6 +937,9 @@ class RekonsiliasiAsetController extends Controller
                         ->where('periode_id', $request->periode)
                         ->first();
                 }
+                // Realisasi Belanja
+                $getData->plus_realisasi_belanja = $dataLRA->realisasi ?? $getData->plus_realisasi_belanja ?? 0;
+
                 // Hutang Belanja
                 $HutangBaru = DB::table('acc_htb_hutang_baru')
                     ->where('instance_id', $instance->id)
@@ -1277,6 +1286,9 @@ class RekonsiliasiAsetController extends Controller
                         ->where('periode_id', $request->periode)
                         ->first();
                 }
+                // Realisasi Belanja
+                $getData->plus_realisasi_belanja = $dataLRA->realisasi ?? $getData->plus_realisasi_belanja ?? 0;
+
                 // Hutang Belanja
                 $HutangBaru = DB::table('acc_htb_hutang_baru')
                     ->where('instance_id', $instance->id)
@@ -1623,6 +1635,9 @@ class RekonsiliasiAsetController extends Controller
                         ->where('periode_id', $request->periode)
                         ->first();
                 }
+                // Realisasi Belanja
+                $getData->plus_realisasi_belanja = $dataLRA->realisasi ?? $getData->plus_realisasi_belanja ?? 0;
+
                 // Hutang Belanja
                 $HutangBaru = DB::table('acc_htb_hutang_baru')
                     ->where('instance_id', $instance->id)
@@ -2517,8 +2532,9 @@ class RekonsiliasiAsetController extends Controller
                         ->where('periode_id', $request->periode)
                         ->first();
                 }
+                // Realisasi Belanja
+                $getData->plus_realisasi_belanja = $dataLRA->realisasi ?? $getData->plus_realisasi_belanja ?? 0;
 
-                $getData->plus_realisasi_belanja = $dataLRA->realisasi ?? 0;
 
                 // Hutang Belanja
                 $HutangBaru = DB::table('acc_htb_hutang_baru')
