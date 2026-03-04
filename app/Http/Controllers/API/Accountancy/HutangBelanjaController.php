@@ -111,7 +111,8 @@ class HutangBelanjaController extends Controller
 
                     'beban' => $data->beban,
                     'jangka_pendek' => $data->jangka_pendek,
-                    'total_hutang' => floatval($data->beban ?? 0) + floatval($data->jangka_pendek ?? 0),
+                    // 'total_hutang' => floatval($data->beban ?? 0) + floatval($data->jangka_pendek ?? 0),
+                    'total_hutang' => $data->kewajiban_tidak_terbayar_last_year ? ($data->kewajiban_tidak_terbayar_last_year > 0 ? (($data->kewajiban_tidak_terbayar_last_year - $data->jumlah_pembayaran_hutang) + $data->hutang_baru) : $data->hutang_baru) : 0,
                     'created_at' => $data->created_at,
                     'updated_at' => $data->updated_at
                 ];
