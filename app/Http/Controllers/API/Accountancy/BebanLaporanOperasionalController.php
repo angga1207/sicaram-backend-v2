@@ -647,9 +647,9 @@ class BebanLaporanOperasionalController extends Controller
                         }
                         // $realisasiBelanja = $data->realisasi_belanja;
                         $realisasiBelanja = $PersediaanHabisPakai->sum('realisasi_lra') + $PersediaanUntukDijual->sum('realisasi_lra');
-                        if ($editable == false) {
-                            $realisasiBelanja = $lra->realisasi;
-                        }
+                        // if ($editable == false) {
+                        //     $realisasiBelanja = $lra->realisasi;
+                        // }
 
                         DB::table('acc_blo_persediaan')
                             ->where('id', $data->id)
