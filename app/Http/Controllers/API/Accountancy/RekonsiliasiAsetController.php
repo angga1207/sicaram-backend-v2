@@ -230,6 +230,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
                     ->where('kode_rekening', '5.2.01')
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $getData = KibA::where('instance_id', $instance->id)
@@ -257,12 +258,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_tanah') ?? 0;
                 $getData->plus_hutang_kegiatan = $HutangBaru ?? 0;
                 $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_tanah') ?? 0;
                 $getData->min_pembayaran_utang = $PembayaranHutang ?? 0;
 
@@ -271,6 +274,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('atri_aset_tetap_tanah') ?? 0;
                 $getData->plus_atribusi = $Atribusi ?? 0;
 
@@ -279,6 +283,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
 
                 $plusReklasKey = 'plus_aset_tetap_tanah';
@@ -339,6 +344,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_tanah') ?? 0;
                 $getData->plus_hibah_masuk = $HibahMasuk ?? 0;
 
@@ -347,6 +353,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_tanah') ?? 0;
                 $getData->min_reklasifikasi_beban_hibah = $HibahKeluar ?? 0;
 
@@ -355,6 +362,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_tanah') ?? 0;
                 $getData->plus_penilaian = $PenilaianAset ?? 0;
 
@@ -364,12 +372,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('to_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $MutasiOPDKeluar = DB::table('acc_padb_tambahan_mutasi_aset')
                     // ->where('instance_id', $instance->id)
                     ->where('from_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $getData->plus_mutasi_antar_opd = $MutasiOPDMasuk->sum('plus_aset_tetap_tanah') ?? 0;
                 // $getData->min_mutasi_antar_opd = $MutasiOPDKeluar->sum('min_aset_tetap_tanah') ?? 0;
@@ -379,11 +389,13 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_tanah') ?? 0;
                 $minPenjualan = DB::table('acc_padb_penjualan_aset')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_tanah') ?? 0;
 
                 $getData->min_penghapusan = ($minPenghapusan + $minPenjualan) ?? 0;
@@ -568,6 +580,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
                     ->where('kode_rekening', '5.2.02')
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $getData = KibB::where('instance_id', $instance->id)
@@ -595,12 +608,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_peralatan_mesin') ?? 0;
                 $getData->plus_hutang_kegiatan = $HutangBaru ?? 0;
                 $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_peralatan_mesin') ?? 0;
                 $getData->min_pembayaran_utang = $PembayaranHutang ?? 0;
 
@@ -609,6 +624,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('atri_aset_tetap_peralatan_mesin') ?? 0;
                 $getData->plus_atribusi = $Atribusi ?? 0;
 
@@ -617,6 +633,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 // $getData->plus_reklasifikasi_kib_a = $ReklasKib->sum('min_aset_tetap_tanah') ?? 0;
                 // $getData->min_reklasifikasi_beban_kib_a = $ReklasKib->sum('plus_aset_tetap_tanah') ?? 0;
@@ -690,6 +707,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_peralatan_mesin') ?? 0;
                 $getData->plus_hibah_masuk = $HibahMasuk ?? 0;
 
@@ -698,6 +716,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_peralatan_mesin') ?? 0;
                 $getData->min_reklasifikasi_beban_hibah = $HibahKeluar ?? 0;
 
@@ -706,6 +725,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_peralatan_mesin') ?? 0;
                 $getData->plus_penilaian = $PenilaianAset ?? 0;
 
@@ -715,12 +735,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('to_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $MutasiOPDKeluar = DB::table('acc_padb_tambahan_mutasi_aset')
                     // ->where('instance_id', $instance->id)
                     ->where('from_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $getData->plus_mutasi_antar_opd = $MutasiOPDMasuk->sum('plus_aset_tetap_peralatan_mesin') ?? 0;
                 $getData->min_mutasi_antar_opd = $MutasiOPDKeluar->sum('plus_aset_tetap_peralatan_mesin') ?? 0;
@@ -729,11 +751,13 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_peralatan_mesin') ?? 0;
                 $minPenjualan = DB::table('acc_padb_penjualan_aset')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_peralatan_mesin') ?? 0;
 
                 $getData->min_penghapusan = ($minPenghapusan + $minPenjualan) ?? 0;
@@ -918,6 +942,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
                     ->where('kode_rekening', '5.2.03')
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $getData = KibC::where('instance_id', $instance->id)
@@ -945,12 +970,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_gedung_bangunan') ?? 0;
                 $getData->plus_hutang_kegiatan = $HutangBaru ?? 0;
                 $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_gedung_bangunan') ?? 0;
                 $getData->min_pembayaran_utang = $PembayaranHutang ?? 0;
 
@@ -959,6 +986,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('atri_aset_tetap_gedung_bangunan') ?? 0;
                 $getData->plus_atribusi = $Atribusi ?? 0;
 
@@ -967,6 +995,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 // $getData->plus_reklasifikasi_kib_a = $ReklasKib->sum('min_aset_tetap_tanah') ?? 0;
                 // $getData->min_reklasifikasi_beban_kib_a = $ReklasKib->sum('plus_aset_tetap_tanah') ?? 0;
@@ -1039,6 +1068,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_gedung_bangunan') ?? 0;
                 $getData->plus_hibah_masuk = $HibahMasuk ?? 0;
 
@@ -1055,6 +1085,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_gedung_bangunan') ?? 0;
                 $getData->plus_penilaian = $PenilaianAset ?? 0;
 
@@ -1064,12 +1095,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('to_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $MutasiOPDKeluar = DB::table('acc_padb_tambahan_mutasi_aset')
                     // ->where('instance_id', $instance->id)
                     ->where('from_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $getData->plus_mutasi_antar_opd = $MutasiOPDMasuk->sum('plus_aset_tetap_gedung_bangunan') ?? 0;
                 $getData->min_mutasi_antar_opd = $MutasiOPDKeluar->sum('plus_aset_tetap_gedung_bangunan') ?? 0;
@@ -1078,11 +1111,13 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_gedung_bangunan') ?? 0;
                 $minPenjualan = DB::table('acc_padb_penjualan_aset')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_gedung_bangunan') ?? 0;
 
                 $getData->min_penghapusan = ($minPenghapusan + $minPenjualan) ?? 0;
@@ -1267,6 +1302,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
                     ->where('kode_rekening', '5.2.04')
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $getData = KibD::where('instance_id', $instance->id)
@@ -1294,12 +1330,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_jalan_jaringan_irigasi') ?? 0;
                 $getData->plus_hutang_kegiatan = $HutangBaru ?? 0;
                 $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_jalan_jaringan_irigasi') ?? 0;
                 $getData->min_pembayaran_utang = $PembayaranHutang ?? 0;
 
@@ -1308,6 +1346,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('atri_aset_tetap_jalan_jaringan_irigasi') ?? 0;
                 $getData->plus_atribusi = $Atribusi ?? 0;
 
@@ -1316,6 +1355,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 // $getData->plus_reklasifikasi_kib_a = $ReklasKib->sum('min_aset_tetap_tanah') ?? 0;
                 // $getData->min_reklasifikasi_beban_kib_a = $ReklasKib->sum('plus_aset_tetap_tanah') ?? 0;
@@ -1388,6 +1428,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_jalan_jaringan_irigasi') ?? 0;
                 $getData->plus_hibah_masuk = $HibahMasuk ?? 0;
 
@@ -1396,6 +1437,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_jalan_jaringan_irigasi') ?? 0;
                 $getData->min_reklasifikasi_beban_hibah = $HibahKeluar ?? 0;
 
@@ -1404,6 +1446,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_jalan_jaringan_irigasi') ?? 0;
                 $getData->plus_penilaian = $PenilaianAset ?? 0;
 
@@ -1413,12 +1456,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('to_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $MutasiOPDKeluar = DB::table('acc_padb_tambahan_mutasi_aset')
                     // ->where('instance_id', $instance->id)
                     ->where('from_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $getData->plus_mutasi_antar_opd = $MutasiOPDMasuk->sum('plus_aset_tetap_jalan_jaringan_irigasi') ?? 0;
                 $getData->min_mutasi_antar_opd = $MutasiOPDKeluar->sum('plus_aset_tetap_jalan_jaringan_irigasi') ?? 0;
@@ -1427,11 +1472,13 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_jalan_jaringan_irigasi') ?? 0;
                 $minPenjualan = DB::table('acc_padb_penjualan_aset')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_jalan_jaringan_irigasi') ?? 0;
 
                 $getData->min_penghapusan = ($minPenghapusan + $minPenjualan) ?? 0;
@@ -1616,6 +1663,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
                     ->where('kode_rekening', '5.2.05')
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $getData = KibE::where('instance_id', $instance->id)
@@ -1643,12 +1691,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_lainnya') ?? 0;
                 $getData->plus_hutang_kegiatan = $HutangBaru ?? 0;
                 $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_lainnya') ?? 0;
                 $getData->min_pembayaran_utang = $PembayaranHutang ?? 0;
 
@@ -1657,6 +1707,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('atri_aset_tetap_tetap_lainnya') ?? 0;
                 $getData->plus_atribusi = $Atribusi ?? 0;
 
@@ -1665,6 +1716,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 // $getData->plus_reklasifikasi_kib_a = $ReklasKib->sum('min_aset_tetap_tanah') ?? 0;
                 // $getData->min_reklasifikasi_beban_kib_a = $ReklasKib->sum('plus_aset_tetap_tanah') ?? 0;
@@ -1737,6 +1789,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_lainnya') ?? 0;
                 $getData->plus_hibah_masuk = $HibahMasuk ?? 0;
 
@@ -1745,6 +1798,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_lainnya') ?? 0;
                 $getData->min_reklasifikasi_beban_hibah = $HibahKeluar ?? 0;
 
@@ -1753,6 +1807,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_lainnya') ?? 0;
                 $getData->plus_penilaian = $PenilaianAset ?? 0;
 
@@ -1762,12 +1817,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('to_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $MutasiOPDKeluar = DB::table('acc_padb_tambahan_mutasi_aset')
                     // ->where('instance_id', $instance->id)
                     ->where('from_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $getData->plus_mutasi_antar_opd = $MutasiOPDMasuk->sum('plus_aset_tetap_lainnya') ?? 0;
                 $getData->min_mutasi_antar_opd = $MutasiOPDKeluar->sum('plus_aset_tetap_lainnya') ?? 0;
@@ -1776,11 +1833,13 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_lainnya') ?? 0;
                 $minPenjualan = DB::table('acc_padb_penjualan_aset')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_tetap_lainnya') ?? 0;
 
                 $getData->min_penghapusan = ($minPenghapusan + $minPenjualan) ?? 0;
@@ -1964,12 +2023,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
                     ->where('kode_rekening', '5.2.06')
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $getData = DB::table('acc_rek_as_aset_lain_lain')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 if (!$getData) {
                     DB::table('acc_rek_as_aset_lain_lain')->insert([
@@ -1983,6 +2044,7 @@ class RekonsiliasiAsetController extends Controller
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
                         ->where('periode_id', $request->periode)
+                        ->whereNull('deleted_at')
                         ->first();
                 }
 
@@ -2164,11 +2226,13 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $getData = KDP::where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 if (!$getData) {
                     DB::table('acc_rek_as_kdp')->insert([
@@ -2181,6 +2245,7 @@ class RekonsiliasiAsetController extends Controller
                     $getData = KDP::where('instance_id', $instance->id)
                         ->where('year', $request->year)
                         ->where('periode_id', $request->periode)
+                        ->whereNull('deleted_at')
                         ->first();
                 }
                 $getData->plus_realisasi_belanja = $rekapBelanja->kdp ?? 0;
@@ -2190,12 +2255,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('konstruksi_dalam_pekerjaan') ?? 0;
                 $getData->plus_hutang_kegiatan = $HutangBaru ?? 0;
                 $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('konstruksi_dalam_pekerjaan') ?? 0;
                 $getData->min_pembayaran_utang = $PembayaranHutang ?? 0;
 
@@ -2204,6 +2271,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('atri_konstruksi_dalam_pekerjaan') ?? 0;
                 $getData->plus_atribusi = $Atribusi ?? 0;
 
@@ -2212,6 +2280,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 // $getData->plus_reklasifikasi_kib_a = $ReklasKib->sum('min_aset_tetap_tanah') ?? 0;
                 // $getData->min_reklasifikasi_beban_kib_a = $ReklasKib->sum('plus_aset_tetap_tanah') ?? 0;
@@ -2285,6 +2354,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('konstruksi_dalam_pekerjaan') ?? 0;
                 $getData->plus_hibah_masuk = $HibahMasuk ?? 0;
 
@@ -2293,6 +2363,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('konstruksi_dalam_pekerjaan') ?? 0;
                 $getData->min_reklasifikasi_beban_hibah = $HibahKeluar ?? 0;
 
@@ -2301,6 +2372,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('konstruksi_dalam_pekerjaan') ?? 0;
                 $getData->plus_penilaian = $PenilaianAset ?? 0;
 
@@ -2310,12 +2382,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('to_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $MutasiOPDKeluar = DB::table('acc_padb_tambahan_mutasi_aset')
                     // ->where('instance_id', $instance->id)
                     ->where('from_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $getData->plus_mutasi_antar_opd = $MutasiOPDMasuk->sum('plus_kdp') ?? 0;
                 $getData->min_mutasi_antar_opd = $MutasiOPDKeluar->sum('plus_kdp') ?? 0;
@@ -2324,11 +2398,13 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('konstruksi_dalam_pekerjaan') ?? 0;
                 $minPenjualan = DB::table('acc_padb_penjualan_aset')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('konstruksi_dalam_pekerjaan') ?? 0;
 
                 $getData->min_penghapusan = ($minPenghapusan + $minPenjualan) ?? 0;
@@ -2513,23 +2589,27 @@ class RekonsiliasiAsetController extends Controller
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
                     ->where('kode_rekening', '5.2.06')
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $getData = AsetTakBerwujud::where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 if (!$getData) {
-                    DB::table('acc_rek_as_aset_tak_berwujud')->insert([
-                        'periode_id' => $request->periode,
-                        'year' => $request->year,
-                        'instance_id' => $instance->id,
-                        'plus_realisasi_belanja' => $dataLRA->realisasi ?? 0,
-                    ]);
+                    DB::table('acc_rek_as_aset_tak_berwujud')
+                        ->insert([
+                            'periode_id' => $request->periode,
+                            'year' => $request->year,
+                            'instance_id' => $instance->id,
+                            'plus_realisasi_belanja' => $dataLRA->realisasi ?? 0,
+                        ]);
 
                     $getData = AsetTakBerwujud::where('instance_id', $instance->id)
                         ->where('year', $request->year)
                         ->where('periode_id', $request->periode)
+                        ->whereNull('deleted_at')
                         ->first();
                 }
                 // Realisasi Belanja
@@ -2541,12 +2621,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_lain_lain') ?? 0;
                 $getData->plus_hutang_kegiatan = $HutangBaru ?? 0;
                 $PembayaranHutang = DB::table('acc_htb_pembayaran_hutang')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_lain_lain') ?? 0;
                 $getData->min_pembayaran_utang = $PembayaranHutang ?? 0;
 
@@ -2555,6 +2637,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('atri_aset_lain_lain') ?? 0;
                 $getData->plus_atribusi = $Atribusi ?? 0;
 
@@ -2563,6 +2646,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 // $getData->plus_reklasifikasi_kib_a = $ReklasKib->sum('min_aset_tetap_tanah') ?? 0;
                 // $getData->min_reklasifikasi_beban_kib_a = $ReklasKib->sum('plus_aset_tetap_tanah') ?? 0;
@@ -2636,6 +2720,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_lainnya') ?? 0;
                 $getData->plus_hibah_masuk = $HibahMasuk ?? 0;
 
@@ -2644,6 +2729,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_lainnya') ?? 0;
                 $getData->min_reklasifikasi_beban_hibah = $HibahKeluar ?? 0;
 
@@ -2652,6 +2738,7 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_lainnya') ?? 0;
                 $getData->plus_penilaian = $PenilaianAset ?? 0;
 
@@ -2661,12 +2748,14 @@ class RekonsiliasiAsetController extends Controller
                     ->where('to_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $MutasiOPDKeluar = DB::table('acc_padb_tambahan_mutasi_aset')
                     // ->where('instance_id', $instance->id)
                     ->where('from_instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->get();
                 $getData->plus_mutasi_antar_opd = $MutasiOPDMasuk->sum('plus_aset_lainnya') ?? 0;
                 $getData->min_mutasi_antar_opd = $MutasiOPDKeluar->sum('plus_aset_lainnya') ?? 0;
@@ -2675,11 +2764,13 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_lainnya') ?? 0;
                 $minPenjualan = DB::table('acc_padb_penjualan_aset')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->sum('aset_lainnya') ?? 0;
 
                 $getData->min_penghapusan = ($minPenghapusan + $minPenjualan) ?? 0;
@@ -2864,17 +2955,20 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $asetTakBerwujud = DB::table('acc_rek_as_aset_tak_berwujud')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $asetLainLain = DB::table('acc_rek_as_aset_lain_lain')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
 
                 if (!$getData) {
@@ -2924,6 +3018,7 @@ class RekonsiliasiAsetController extends Controller
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
                         ->where('periode_id', $request->periode)
+                        ->whereNull('deleted_at')
                         ->first();
                 } elseif ($getData) {
                     DB::table('acc_rek_as_aset_lainnya')
@@ -2970,6 +3065,7 @@ class RekonsiliasiAsetController extends Controller
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
                         ->where('periode_id', $request->periode)
+                        ->whereNull('deleted_at')
                         ->first();
                 }
 
@@ -3152,50 +3248,59 @@ class RekonsiliasiAsetController extends Controller
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
 
                 $KibA = DB::table('acc_rek_as_kib_a')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KibB = DB::table('acc_rek_as_kib_b')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KibC = DB::table('acc_rek_as_kib_c')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KibD = DB::table('acc_rek_as_kib_d')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KibE = DB::table('acc_rek_as_kib_e')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
                 $KDP = DB::table('acc_rek_as_kdp')
                     ->where('instance_id', $instance->id)
                     ->where('year', $request->year)
                     ->where('periode_id', $request->periode)
+                    ->whereNull('deleted_at')
                     ->first();
 
                 if (!$getData) {
-                    DB::table('acc_rek_as_rekap_aset_tetap')->insert([
-                        'periode_id' => $request->periode,
-                        'year' => $request->year,
-                        'instance_id' => $instance->id,
-                    ]);
+                    DB::table('acc_rek_as_rekap_aset_tetap')
+                        ->insert([
+                            'periode_id' => $request->periode,
+                            'year' => $request->year,
+                            'instance_id' => $instance->id,
+                        ]);
 
                     $getData = DB::table('acc_rek_as_rekap_aset_tetap')
                         ->where('instance_id', $instance->id)
                         ->where('year', $request->year)
                         ->where('periode_id', $request->periode)
+                        ->whereNull('deleted_at')
                         ->first();
                 }
 
@@ -3313,6 +3418,7 @@ class RekonsiliasiAsetController extends Controller
 
                     $getData = DB::table('acc_rek_as_rekap_aset_tetap')
                         ->where('id', $getData->id)
+                        ->whereNull('deleted_at')
                         ->first();
                 }
                 $values[] = [
