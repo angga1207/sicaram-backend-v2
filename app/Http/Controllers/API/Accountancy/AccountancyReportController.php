@@ -28,7 +28,7 @@ class AccountancyReportController extends Controller
             return $this->validationResponse($validate->errors());
         }
 
-        if (!$request->data[0]['id']) {
+        if (!$request->data[0]['id'] || $request->params['category'] != 'beban_lo') {
             return $this->errorResponse('Tidak ada data untuk diexport!');
         }
 
@@ -133,7 +133,7 @@ class AccountancyReportController extends Controller
                 'path' => asset('storage/export-accountancy/' . $filename),
                 'filename' => $filename,
             ]);
-        } else if ($request->params['category'] == 'pengembalian-belanja'){
+        } else if ($request->params['category'] == 'pengembalian-belanja') {
             $datas = $request->data;
             if (isset($request->params['instance'])) {
                 $instance = DB::table('instances')->where('id', $request->params['instance'])->first();
@@ -1525,5 +1525,4 @@ class AccountancyReportController extends Controller
 
         return $datas;
     }
-
 }
