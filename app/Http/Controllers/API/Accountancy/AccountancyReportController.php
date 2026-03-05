@@ -28,7 +28,7 @@ class AccountancyReportController extends Controller
             return $this->validationResponse($validate->errors());
         }
 
-        if (!$request->data[0]['id'] || $request->params['category'] != 'beban_lo') {
+        if (!$request->data[0]['id'] && $request->params['category'] != 'beban_lo') {
             return $this->errorResponse('Tidak ada data untuk diexport!');
         }
 
