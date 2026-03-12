@@ -1022,7 +1022,7 @@ class RekonsiliasiAsetController extends Controller
                     ->sum($minReklasKey) ?? 0;
 
                 $getData->plus_reklasifikasi_kib_b = $ReklasKib->where($plusReklasKey, '>', 0)
-                    ->where('min_aset_tetap_tanah', '>', 0)
+                    ->where('min_aset_tetap_peralatan_mesin', '>', 0)
                     ->sum($plusReklasKey) ?? 0;
                 $getData->min_reklasifikasi_beban_kib_b = $ReklasKib->where($minReklasKey, '>', 0)
                     ->where('plus_aset_tetap_peralatan_mesin', '>', 0)

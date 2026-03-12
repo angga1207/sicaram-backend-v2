@@ -28,10 +28,13 @@ class AccountancyReportController extends Controller
             return $this->validationResponse($validate->errors());
         }
 
-        if (!$request->data[0]['id'] && $request->params['category'] != 'beban_lo') {
+        if (
+            (isset($request->data[0]['id']) && !$request->data[0]['id']) &&
+            $request->params['category'] != 'beban_lo' &&
+            ($request->params['category'] == 'kibs' && $request->params['type'] == 'rekon_aset_penyusutan')
+        ) {
             return $this->errorResponse('Tidak ada data untuk diexport!');
         }
-
         if ($request->params['category'] == 'kibs') {
             $datas = $request->data;
             if (isset($request->params['instance'])) {
